@@ -24,134 +24,149 @@ class BxAutocompleteResponse
 	def getTextualSuggestions
 		suggestions = Array.new()
 		getResponse().hits.each  do |hit|
-		    if(suggestions.keys[$hit->suggestion])) continue;
-			$suggestions[$hit->suggestion] = $hit->suggestion;
+		    if(suggestions.keys[hit.suggestion]) 
+				next
+			end
+			suggestions[hit.suggestion] = hit.suggestion
         end
-		return $this->reOrderSuggestions($suggestions);
+		return reOrderSuggestions(suggestions)
 	end
 	
-	public function suggestionIsInGroup($groupName, $suggestion) {
-		$hit = $this->getTextualSuggestionHit($suggestion);
-		switch($groupName) {
-		case 'highlighted-beginning';
-			return $hit->highlighted != "" && strpos($hit->highlighted, $this->bxAutocompleteRequest->getHighlightPre()) === 0;
-		case 'highlighted-not-beginning';
-			return $hit->highlighted != "" && strpos($hit->highlighted, $this->bxAutocompleteRequest->getHighlightPre()) !== 0;
-		default:
-			return ($hit->highlighted == "");
-		}
-	}
-	
-	public function reOrderSuggestions($suggestions) {
-		$queryText = $this->getSearchRequest()->getQueryText();
-		
-		$groupNames = array('highlighted-beginning', 'highlighted-not-beginning', 'others');
-		$groupValues = array();
-		
-		foreach($groupNames as $k => $groupName) {
-			if(!isset($groupValues[$k])) {
-				$groupValues[$k] = array();
-			}
-			foreach($suggestions as $suggestion) {
-				if($this->suggestionIsInGroup($groupName, $suggestion)) {
-					$groupValues[$k][] = $suggestion;
-				}
-			}
-		}
-		
-		$final = array();
-		foreach($groupValues as $values) {
-			foreach($values as $value) {
-				$final[] = $value;
-			}
-		}
-		
-		return $final;
-	}
-	
-	protected function getTextualSuggestionHit($suggestion) {
-		foreach ($this->getResponse()->hits as $hit) {
-			if($hit->suggestion == $suggestion) {
-				return $hit;
-			}
-		}
-		throw new \Exception("unexisting textual suggestion provided " . $suggestion);
-	}
-	
-	public function getTextualSuggestionTotalHitCount($suggestion) {
-		$hit = $this->getTextualSuggestionHit($suggestion);
-		return $hit->searchResult->totalHitCount;
-	}
-	
-	public function getSearchRequest() {
-		return $this->bxAutocompleteRequest->getBxSearchRequest();
-	}
-	
-	public function getTextualSuggestionFacets($suggestion) {
-		$hit = $this->getTextualSuggestionHit($suggestion);
-	
-		$facets = $this->getSearchRequest()->getFacets();
+	def suggestionIsInGroup(groupName, suggestion) 
+		hit = getTextualSuggestionHit(suggestion)
+		case groupName
+		when 'highlighted-beginning'
+			if hit.highlighted != "" && hit.highlighted.index(@bxAutocompleteRequest.getHighlightPre()) == nil
+				return true
+			else
+				return false
+			end
 
-		if(empty($facets)){
-			return null;
-		}
-		$facets->setSearchResults($hit->searchResult);
-		return $facets;
-	}
+		when 'highlighted-not-beginning'
+			if hit.highlighted != "" && hit.highlighted.index(@bxAutocompleteRequest.getHighlightPre()) != nil
+				return true
+			else
+				return false
+			end
+		else
+			if hit.highlighted == "" 
+				return true
+			else
+				return false
+			end
+		end
+	end
 	
-	public function getTextualSuggestionHighlighted($suggestion) {
-		$hit = $this->getTextualSuggestionHit($suggestion);
-		if($hit->highlighted == "") {
-			return $suggestion;
-		}
-		return $hit->highlighted;
-	}
+	def reOrderSuggestions(suggestions) 
+		queryText = getSearchRequest().getQueryText()
+		
+		groupNames = Array.new('highlighted-beginning', 'highlighted-not-beginning', 'others')
+		groupValues = Array.new
+		
+		groupNames.each do |k , groupName|
+			if (!groupValues.has(k)) 
+				groupValues[k] = Array.new
+			end
+			suggestions.each do |suggestion|
+				if (suggestionIsInGroup(groupName, suggestion)) 
+					groupValues[k].push(suggestion)
+				end
+			end
+		end
+		
+		final = Array.new
+		groupValues.each do |values|
+			values.each do |value|
+				final.push(value)
+			end
+		end
+		
+		return final
+	end
 	
-	public function getBxSearchResponse($textualSuggestion = null) {
-		$searchResult = $textualSuggestion == null ? $this->getResponse()->prefixSearchResult : $this->getTextualSuggestionHit($textualSuggestion)->searchResult;
-		return new \com\boxalino\bxclient\v1\BxChooseResponse($searchResult, $this->bxAutocompleteRequest->getBxSearchRequest());
-	}
+	def getTextualSuggestionHit(suggestion) 
+		getResponse().hits.each do |hit|
+			if (hit.suggestion == suggestion) 
+				return hit
+			end
+		end
+		raise "unexisting textual suggestion provided " + suggestion
+	end
 	
-	public function getPropertyHits($field) {
-		foreach ($this->getResponse()->propertyResults as $propertyResult) {
-			if ($propertyResult->name == $field) {
-				return $propertyResult->hits;
-			}
-		}
-		return array();
-	}
+	def getTextualSuggestionTotalHitCount(suggestion) 
+		hit = getTextualSuggestionHit(suggestion)
+		return hit.searchResult.totalHitCount
+	end
 	
-	public function getPropertyHit($field, $hitValue) {
-		foreach ($this->getPropertyHits($field) as $hit) {
-			if($hit->value == $hitValue) {
-				return $hit;
-			}
-		}
-		return null;
-	}
+	def getSearchRequest
+		return bxAutocompleteRequest.getBxSearchRequest()
+	end
 	
-	public function getPropertyHitValues($field) {
-		$hitValues = array();
-		foreach ($this->getPropertyHits($field) as $hit) {
-			$hitValues[] = $hit->value;
-		}
-		return $hitValues;
-	}
+	def getTextualSuggestionFacets(suggestion) 
+		hit = getTextualSuggestionHit(suggestion)
 	
-	public function getPropertyHitValueLabel($field, $hitValue) {
-		$hit = $this->getPropertyHit($field, $hitValue);
-		if($hit != null) {
-			return $hit->label;
-		}
-		return null;
-	}
+		facets = getSearchRequest().getFacets()
+
+		if (facets ==nil || facets =="" )
+			return nil
+		end
+		facets.setSearchResults(hit.searchResult)
+		return facets
+	end
 	
-	public function getPropertyHitValueTotalHitCount($field, $hitValue) {
-		$hit = $this->getPropertyHit($field, $hitValue);
-		if($hit != null) {
-			return $hit->totalHitCount;
-		}
-		return null;
-	}
+	def getTextualSuggestionHighlighted(suggestion) 
+		hit = getTextualSuggestionHit(suggestion)
+		if(hit.highlighted == "") 
+			return suggestion
+		end
+		return hit.highlighted
+	end
+	
+	def getBxSearchResponse(textualSuggestion = nil) 
+		searchResult = textualSuggestion == nil ? getResponse().prefixSearchResult : getTextualSuggestionHit(textualSuggestion).searchResult
+		return BxChooseResponse.new(searchResult, bxAutocompleteRequest.getBxSearchRequest())
+	end
+	
+	def getPropertyHits(field) 
+		getResponse().propertyResults.each do |propertyResult|
+			if (propertyResult.name == field) 
+				return propertyResult.hits
+			end
+		end
+		return Array.new
+	end
+	
+	def getPropertyHit(field, hitValue) 
+		getPropertyHits(field).each do |hit|
+			if (hit.value == hitValue) 
+				return hit
+			end
+		end
+		return nil
+	end
+	
+	def getPropertyHitValues(field) 
+		hitValues = Array.new
+		getPropertyHits(field).each do |hit|
+			hitValues.push(hit.value)
+		end
+		return hitValues
+	end
+	
+	def getPropertyHitValueLabel(field, hitValue) 
+		hit = getPropertyHit(field, hitValue)
+		if (hit != nil) 
+			return hit.label
+		end
+		return nil
+	end
+	
+	def getPropertyHitValueTotalHitCount(field, hitValue) 
+		hit = getPropertyHit(field, hitValue)
+		if (hit != nil) 
+			return hit.totalHitCount
+		end
+		return nil
+	end
 	
 end
