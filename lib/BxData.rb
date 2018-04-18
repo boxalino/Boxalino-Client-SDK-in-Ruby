@@ -80,9 +80,9 @@ class BxData
     def addCSVCustomerFile(filePath, itemIdColumn, encoding = 'UTF-8', delimiter = ',', enclosure = "\&", escape = "\\\\", lineSeparator = "\\n", sourceId = nil, container = 'customers', validate=true, maxLength=23) 
         params = array('itemIdColumn'=>itemIdColumn, 'encoding'=>encoding, 'delimiter'=>delimiter, 'enclosure'=>enclosure, 'escape'=>escape, 'lineSeparator'=>lineSeparator);
         if(sourceId == nil) 
-            sourceId = this->getSourceIdFromFileNameFromPath(filePath, container, maxLength, true);
-        }
-        return this->addSourceFile(filePath, sourceId, container, 'item_data_file', 'CSV', params, validate);
+            sourceId = getSourceIdFromFileNameFromPath(filePath, container, maxLength, true);
+        end
+        return addSourceFile(filePath, sourceId, container, 'item_data_file', 'CSV', params, validate);
     end
 
     def addCategoryFile(filePath, categoryIdColumn, parentIdColumn, categoryLabelColumns, encoding = 'UTF-8', delimiter = ',', enclosure = "\&", escape = "\\\\", lineSeparator = "\\n", sourceId = 'resource_categories', container = 'products', validate=true) 
@@ -176,7 +176,7 @@ class BxData
 
     def validateColumnExistance(container, sourceId, col) 
         row = getSourceCSVRow(container, sourceId, 0)
-        if(row != nil && row.include?col == false) 
+        if(row != nil and row.include?col == false) 
             raise "the source 'sourceId' in the container 'container' declares an column 'col' which is not present in the header row of the provided CSV file: " + row.join(',')
         end
     end
@@ -341,7 +341,7 @@ class BxData
 
                             if(sourceValues['additional_item_source'] != nil)
                                 if(@ftpSources[sourceId] != nil)
-                                    xml.source('id' => sourceId, 'type' => sourceValues['type'] ,'additional_item_source', sourceValues['additional_item_source']) do
+                                    xml.source("id" => sourceId, "type" => sourceValues['type'] ,'additional_item_source'=> sourceValues['additional_item_source']) do
                                         xml.location('type'=>'ftp')
                                         xml.ftp('name'=>'ftp')
                                         # @ftpSources[sourceId].each do |ftpPn , ftpPv|  
@@ -349,7 +349,8 @@ class BxData
                                         # end
                                     end
                                 else
-                                    xml.source('id' => sourceId, 'type' => sourceValues['type'] ,'additional_item_source', sourceValues['additional_item_source'])
+                                    #To check Below line
+                                    xml.source('id' => sourceId, 'type' => sourceValues['type'] ,'additional_item_source'=> sourceValues['additional_item_source'])
                                 end
                             else
                                  if(@ftpSources[sourceId] != nil)
@@ -408,7 +409,7 @@ class BxData
                                     parameters.delete('customer_property_id')   
                             end
                             parameters.each do |parameter , defaultValue|
-                                value = !sourceValues[parameter].kind_of?(nil)) ? sourceValues[parameter] : defaultValue
+                                value = !sourceValues[parameter].kind_of?(nil) ? sourceValues[parameter] : defaultValue
                                 if(value == false) 
                                     raise "source parameter 'parameter' required but not defined in source id 'sourceId' for container 'containerName'"
                                 end
@@ -526,7 +527,7 @@ class BxData
 
         request = Net::HTTP::Post.new(uri.path, {'Content-Type' => 'application/json'})
 
-        request.body = {fields} # SOME JSON DATA
+        request.body = "[ #{fields} ]" # SOME JSON DATA
 
         response = http.request(request)
         checkResponseBody(response, url)

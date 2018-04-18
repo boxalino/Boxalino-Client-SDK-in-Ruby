@@ -1,91 +1,91 @@
 class BxClient
-	require 'P13nService'
+	require 'p13n_service'
 	require 'pp'
-	private account, password, isDev, host, port, uri, schema, p13n_username, p13n_password, domain
-	private isTest = nil
-	private autocompleteRequests = nil
-	private autocompleteResponses = nil
+	 @isTest = nil
+	 @autocompleteRequests = nil
+	 @autocompleteResponses = nil
 	
-	private chooseRequests = Array.new() 
-	private chooseResponses = nil
-	private bundleChooseRequests = Array.new() 
+	 @chooseRequests = Array.new() 
+	 @chooseResponses = nil
+	 @bundleChooseRequests = Array.new() 
 	VISITOR_COOKIE_TIME = 31536000
-	private _timeout = 2
-	private requestContextParameters = Array.new() 
+	 _timeout = 2
+	 @requestContextParameters = Array.new() 
 	
-	private sessionId = nil
-	private profileId = nil
+	 @sessionId = nil
+	 @profileId = nil
 	
-	private requestMap = Array.new()
+	 @requestMap = Array.new()
 	
-	private socketHost = nil
-	private socketPort = nil
-	private socketSendTimeout = nil
-	private socketRecvTimeout = nil
-    private notifications = Array.new() 
+	 @socketHost = nil
+	 @socketPort = nil
+	 @socketSendTimeout = nil
+	 @socketRecvTimeout = nil
+     @notifications = Array.new() 
 
     def initialize(account, password, domain, isDev=false, host=nil, port=nil, uri=nil, schema=nil, p13n_username=nil, p13n_password=nil) 
-		self.account = account
-		self.password = password
-		self.requestMap = params
-		self.isDev = isDev
-		self.host = host
-		if (self.host == nil) 
-			self.host = "cdn.bx-cloud.com"
+		@account = account
+		@password = password
+		#To Check Below Line 
+	#	@requestMap = params
+		@isDev = isDev
+		@host = host
+		if (@host == nil) 
+			@host = "cdn.bx-cloud.com"
 		end
 
-		self.port = port
-		if(self.port == nil) 
-			$this->port = 443;
+		@port = port
+		if(@port == nil) 
+			@port = 443;
 		end
-		self.uri = uri
-		if (self.uri == nil) 
-			self.uri = '/p13n.web/p13n'
-		end
-
-		self.schema = schema
-		if(self.schema == nil) 
-			self.schema = 'https'
+		@uri = uri
+		if (@uri == nil) 
+			@uri = '/p13n.web/p13n'
 		end
 
-		self.p13n_username = p13n_username
-		if(self.p13n_username == nil) 
-			self.p13n_username = "boxalino"
+		@schema = schema
+		if(@schema == nil) 
+			@schema = 'https'
 		end
 
-		self.p13n_password = p13n_password
-		if(self.p13n_password == nil) 
-			self.p13n_password = "tkZ8EXfzeZc6SdXZntCU"
+		@p13n_username = p13n_username
+		if(@p13n_username == nil) 
+			@p13n_username = "boxalino"
 		end
-		self.domain = domain
+
+		@p13n_password = p13n_password
+		if(@p13n_password == nil) 
+			@p13n_password = "tkZ8EXfzeZc6SdXZntCU"
+		end
+		@domain = domain
 	end
 
 	def setHost(host) 
-	    self.host = host
+	    @host = host
     end
 
 	def setTestMode(isTest) 
-		self.isTest = isTest
+		@isTest = isTest
 	end
 
 
 	def setSocket(socketHost, socketPort=4040, socketSendTimeout=1000, socketRecvTimeout=1000) 
-		self.socketHost = socketHost
-		self.socketPort = socketPort
-		self.socketSendTimeout = socketSendTimeout
-		self.socketRecvTimeout = socketRecvTimeout
+		@socketHost = socketHost
+		@socketPort = socketPort
+		@socketSendTimeout = socketSendTimeout
+		@socketRecvTimeout = socketRecvTimeout
 	end
 	
 	def setRequestMap(requestMap) 
-		self.requestMap = requestMap
+		@requestMap = requestMap
 	end
 
 
-	private choiceIdOverwrite = "owbx_choice_id"
+	 choiceIdOverwrite = "owbx_choice_id"
 	
 	def getChoiceIdOverwrite
-        if (requestMap.has_key ? self.choiceIdOverwrite) 
-            return requestMap[self.choiceIdOverwrite]
+        if (requestMap.has_key?(:@choiceIdOverwrite) == true) 
+            return requestMap[@choiceIdOverwrite]
         end
         return nil
     end
@@ -138,10 +138,10 @@ class BxClient
 		if (@domain == nil) 
 			cookies[:cems] = @sessionId
 			cookies[:cemv] =  { :value => @profileId, :expires => 1.year.from_now } 
-		} else {
+		else 
 			cookies[:cems] =  {:value => @sessionId, :expire =>0 , :path=> '/', :domain => @domain}
 			cookies[:cemv] =  { :value => @profileId, :expires => 1.year.from_now , :path=> '/', :domain => @domain} 
-		}
+		end
 		
 		return Array.new(@sessionId, @profileId)
 	end
@@ -200,14 +200,14 @@ class BxClient
 		return @protocol + '://' + @hostname + @requesturi
 	end
 	
-	def forwardRequestMapAsContextParameters(filterPrefix = '', setPrefix = ''){
+	def forwardRequestMapAsContextParameters(filterPrefix = '', setPrefix = '')
 		@requestMap.each do |key ,value|
 			if(filterPrefix != '')
-				if(strpos($key, $filterPrefix) !== 0) {
+				if(strpos($key, $filterPrefix) != 0) 
 					continue;
 				end
 			end
-			@requestContextParameters[setPrefix + key] = value.kind_of?(Array) ? value : Array.new(value)
+			@requestContextParameters[setPrefix + key] = value.kind_of?(Array)==true ? value : [value]
 		end
 	end
 
@@ -252,8 +252,8 @@ class BxClient
 	def getRequestContext
 
 		requestContext = RequestContext.new()
-		requestContext.parameters = @getBasicRequestContextParameters()
-		@getRequestContextParameters().each do |k,v|
+		requestContext.parameters = getBasicRequestContextParameters()
+		getRequestContextParameters().each do |k,v|
 			requestContext.parameters[k] = v
 		end
 
@@ -280,7 +280,7 @@ class BxClient
 			pieces = pieceMsg.split(' at ')
 			choiceId = pieces[0]
 			choiceId [':'] =""
-			raise "Configuration not live on account " + getAccount() + ": choice $choiceId doesn't exist. NB: If you get a message indicating that the choice doesn't exist, go to http://intelligence.bx-cloud.com, log in your account and make sure that the choice id you want to use is published.");
+			raise "Configuration not live on account " + getAccount() + ": choice $choiceId doesn't exist. NB: If you get a message indicating that the choice doesn't exist, go to http://intelligence.bx-cloud.com, log in your account and make sure that the choice id you want to use is published."
 		end
 
 		if(e.getMessage().index('Solr returned status 404') !=nil) 
@@ -391,7 +391,7 @@ class BxClient
 			@sessionid = getSessionAndProfile()[0]
 			@profileid = getSessionAndProfile()[1]
 			userRecord = getUserRecord()
-			tempArray = @autocompleteRequests()
+			tempArray = autocompleteRequests()
 			@p13nrequests = tempArray.map { |request| request.getAutocompleteThriftRequest(@profileid, @userRecord) }
 			return @p13nrequests
 		end
@@ -452,7 +452,7 @@ class BxClient
                 choiceInquiries.push(choiceInquiry)
             end
             bundleRequest.push(getBundleChoiceRequest(choiceInquiries, getRequestContext()))
-        }
+        end
         return ChoiceRequestBundle.new(['requests' => bundleRequest])
     end
 
@@ -501,7 +501,7 @@ class BxClient
     end
 	
 	def setAutocompleteRequest(request) 
-		@setAutocompleteRequests(Array.new(request))
+		setAutocompleteRequests(Array.new(request))
 	end
 	
 	def setAutocompleteRequests(requests) 
@@ -511,8 +511,8 @@ class BxClient
 		autocompleteRequests = requests
 	end
 	
-	def enhanceAutoCompleterequest(@request) 
-		@request.setDefaultIndexId(getAccount())
+	def enhanceAutoCompleterequest(request) 
+		request.setDefaultIndexId(getAccount())
 	end
 
 	def p13nautocomplete(autocompleteRequest) 
@@ -538,12 +538,12 @@ class BxClient
 		@profileid = getSessionAndProfile()[1]
 		@userRecord = getUserRecord()
 
-		tempArray = @autocompleteRequests()
+		tempArray = autocompleteRequests()
 		@p13nrequests = tempArray.map { |request| request.getAutocompleteThriftRequest(@profileid, @userRecord) }
 		@i = -1
 		
 
-		tempArrayBxAuto = @p13nautocompleteAll(@p13nrequests)
+		tempArrayBxAuto = p13nautocompleteAll(@p13nrequests)
 		@autocompleteResponses = tempArrayBxAuto.map { |request| autocompletePartail(request , ++@i) }
 		
 	end
@@ -592,14 +592,14 @@ class BxClient
 
 	def setTimeout(timeout) 
 		@_timeout = timeout
-	}end
+	end
 
     def notifyWarning(warning) 
         addNotification("warning", warning)
     end
 
     def addNotification(type, notification) 
-        if(!notifications[type].nil?)) 
+        if(!notifications[type].nil?)
             notifications[type] = Array.new()
         end
         notifications[type].push(notification)
