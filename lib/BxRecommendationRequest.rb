@@ -1,4 +1,4 @@
 require 'BxRequest'
-class BxRecommendationRequest extend BxRequest
-	
+class BxRecommendationRequest < BxRequest
+
 end

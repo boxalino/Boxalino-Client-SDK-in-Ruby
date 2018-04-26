@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<colors>
+    <color>
+        <color_id>49</color_id>
+        <value>
+            <translation locale="en">Black</translation>
+        </value>
+    </color>
+    <color>
+        <color_id>50</color_id>
+        <value>
+            <translation locale="en">Blue</translation>
+        </value>
+    </color>
+    <color>
+        <color_id>51</color_id>
+        <value>
+            <translation locale="en">Brown</translation>
+        </value>
+    </color>
+    <color>
+        <color_id>52</color_id>
+        <value>
+            <translation locale="en">Gray</translation>
+        </value>
+    </color>
+    <color>
+        <color_id>53</color_id>
+        <value>
+            <translation locale="en">Green</translation>
+        </value>
+    </color>
+    <color>
+        <color_id>54</color_id>
+        <value>
+            <translation locale="en">Lavender</translation>
+        </value>
+    </color>
+    <color>
+        <color_id>55</color_id>
+        <value>
+            <translation locale="en">Multi</translation>
+        </value>
+    </color>
+    <color>
+        <color_id>56</color_id>
+        <value>
+            <translation locale="en">Orange</translation>
+        </value>
+    </color>
+    <color>
+        <color_id>57</color_id>
+        <value>
+            <translation locale="en">Purple</translation>
+        </value>
+    </color>
+    <color>
+        <color_id>58</color_id>
+        <value>
+            <translation locale="en">Red</translation>
+        </value>
+    </color>
+    <color>
+        <color_id>59</color_id>
+        <value>
+            <translation locale="en">White</translation>
+        </value>
+    </color>
+    <color>
+        <color_id>60</color_id>
+        <value>
+            <translation locale="en">Yellow</translation>
+        </value>
+    </color>
+</colors>

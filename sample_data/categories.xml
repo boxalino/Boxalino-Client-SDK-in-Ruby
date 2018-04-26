@@ -1,0 +1,283 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<categories>
+    <category>
+        <category_id>1</category_id>
+        <parent_id></parent_id>
+        <name>
+            <translation locale="en">Root Catalog</translation>
+        </name>
+    </category>
+    <category>
+        <category_id>2</category_id>
+        <parent_id>1</parent_id>
+        <name>
+            <translation locale="en">Default Category</translation>
+        </name>
+    </category>
+    <category>
+        <category_id>3</category_id>
+        <parent_id>2</parent_id>
+        <name>
+            <translation locale="en">Gear</translation>
+        </name>
+    </category>
+    <category>
+        <category_id>4</category_id>
+        <parent_id>3</parent_id>
+        <name>
+            <translation locale="en">Bags</translation>
+        </name>
+    </category>
+    <category>
+        <category_id>5</category_id>
+        <parent_id>3</parent_id>
+        <name>
+            <translation locale="en">Fitness Equipment</translation>
+        </name>
+    </category>
+    <category>
+        <category_id>6</category_id>
+        <parent_id>3</parent_id>
+        <name>
+            <translation locale="en">Watches</translation>
+        </name>
+    </category>
+    <category>
+        <category_id>7</category_id>
+        <parent_id>2</parent_id>
+        <name>
+            <translation locale="en">Collections</translation>
+        </name>
+    </category>
+    <category>
+        <category_id>8</category_id>
+        <parent_id>7</parent_id>
+        <name>
+            <translation locale="en">New Luma Yoga Collection</translation>
+        </name>
+    </category>
+    <category>
+        <category_id>9</category_id>
+        <parent_id>2</parent_id>
+        <name>
+            <translation locale="en">Training</translation>
+        </name>
+    </category>
+    <category>
+        <category_id>10</category_id>
+        <parent_id>9</parent_id>
+        <name>
+            <translation locale="en">Video Download</translation>
+        </name>
+    </category>
+    <category>
+        <category_id>11</category_id>
+        <parent_id>2</parent_id>
+        <name>
+            <translation locale="en">Men</translation>
+        </name>
+    </category>
+    <category>
+        <category_id>12</category_id>
+        <parent_id>11</parent_id>
+        <name>
+            <translation locale="en">Tops</translation>
+        </name>
+    </category>
+    <category>
+        <category_id>13</category_id>
+        <parent_id>11</parent_id>
+        <name>
+            <translation locale="en">Bottoms</translation>
+        </name>
+    </category>
+    <category>
+        <category_id>14</category_id>
+        <parent_id>12</parent_id>
+        <name>
+            <translation locale="en">Jackets</translation>
+        </name>
+    </category>
+    <category>
+        <category_id>15</category_id>
+        <parent_id>12</parent_id>
+        <name>
+            <translation locale="en">Hoodies &amp;amp; Sweatshirts</translation>
+        </name>
+    </category>
+    <category>
+        <category_id>16</category_id>
+        <parent_id>12</parent_id>
+        <name>
+            <translation locale="en">Tees</translation>
+        </name>
+    </category>
+    <category>
+        <category_id>17</category_id>
+        <parent_id>12</parent_id>
+        <name>
+            <translation locale="en">Tanks</translation>
+        </name>
+    </category>
+    <category>
+        <category_id>18</category_id>
+        <parent_id>13</parent_id>
+        <name>
+            <translation locale="en">Pants</translation>
+        </name>
+    </category>
+    <category>
+        <category_id>19</category_id>
+        <parent_id>13</parent_id>
+        <name>
+            <translation locale="en">Shorts</translation>
+        </name>
+    </category>
+    <category>
+        <category_id>20</category_id>
+        <parent_id>2</parent_id>
+        <name>
+            <translation locale="en">Femmes</translation>
+        </name>
+    </category>
+    <category>
+        <category_id>21</category_id>
+        <parent_id>20</parent_id>
+        <name>
+            <translation locale="en">Tops</translation>
+        </name>
+    </category>
+    <category>
+        <category_id>22</category_id>
+        <parent_id>20</parent_id>
+        <name>
+            <translation locale="en">Bottoms</translation>
+        </name>
+    </category>
+    <category>
+        <category_id>23</category_id>
+        <parent_id>21</parent_id>
+        <name>
+            <translation locale="en">Jackets</translation>
+        </name>
+    </category>
+    <category>
+        <category_id>24</category_id>
+        <parent_id>21</parent_id>
+        <name>
+            <translation locale="en">Hoodies &amp;amp; Sweatshirts</translation>
+        </name>
+    </category>
+    <category>
+        <category_id>25</category_id>
+        <parent_id>21</parent_id>
+        <name>
+            <translation locale="en">Tees</translation>
+        </name>
+    </category>
+    <category>
+        <category_id>26</category_id>
+        <parent_id>21</parent_id>
+        <name>
+            <translation locale="en">Bras &amp;amp; Tanks</translation>
+        </name>
+    </category>
+    <category>
+        <category_id>27</category_id>
+        <parent_id>22</parent_id>
+        <name>
+            <translation locale="en">Pants</translation>
+        </name>
+    </category>
+    <category>
+        <category_id>28</category_id>
+        <parent_id>22</parent_id>
+        <name>
+            <translation locale="en">Shorts</translation>
+        </name>
+    </category>
+    <category>
+        <category_id>29</category_id>
+        <parent_id>2</parent_id>
+        <name>
+            <translation locale="en">Promotions</translation>
+        </name>
+    </category>
+    <category>
+        <category_id>30</category_id>
+        <parent_id>29</parent_id>
+        <name>
+            <translation locale="en">Women Sale</translation>
+        </name>
+    </category>
+    <category>
+        <category_id>31</category_id>
+        <parent_id>29</parent_id>
+        <name>
+            <translation locale="en">Men Sale</translation>
+        </name>
+    </category>
+    <category>
+        <category_id>32</category_id>
+        <parent_id>29</parent_id>
+        <name>
+            <translation locale="en">Pants</translation>
+        </name>
+    </category>
+    <category>
+        <category_id>33</category_id>
+        <parent_id>29</parent_id>
+        <name>
+            <translation locale="en">Tees</translation>
+        </name>
+    </category>
+    <category>
+        <category_id>34</category_id>
+        <parent_id>7</parent_id>
+        <name>
+            <translation locale="en">Erin Recommends</translation>
+        </name>
+    </category>
+    <category>
+        <category_id>35</category_id>
+        <parent_id>7</parent_id>
+        <name>
+            <translation locale="en">Performance Fabrics</translation>
+        </name>
+    </category>
+    <category>
+        <category_id>36</category_id>
+        <parent_id>7</parent_id>
+        <name>
+            <translation locale="en">Eco Friendly</translation>
+        </name>
+    </category>
+    <category>
+        <category_id>37</category_id>
+        <parent_id>2</parent_id>
+        <name>
+            <translation locale="en">Sale</translation>
+        </name>
+    </category>
+    <category>
+        <category_id>38</category_id>
+        <parent_id>2</parent_id>
+        <name>
+            <translation locale="en">What&apos;s New</translation>
+        </name>
+    </category>
+    <category>
+        <category_id>39</category_id>
+        <parent_id>7</parent_id>
+        <name>
+            <translation locale="en">Performance Sportswear New</translation>
+        </name>
+    </category>
+    <category>
+        <category_id>40</category_id>
+        <parent_id>7</parent_id>
+        <name>
+            <translation locale="en">Nouvelle collection eco</translation>
+        </name>
+    </category>
+</categories>
