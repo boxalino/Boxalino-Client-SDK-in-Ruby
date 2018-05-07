@@ -8,6 +8,7 @@
       <change beforePath="$PROJECT_DIR$/Gemfile.lock" beforeDir="false" afterPath="$PROJECT_DIR$/Gemfile.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/controllers/backend_pages_controller.rb" beforeDir="false" afterPath="$PROJECT_DIR$/app/controllers/backend_pages_controller.rb" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/controllers/frontend_pages_controller.rb" beforeDir="false" afterPath="$PROJECT_DIR$/app/controllers/frontend_pages_controller.rb" afterDir="false" />
+<<<<<<< HEAD
       <change beforePath="$PROJECT_DIR$/app/controllers/static_pages_controller.rb" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/app/views/backend_pages/backend_data_init.html.erb" beforeDir="false" afterPath="$PROJECT_DIR$/app/views/backend_pages/backend_data_init.html.erb" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/views/frontend_pages/frontend_recommendations_basket.html.erb" beforeDir="false" afterPath="$PROJECT_DIR$/app/views/frontend_pages/frontend_recommendations_basket.html.erb" afterDir="false" />
@@ -16,6 +17,11 @@
       <change beforePath="$PROJECT_DIR$/lib/BxData.rb" beforeDir="false" afterPath="$PROJECT_DIR$/lib/BxData.rb" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/BxFacets.rb" beforeDir="false" afterPath="$PROJECT_DIR$/lib/BxFacets.rb" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/BxParametrizedRequest.rb" beforeDir="false" afterPath="$PROJECT_DIR$/lib/BxParametrizedRequest.rb" afterDir="false" />
+=======
+      <change beforePath="$PROJECT_DIR$/app/views/frontend_pages/frontend_recommendations_basket.html.erb" beforeDir="false" afterPath="$PROJECT_DIR$/app/views/frontend_pages/frontend_recommendations_basket.html.erb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/BxClient.rb" beforeDir="false" afterPath="$PROJECT_DIR$/lib/BxClient.rb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/BxData.rb" beforeDir="false" afterPath="$PROJECT_DIR$/lib/BxData.rb" afterDir="false" />
+>>>>>>> 880440f2e240a6f639cb461fa41a38ec829d04a7
       <change beforePath="$PROJECT_DIR$/lib/BxRecommendationRequest.rb" beforeDir="false" afterPath="$PROJECT_DIR$/lib/BxRecommendationRequest.rb" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/BxRequest.rb" beforeDir="false" afterPath="$PROJECT_DIR$/lib/BxRequest.rb" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/sample_data/categories.csv" beforeDir="false" />
@@ -31,9 +37,12 @@
       <change beforePath="$PROJECT_DIR$/lib/sample_data/products.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/sample_data/transactions.csv" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/sample_data/transactions.xml" beforeDir="false" />
+<<<<<<< HEAD
       <change beforePath="$PROJECT_DIR$/test/controllers/backend_pages_controller_test.rb" beforeDir="false" afterPath="$PROJECT_DIR$/test/controllers/backend_pages_controller_test.rb" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/test/controllers/frontend_pages_controller_test.rb" beforeDir="false" afterPath="$PROJECT_DIR$/test/controllers/frontend_pages_controller_test.rb" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/test/controllers/static_pages_controller_test.rb" beforeDir="false" />
+=======
+>>>>>>> 880440f2e240a6f639cb461fa41a38ec829d04a7
     </list>
     <ignored path="$PROJECT_DIR$/.bundle/" />
     <ignored path="$PROJECT_DIR$/components/" />
@@ -50,27 +59,47 @@
   </component>
   <component name="CoverageDataManager">
     <SUITE FILE_PATH="coverage/boxalino@db_structure_dump__boxalino.rcov" NAME="db:structure:dump: boxalino Coverage Results" MODIFIED="1524555909796" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="rcov" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" MODULE_NAME="boxalino" />
+<<<<<<< HEAD
     <SUITE FILE_PATH="coverage/boxalino@Development__boxalino.rcov" NAME="Development: boxalino Coverage Results" MODIFIED="1525358301811" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="rcov" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" MODULE_NAME="boxalino" />
+=======
+    <SUITE FILE_PATH="coverage/boxalino@Development__boxalino.rcov" NAME="Development: boxalino Coverage Results" MODIFIED="1524721948405" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="rcov" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" MODULE_NAME="boxalino" />
+>>>>>>> 880440f2e240a6f639cb461fa41a38ec829d04a7
     <SUITE FILE_PATH="coverage/boxalino@BxData.rcov" NAME="BxData Coverage Results" MODIFIED="1524148714522" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="rcov" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/lib" MODULE_NAME="boxalino" />
     <SUITE FILE_PATH="coverage/boxalino@backend_pages_controller.rcov" NAME="backend_pages_controller Coverage Results" MODIFIED="1524148801850" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="rcov" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/app/controllers" MODULE_NAME="boxalino" />
     <SUITE FILE_PATH="coverage/boxalino@All_tests_in_boxalino__boxalino.rcov" NAME="All tests in boxalino: boxalino Coverage Results" MODIFIED="1524148619299" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="rcov" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" MODULE_NAME="boxalino" />
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+<<<<<<< HEAD
       <file leaf-file-name="backend_pages_controller_test.rb" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/test/controllers/backend_pages_controller_test.rb">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="221">
               <caret line="13" column="27" selection-start-line="13" selection-start-column="27" selection-end-line="13" selection-end-column="27" />
+=======
+      <file leaf-file-name="BxClient.rb" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/lib/BxClient.rb">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="5162">
+              <caret line="343" selection-start-line="343" selection-end-line="343" />
+>>>>>>> 880440f2e240a6f639cb461fa41a38ec829d04a7
             </state>
           </provider>
         </entry>
       </file>
+<<<<<<< HEAD
       <file leaf-file-name="frontend_pages_controller_test.rb" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/test/controllers/frontend_pages_controller_test.rb">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="-282">
               <caret line="178" column="6" selection-start-line="178" selection-start-column="6" selection-end-line="178" selection-end-column="6" />
+=======
+      <file leaf-file-name="BxData.rb" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/lib/BxData.rb">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="238">
+              <caret line="548" column="8" selection-start-line="548" selection-start-column="8" selection-end-line="548" selection-end-column="8" />
+>>>>>>> 880440f2e240a6f639cb461fa41a38ec829d04a7
             </state>
           </provider>
         </entry>
@@ -79,6 +108,30 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
+<<<<<<< HEAD
+=======
+      <find>getU</find>
+      <find>sourceValues</find>
+      <find>@host</find>
+      <find>getUsername</find>
+      <find>callAPI</find>
+      <find>xml</find>
+      <find>callA</find>
+      <find>getXML</find>
+      <find>transfor</find>
+      <find>calla</find>
+      <find>addMainXmlItemFile</find>
+      <find>addMainXMLItemFile</find>
+      <find>publishChanges</find>
+      <find>pushData</find>
+      <find>getFiles</find>
+      <find>addSourceFile</find>
+      <find>@ftpSources</find>
+      <find>getFileNameFromPath</find>
+      <find>1173</find>
+      <find>UserRecord</find>
+      <find>createzip</find>
+>>>>>>> 880440f2e240a6f639cb461fa41a38ec829d04a7
       <find>BxRecommendationRequest</find>
       <find>setBasketProductWithPrices</find>
       <find>ContextItem</find>
@@ -88,6 +141,7 @@
       <find>setIndexId</find>
       <find>addRequest</find>
       <find>setDefaultIndexId</find>
+<<<<<<< HEAD
       <find>@contextItems</find>
       <find>backend_data_full_export_url</find>
       <find>full_fa</find>
@@ -109,6 +163,8 @@
       <find>ChoiceRequest</find>
       <find>keys</find>
       <find>failed</find>
+=======
+>>>>>>> 880440f2e240a6f639cb461fa41a38ec829d04a7
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -118,6 +174,7 @@
     <option name="CHANGED_PATHS">
       <list>
         <option value="$PROJECT_DIR$/lib/BxClient.rb" />
+<<<<<<< HEAD
         <option value="$PROJECT_DIR$/app/views/frontend_pages/frontend_recommendations_basket.html.erb" />
         <option value="$PROJECT_DIR$/lib/BxRecommendationRequest.rb" />
         <option value="$PROJECT_DIR$/lib/BxData.rb" />
@@ -132,6 +189,14 @@
         <option value="$PROJECT_DIR$/app/controllers/frontend_pages_controller.rb" />
         <option value="$PROJECT_DIR$/test/controllers/unit_test_controller_test.rb" />
         <option value="$PROJECT_DIR$/test/controllers/frontend_pages_controller_test.rb" />
+=======
+        <option value="$PROJECT_DIR$/app/controllers/backend_pages_controller.rb" />
+        <option value="$PROJECT_DIR$/app/views/frontend_pages/frontend_recommendations_basket.html.erb" />
+        <option value="$PROJECT_DIR$/lib/BxRecommendationRequest.rb" />
+        <option value="$PROJECT_DIR$/app/controllers/frontend_pages_controller.rb" />
+        <option value="$PROJECT_DIR$/lib/BxRequest.rb" />
+        <option value="$PROJECT_DIR$/lib/BxData.rb" />
+>>>>>>> 880440f2e240a6f639cb461fa41a38ec829d04a7
       </list>
     </option>
   </component>
@@ -165,8 +230,38 @@
     </navigator>
     <panes>
       <pane id="RailsProjectView" />
+<<<<<<< HEAD
       <pane id="ProjectPane" />
       <pane id="Scope" />
+=======
+      <pane id="Scope" />
+      <pane id="ProjectPane">
+        <subPane>
+          <expand>
+            <path>
+              <item name="boxalino" type="b2602c69:ProjectViewProjectNode" />
+              <item name="boxalino" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="boxalino" type="b2602c69:ProjectViewProjectNode" />
+              <item name="boxalino" type="462c0819:PsiDirectoryNode" />
+              <item name="app" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="boxalino" type="b2602c69:ProjectViewProjectNode" />
+              <item name="boxalino" type="462c0819:PsiDirectoryNode" />
+              <item name="config" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="boxalino" type="b2602c69:ProjectViewProjectNode" />
+              <item name="boxalino" type="462c0819:PsiDirectoryNode" />
+              <item name="lib" type="462c0819:PsiDirectoryNode" />
+            </path>
+          </expand>
+          <select />
+        </subPane>
+      </pane>
+>>>>>>> 880440f2e240a6f639cb461fa41a38ec829d04a7
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -376,6 +471,7 @@
       <workItem from="1524549749830" duration="10719000" />
       <workItem from="1524570836141" duration="8733000" />
       <workItem from="1524634614929" duration="21758000" />
+<<<<<<< HEAD
       <workItem from="1524721563682" duration="15408000" />
       <workItem from="1524807921810" duration="17247000" />
       <workItem from="1525067146886" duration="6823000" />
@@ -385,6 +481,9 @@
       <workItem from="1525326576215" duration="15847000" />
       <workItem from="1525412590908" duration="4076000" />
       <workItem from="1525686952186" duration="8586000" />
+=======
+      <workItem from="1524721563682" duration="2610000" />
+>>>>>>> 880440f2e240a6f639cb461fa41a38ec829d04a7
     </task>
     <servers />
   </component>
@@ -397,6 +496,7 @@
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
+<<<<<<< HEAD
     <option name="totallyTimeSpent" value="152892000" />
   </component>
   <component name="ToolWindowManager">
@@ -412,6 +512,24 @@
       <window_info anchor="bottom" id="Run" order="7" weight="0.4892916" />
       <window_info id="Structure" order="2" sideWeight="0.5012285" side_tool="true" weight="0.24281392" />
       <window_info active="true" anchor="bottom" id="Terminal" order="2" sideWeight="0.49848714" visible="true" weight="0.461285" />
+=======
+    <option name="totallyTimeSpent" value="69574000" />
+  </component>
+  <component name="ToolWindowManager">
+    <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
+    <editor active="true" />
+    <layout>
+      <window_info active="true" content_ui="combo" id="Project" order="1" visible="true" weight="0.24281392" />
+      <window_info anchor="bottom" id="TODO" order="11" />
+      <window_info anchor="bottom" id="Docker" order="0" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Event Log" order="6" side_tool="true" />
+      <window_info anchor="right" id="Database" order="0" />
+      <window_info anchor="bottom" id="Database Changes" order="1" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Version Control" order="5" />
+      <window_info anchor="bottom" id="Run" order="7" weight="0.4892916" />
+      <window_info id="Structure" order="2" side_tool="true" weight="0.24962178" />
+      <window_info anchor="bottom" id="Terminal" order="2" />
+>>>>>>> 880440f2e240a6f639cb461fa41a38ec829d04a7
       <window_info id="Favorites" order="0" side_tool="true" />
       <window_info anchor="bottom" id="Debug" order="8" weight="0.4497529" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="3" weight="0.25" />
@@ -422,10 +540,35 @@
       <window_info anchor="bottom" id="Cvs" order="9" weight="0.25" />
       <window_info anchor="bottom" id="Find" order="4" />
     </layout>
+<<<<<<< HEAD
+=======
+    <layout-to-restore>
+      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="3" weight="0.25" />
+      <window_info anchor="bottom" id="Docker" order="0" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Inspection" order="10" weight="0.4" />
+      <window_info content_ui="combo" id="Project" order="1" visible="true" weight="0.24281392" />
+      <window_info id="Structure" order="2" side_tool="true" weight="0.24962178" />
+      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="1" type="SLIDING" weight="0.4" />
+      <window_info anchor="right" id="Ant Build" order="2" weight="0.25" />
+      <window_info anchor="bottom" id="TODO" order="11" />
+      <window_info anchor="bottom" id="Version Control" order="5" />
+      <window_info anchor="bottom" id="Run" order="7" weight="0.4892916" />
+      <window_info anchor="bottom" id="Find" order="4" />
+      <window_info anchor="right" id="Database" order="0" />
+      <window_info anchor="bottom" id="Terminal" order="2" />
+      <window_info active="true" anchor="bottom" id="Debug" order="8" visible="true" weight="0.4497529" />
+      <window_info anchor="bottom" id="Database Changes" order="1" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Cvs" order="9" weight="0.25" />
+      <window_info anchor="bottom" id="Event Log" order="6" side_tool="true" />
+      <window_info anchor="bottom" id="Message" order="3" />
+      <window_info id="Favorites" order="0" side_tool="true" />
+    </layout-to-restore>
+>>>>>>> 880440f2e240a6f639cb461fa41a38ec829d04a7
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="1" />
   </component>
+<<<<<<< HEAD
   <component name="Vcs.Log.Tabs.Properties">
     <option name="TAB_STATES">
       <map>
@@ -452,6 +595,8 @@
       </map>
     </option>
   </component>
+=======
+>>>>>>> 880440f2e240a6f639cb461fa41a38ec829d04a7
   <component name="VcsContentAnnotationSettings">
     <option name="myLimit" value="2678400000" />
   </component>
@@ -495,7 +640,11 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="ruby-line">
           <url>file://$PROJECT_DIR$/app/controllers/backend_pages_controller.rb</url>
+<<<<<<< HEAD
           <line>43</line>
+=======
+          <line>36</line>
+>>>>>>> 880440f2e240a6f639cb461fa41a38ec829d04a7
           <option name="timeStamp" value="43" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="ruby-line">
@@ -560,42 +709,74 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="ruby-line">
           <url>file://$PROJECT_DIR$/app/controllers/backend_pages_controller.rb</url>
+<<<<<<< HEAD
           <line>63</line>
+=======
+          <line>56</line>
+>>>>>>> 880440f2e240a6f639cb461fa41a38ec829d04a7
           <option name="timeStamp" value="96" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="ruby-line">
           <url>file://$PROJECT_DIR$/app/controllers/backend_pages_controller.rb</url>
+<<<<<<< HEAD
           <line>66</line>
+=======
+          <line>59</line>
+>>>>>>> 880440f2e240a6f639cb461fa41a38ec829d04a7
           <option name="timeStamp" value="97" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="ruby-line">
           <url>file://$PROJECT_DIR$/app/controllers/backend_pages_controller.rb</url>
+<<<<<<< HEAD
           <line>68</line>
+=======
+          <line>61</line>
+>>>>>>> 880440f2e240a6f639cb461fa41a38ec829d04a7
           <option name="timeStamp" value="98" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="ruby-line">
           <url>file://$PROJECT_DIR$/app/controllers/backend_pages_controller.rb</url>
+<<<<<<< HEAD
           <line>80</line>
+=======
+          <line>73</line>
+>>>>>>> 880440f2e240a6f639cb461fa41a38ec829d04a7
           <option name="timeStamp" value="99" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="ruby-line">
           <url>file://$PROJECT_DIR$/app/controllers/backend_pages_controller.rb</url>
+<<<<<<< HEAD
           <line>87</line>
+=======
+          <line>80</line>
+>>>>>>> 880440f2e240a6f639cb461fa41a38ec829d04a7
           <option name="timeStamp" value="100" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="ruby-line">
           <url>file://$PROJECT_DIR$/app/controllers/backend_pages_controller.rb</url>
+<<<<<<< HEAD
           <line>90</line>
+=======
+          <line>83</line>
+>>>>>>> 880440f2e240a6f639cb461fa41a38ec829d04a7
           <option name="timeStamp" value="101" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="ruby-line">
           <url>file://$PROJECT_DIR$/app/controllers/backend_pages_controller.rb</url>
+<<<<<<< HEAD
           <line>92</line>
+=======
+          <line>85</line>
+>>>>>>> 880440f2e240a6f639cb461fa41a38ec829d04a7
           <option name="timeStamp" value="102" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="ruby-line">
           <url>file://$PROJECT_DIR$/app/controllers/backend_pages_controller.rb</url>
+<<<<<<< HEAD
           <line>73</line>
+=======
+          <line>66</line>
+>>>>>>> 880440f2e240a6f639cb461fa41a38ec829d04a7
           <option name="timeStamp" value="103" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="ruby-line">
@@ -605,7 +786,11 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="ruby-line">
           <url>file://$PROJECT_DIR$/app/controllers/backend_pages_controller.rb</url>
+<<<<<<< HEAD
           <line>28</line>
+=======
+          <line>21</line>
+>>>>>>> 880440f2e240a6f639cb461fa41a38ec829d04a7
           <option name="timeStamp" value="105" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="ruby-line">
@@ -620,22 +805,38 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="ruby-line">
           <url>file://$PROJECT_DIR$/app/controllers/backend_pages_controller.rb</url>
+<<<<<<< HEAD
           <line>95</line>
+=======
+          <line>88</line>
+>>>>>>> 880440f2e240a6f639cb461fa41a38ec829d04a7
           <option name="timeStamp" value="108" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="ruby-line">
           <url>file://$PROJECT_DIR$/app/controllers/backend_pages_controller.rb</url>
+<<<<<<< HEAD
           <line>98</line>
+=======
+          <line>91</line>
+>>>>>>> 880440f2e240a6f639cb461fa41a38ec829d04a7
           <option name="timeStamp" value="109" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="ruby-line">
           <url>file://$PROJECT_DIR$/app/controllers/backend_pages_controller.rb</url>
+<<<<<<< HEAD
           <line>45</line>
+=======
+          <line>38</line>
+>>>>>>> 880440f2e240a6f639cb461fa41a38ec829d04a7
           <option name="timeStamp" value="110" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="ruby-line">
           <url>file://$PROJECT_DIR$/app/controllers/backend_pages_controller.rb</url>
+<<<<<<< HEAD
           <line>46</line>
+=======
+          <line>39</line>
+>>>>>>> 880440f2e240a6f639cb461fa41a38ec829d04a7
           <option name="timeStamp" value="111" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="ruby-line">
@@ -650,7 +851,11 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="ruby-line">
           <url>file://$PROJECT_DIR$/app/controllers/backend_pages_controller.rb</url>
+<<<<<<< HEAD
           <line>50</line>
+=======
+          <line>43</line>
+>>>>>>> 880440f2e240a6f639cb461fa41a38ec829d04a7
           <option name="timeStamp" value="114" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="ruby-line">
@@ -735,42 +940,74 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="ruby-line">
           <url>file://$PROJECT_DIR$/app/controllers/frontend_pages_controller.rb</url>
+<<<<<<< HEAD
           <line>112</line>
+=======
+          <line>100</line>
+>>>>>>> 880440f2e240a6f639cb461fa41a38ec829d04a7
           <option name="timeStamp" value="139" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="ruby-line">
           <url>file://$PROJECT_DIR$/app/controllers/frontend_pages_controller.rb</url>
+<<<<<<< HEAD
           <line>116</line>
+=======
+          <line>104</line>
+>>>>>>> 880440f2e240a6f639cb461fa41a38ec829d04a7
           <option name="timeStamp" value="140" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="ruby-line">
           <url>file://$PROJECT_DIR$/app/controllers/frontend_pages_controller.rb</url>
+<<<<<<< HEAD
           <line>121</line>
+=======
+          <line>109</line>
+>>>>>>> 880440f2e240a6f639cb461fa41a38ec829d04a7
           <option name="timeStamp" value="141" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="ruby-line">
           <url>file://$PROJECT_DIR$/app/controllers/frontend_pages_controller.rb</url>
+<<<<<<< HEAD
           <line>124</line>
+=======
+          <line>112</line>
+>>>>>>> 880440f2e240a6f639cb461fa41a38ec829d04a7
           <option name="timeStamp" value="142" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="ruby-line">
           <url>file://$PROJECT_DIR$/app/controllers/frontend_pages_controller.rb</url>
+<<<<<<< HEAD
           <line>129</line>
+=======
+          <line>117</line>
+>>>>>>> 880440f2e240a6f639cb461fa41a38ec829d04a7
           <option name="timeStamp" value="143" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="ruby-line">
           <url>file://$PROJECT_DIR$/app/controllers/frontend_pages_controller.rb</url>
+<<<<<<< HEAD
           <line>136</line>
+=======
+          <line>124</line>
+>>>>>>> 880440f2e240a6f639cb461fa41a38ec829d04a7
           <option name="timeStamp" value="144" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="ruby-line">
           <url>file://$PROJECT_DIR$/app/controllers/frontend_pages_controller.rb</url>
+<<<<<<< HEAD
           <line>142</line>
+=======
+          <line>130</line>
+>>>>>>> 880440f2e240a6f639cb461fa41a38ec829d04a7
           <option name="timeStamp" value="145" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="ruby-line">
           <url>file://$PROJECT_DIR$/app/controllers/frontend_pages_controller.rb</url>
+<<<<<<< HEAD
           <line>139</line>
+=======
+          <line>127</line>
+>>>>>>> 880440f2e240a6f639cb461fa41a38ec829d04a7
           <option name="timeStamp" value="146" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="ruby-line">
@@ -815,7 +1052,11 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="ruby-line">
           <url>file://$PROJECT_DIR$/app/controllers/frontend_pages_controller.rb</url>
+<<<<<<< HEAD
           <line>145</line>
+=======
+          <line>133</line>
+>>>>>>> 880440f2e240a6f639cb461fa41a38ec829d04a7
           <option name="timeStamp" value="161" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="ruby-line">
@@ -853,6 +1094,7 @@
           <line>135</line>
           <option name="timeStamp" value="168" />
         </line-breakpoint>
+<<<<<<< HEAD
         <line-breakpoint enabled="true" type="ruby-line">
           <url>file://$PROJECT_DIR$/lib/BxRequest.rb</url>
           <line>134</line>
@@ -880,11 +1122,16 @@
         </line-breakpoint>
       </breakpoints>
       <option name="time" value="182" />
+=======
+      </breakpoints>
+      <option name="time" value="169" />
+>>>>>>> 880440f2e240a6f639cb461fa41a38ec829d04a7
     </breakpoint-manager>
   </component>
   <component name="debuggerHistoryManager">
     <expressions id="evaluateCodeFragment">
       <expression>
+<<<<<<< HEAD
         <expression-string>@contextItems.each do |k, contextItem|
 			if contextItem.indexId == nil
 				@contextItems[k][indexId ]= indexId
@@ -894,6 +1141,8 @@
         <evaluation-mode>CODE_FRAGMENT</evaluation-mode>
       </expression>
       <expression>
+=======
+>>>>>>> 880440f2e240a6f639cb461fa41a38ec829d04a7
         <expression-string />
         <language-id>ruby</language-id>
         <evaluation-mode>CODE_FRAGMENT</evaluation-mode>
@@ -901,53 +1150,183 @@
     </expressions>
     <expressions id="evaluateExpression">
       <expression>
+<<<<<<< HEAD
         <expression-string>BackendPagesController.new.backend_data_full_export('csharp_unittest', 'csharp_unittest')</expression-string>
+=======
+        <expression-string>getAccount()</expression-string>
+>>>>>>> 880440f2e240a6f639cb461fa41a38ec829d04a7
         <language-id>ruby</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
       <expression>
+<<<<<<< HEAD
         <expression-string>contextItem.to_json</expression-string>
+=======
+        <expression-string>relatedProducts.empty?</expression-string>
+>>>>>>> 880440f2e240a6f639cb461fa41a38ec829d04a7
         <language-id>ruby</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
       <expression>
+<<<<<<< HEAD
         <expression-string>contextItem</expression-string>
+=======
+        <expression-string>relatedProducts.Empty?</expression-string>
+>>>>>>> 880440f2e240a6f639cb461fa41a38ec829d04a7
         <language-id>ruby</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
       <expression>
+<<<<<<< HEAD
         <expression-string>@contextItems</expression-string>
+=======
+        <expression-string>contextItem.indexId ='123'</expression-string>
+>>>>>>> 880440f2e240a6f639cb461fa41a38ec829d04a7
         <language-id>ruby</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
       <expression>
+<<<<<<< HEAD
         <expression-string>contextItem[k].contextItem</expression-string>
+=======
+        <expression-string>contextItem-&gt;indexId ='123'</expression-string>
+>>>>>>> 880440f2e240a6f639cb461fa41a38ec829d04a7
         <language-id>ruby</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
       <expression>
+<<<<<<< HEAD
         <expression-string>contextItem[k].contextItem['indexId']</expression-string>
+=======
+        <expression-string>contextItem[:indexId] ='123'</expression-string>
+>>>>>>> 880440f2e240a6f639cb461fa41a38ec829d04a7
         <language-id>ruby</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
       <expression>
+<<<<<<< HEAD
         <expression-string>contextItem[k]</expression-string>
+=======
+        <expression-string>contextItem['indexId'] ='123'</expression-string>
+>>>>>>> 880440f2e240a6f639cb461fa41a38ec829d04a7
         <language-id>ruby</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
       <expression>
+<<<<<<< HEAD
         <expression-string>@contextItems[k]</expression-string>
+=======
+        <expression-string>contextItem</expression-string>
+>>>>>>> 880440f2e240a6f639cb461fa41a38ec829d04a7
         <language-id>ruby</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
       <expression>
+<<<<<<< HEAD
         <expression-string>@contextItems['contextItem'].contextItem</expression-string>
+=======
+        <expression-string>basketContent</expression-string>
+>>>>>>> 880440f2e240a6f639cb461fa41a38ec829d04a7
         <language-id>ruby</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
     </expressions>
   </component>
   <component name="editorHistoryManager">
+<<<<<<< HEAD
+=======
+    <entry file="file://$PROJECT_DIR$/app/controllers/frontend_pages_controller.rb">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2465">
+          <caret line="145" selection-start-line="145" selection-end-line="145" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/views/frontend_pages/frontend_recommendations_basket.html.erb">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="17">
+          <caret line="1" column="12" selection-start-line="1" selection-start-column="12" selection-end-line="1" selection-end-column="12" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lib/BxClient.rb">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="5831">
+          <caret line="343" column="39" lean-forward="true" selection-start-line="343" selection-start-column="39" selection-end-line="343" selection-end-column="39" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lib/BxRequest.rb">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2193">
+          <caret line="129" column="19" lean-forward="true" selection-start-line="129" selection-start-column="19" selection-end-line="129" selection-end-column="19" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/controllers/backend_pages_controller.rb">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="833">
+          <caret line="49" selection-start-line="49" selection-end-line="49" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://C:/RailsInstaller/Ruby2.3.3/lib/ruby/gems/2.3.0/gems/actionpack-5.1.6/lib/action_controller/metal/rescue.rb">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="357">
+          <caret line="21" selection-start-line="21" selection-end-line="21" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://C:/RailsInstaller/Ruby2.3.3/lib/ruby/gems/2.3.0/gems/actionpack-5.1.6/lib/action_controller/metal/instrumentation.rb">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="595">
+          <caret line="35" selection-start-line="35" selection-end-line="35" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lib/BxClient.rb">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1819">
+          <caret line="107" selection-start-line="107" selection-end-line="107" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lib/BxData.rb">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2074">
+          <caret line="122" column="21" selection-start-line="122" selection-start-column="8" selection-end-line="122" selection-end-column="21" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/controllers/backend_pages_controller.rb">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="612">
+          <caret line="36" selection-start-line="36" selection-end-line="36" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://C:/RailsInstaller/Ruby2.3.3/lib/ruby/gems/2.3.0/gems/actionpack-5.1.6/lib/action_controller/metal/rescue.rb">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="357">
+          <caret line="21" selection-start-line="21" selection-end-line="21" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lib/BxClient.rb">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1819">
+          <caret line="107" selection-start-line="107" selection-end-line="107" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://C:/RailsInstaller/Ruby2.3.3/lib/ruby/2.3.0/io/console/size.rb">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="204">
+          <caret line="12" column="8" selection-start-line="12" selection-start-column="8" selection-end-line="12" selection-end-column="8" />
+        </state>
+      </provider>
+    </entry>
+>>>>>>> 880440f2e240a6f639cb461fa41a38ec829d04a7
     <entry file="file://$PROJECT_DIR$/lib/BxData.rb">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="12801">
@@ -1025,6 +1404,16 @@
         </state>
       </provider>
     </entry>
+<<<<<<< HEAD
+=======
+    <entry file="file://$PROJECT_DIR$/test/controllers/backend_pages_controller_test.rb">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="197">
+          <caret line="13" column="46" lean-forward="true" selection-start-line="13" selection-start-column="46" selection-end-line="13" selection-end-column="46" />
+        </state>
+      </provider>
+    </entry>
+>>>>>>> 880440f2e240a6f639cb461fa41a38ec829d04a7
     <entry file="file://C:/RailsInstaller/Ruby2.3.3/lib/ruby/gems/2.3.0/gems/actionpack-5.1.5/lib/action_controller/metal/instrumentation.rb">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="117">
@@ -1095,6 +1484,7 @@
         </state>
       </provider>
     </entry>
+<<<<<<< HEAD
     <entry file="file://C:/RailsInstaller/Ruby2.3.3/lib/ruby/gems/2.3.0/gems/rubyzip-1.2.1/lib/zip/file.rb">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="157">
@@ -1170,6 +1560,11 @@
     <entry file="file://C:/RailsInstaller/Ruby2.3.3/lib/ruby/gems/2.3.0/gems/actionpack-5.1.6/lib/action_controller/metal/rescue.rb">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="142">
+=======
+    <entry file="file://C:/RailsInstaller/Ruby2.3.3/lib/ruby/gems/2.3.0/gems/actionpack-5.1.6/lib/action_controller/metal/rescue.rb">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="125">
+>>>>>>> 880440f2e240a6f639cb461fa41a38ec829d04a7
           <caret line="22" selection-start-line="22" selection-end-line="22" />
         </state>
       </provider>
@@ -1181,6 +1576,7 @@
         </state>
       </provider>
     </entry>
+<<<<<<< HEAD
     <entry file="file://$PROJECT_DIR$/lib/BxAutocompleteRequest.rb">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="110">
@@ -1313,6 +1709,82 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-282">
           <caret line="178" column="6" selection-start-line="178" selection-start-column="6" selection-end-line="178" selection-end-column="6" />
+=======
+    <entry file="file://C:/RailsInstaller/Ruby2.3.3/lib/ruby/gems/2.3.0/gems/rubyzip-1.2.1/lib/zip/file.rb">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="157">
+          <caret line="102" selection-start-line="102" selection-end-line="102" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/controllers/backend_pages_controller.rb">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="98">
+          <caret line="36" selection-start-line="36" selection-end-line="36" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lib/BxRecommendationRequest.rb">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="34">
+          <caret line="2" selection-start-line="2" selection-end-line="2" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lib/p13n_types.rb">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="103">
+          <caret line="364" selection-start-line="364" selection-end-line="364" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://C:/RailsInstaller/Ruby2.3.3/lib/ruby/gems/2.3.0/gems/activesupport-5.1.6/lib/active_support/callbacks.rb">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="141">
+          <caret line="131" selection-start-line="131" selection-end-line="131" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/config/routes.rb">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="51">
+          <caret line="3" column="7" lean-forward="true" selection-start-line="3" selection-start-column="7" selection-end-line="3" selection-end-column="53" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/controllers/frontend_pages_controller.rb">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="197">
+          <caret line="130" selection-start-line="130" selection-end-line="130" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lib/BxRequest.rb">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="112">
+          <caret line="133" selection-start-line="133" selection-end-line="133" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/views/frontend_pages/frontend_recommendations_basket.html.erb">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="17">
+          <caret line="1" column="12" selection-start-line="1" selection-start-column="12" selection-end-line="1" selection-end-column="12" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lib/BxClient.rb">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="5162">
+          <caret line="343" selection-start-line="343" selection-end-line="343" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lib/BxData.rb">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="238">
+          <caret line="548" column="8" selection-start-line="548" selection-start-column="8" selection-end-line="548" selection-end-column="8" />
+>>>>>>> 880440f2e240a6f639cb461fa41a38ec829d04a7
         </state>
       </provider>
     </entry>

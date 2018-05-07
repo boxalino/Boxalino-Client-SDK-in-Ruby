@@ -131,9 +131,15 @@ class BxRequest
 	end
 	def setIndexId(indexId)
 		@indexId = indexId
+<<<<<<< HEAD
 		@contextItems.each do | contextItem, k|
 			if contextItem.indexId == nil
 				@contextItems[k]['indexId']= indexId
+=======
+		@contextItems.each do |k, contextItem|
+			if contextItem.indexId == nil
+				@contextItems[k][indexId ]= indexId
+>>>>>>> 880440f2e240a6f639cb461fa41a38ec829d04a7
 			end
 		end
 	end

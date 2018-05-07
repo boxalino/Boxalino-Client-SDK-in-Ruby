@@ -54,7 +54,11 @@ class BackendPagesController < ApplicationController
     rescue Exception => e
 
       #be careful not to print the error message on your publish web-site as sensitive information like credentials might be indicated for debug purposes
+<<<<<<< HEAD
       @message =  e
+=======
+      @message =  JSON.parse(e)
+>>>>>>> 880440f2e240a6f639cb461fa41a38ec829d04a7
       
     end
   end
@@ -106,7 +110,11 @@ class BackendPagesController < ApplicationController
     rescue Exception => e 
 
       #be careful not to print the error message on your publish web-site as sensitive information like credentials might be indicated for debug purposes
+<<<<<<< HEAD
       @message =  e
+=======
+      @message =  JSON.parse(e)
+>>>>>>> 880440f2e240a6f639cb461fa41a38ec829d04a7
       
     end
   end
@@ -168,7 +176,11 @@ class BackendPagesController < ApplicationController
     rescue Exception => e 
 
       #be careful not to print the error message on your publish web-site as sensitive information like credentials might be indicated for debug purposes
+<<<<<<< HEAD
       @message =  e
+=======
+      @message =  JSON.parse(e)
+>>>>>>> 880440f2e240a6f639cb461fa41a38ec829d04a7
       
     end
   end
@@ -232,7 +244,11 @@ class BackendPagesController < ApplicationController
     rescue Exception => e 
 
       #be careful not to print the error message on your publish web-site as sensitive information like credentials might be indicated for debug purposes
+<<<<<<< HEAD
       @message =  e
+=======
+      @message =  JSON.parse(e)
+>>>>>>> 880440f2e240a6f639cb461fa41a38ec829d04a7
       
     end
   end
@@ -285,7 +301,11 @@ class BackendPagesController < ApplicationController
     rescue Exception => e 
 
       #be careful not to print the error message on your publish web-site as sensitive information like credentials might be indicated for debug purposes
+<<<<<<< HEAD
       @message =  e
+=======
+      @message =  JSON.parse(e)
+>>>>>>> 880440f2e240a6f639cb461fa41a38ec829d04a7
       
     end
   end
@@ -326,7 +346,11 @@ class BackendPagesController < ApplicationController
     rescue Exception => e 
 
       #be careful not to print the error message on your publish web-site as sensitive information like credentials might be indicated for debug purposes
+<<<<<<< HEAD
       @message =  e
+=======
+      @message =  JSON.parse(e)
+>>>>>>> 880440f2e240a6f639cb461fa41a38ec829d04a7
       
     end
   end
@@ -433,7 +457,11 @@ class BackendPagesController < ApplicationController
     rescue Exception => e 
 
       #be careful not to print the error message on your publish web-site as sensitive information like credentials might be indicated for debug purposes
+<<<<<<< HEAD
       @message =  e
+=======
+      @message =  JSON.parse(e)
+>>>>>>> 880440f2e240a6f639cb461fa41a38ec829d04a7
       
     end
   end
@@ -481,7 +509,11 @@ class BackendPagesController < ApplicationController
     rescue Exception => e 
 
       #be careful not to print the error message on your publish web-site as sensitive information like credentials might be indicated for debug purposes
+<<<<<<< HEAD
       @message =  e
+=======
+      @message =  JSON.parse(e)
+>>>>>>> 880440f2e240a6f639cb461fa41a38ec829d04a7
       
     end
   end
@@ -542,7 +574,11 @@ class BackendPagesController < ApplicationController
     rescue Exception => e 
 
       #be careful not to print the error message on your publish web-site as sensitive information like credentials might be indicated for debug purposes
+<<<<<<< HEAD
       @message =  e
+=======
+      @message =  JSON.parse(e)
+>>>>>>> 880440f2e240a6f639cb461fa41a38ec829d04a7
       
     end
   end
@@ -607,7 +643,11 @@ class BackendPagesController < ApplicationController
     rescue Exception => e 
 
       #be careful not to print the error message on your publish web-site as sensitive information like credentials might be indicated for debug purposes
+<<<<<<< HEAD
       @message =  e
+=======
+      @message =  JSON.parse(e)
+>>>>>>> 880440f2e240a6f639cb461fa41a38ec829d04a7
       
     end
   end
@@ -655,7 +695,11 @@ class BackendPagesController < ApplicationController
     rescue Exception => e 
 
       #be careful not to print the error message on your publish web-site as sensitive information like credentials might be indicated for debug purposes
+<<<<<<< HEAD
       @message =  e
+=======
+      @message =  JSON.parse(e)
+>>>>>>> 880440f2e240a6f639cb461fa41a38ec829d04a7
       
     end
   end
@@ -725,7 +769,11 @@ class BackendPagesController < ApplicationController
     rescue Exception => e 
 
       #be careful not to print the error message on your publish web-site as sensitive information like credentials might be indicated for debug purposes
+<<<<<<< HEAD
       @message =  e
+=======
+      @message =  JSON.parse(e)
+>>>>>>> 880440f2e240a6f639cb461fa41a38ec829d04a7
       
     end
   end

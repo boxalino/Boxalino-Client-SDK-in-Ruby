@@ -93,7 +93,11 @@ class FrontendPagesController < ApplicationController
 
       #be careful not to print the error message on your publish web-site as sensitive information like credentials might be indicated for debug purposes
       @message =  e
+<<<<<<< HEAD
       @exception = e
+=======
+      
+>>>>>>> 880440f2e240a6f639cb461fa41a38ec829d04a7
     end
   end
 
@@ -114,6 +118,7 @@ end
     require 'BxClient'
     require 'BxRecommendationRequest'
     #required parameters you should set for this example to work
+<<<<<<< HEAD
     # @account = ""; # your account name
     # @password = ""; # your account password
     #@domain = "" # your web-site domain (e.g.: www.abc.com)
@@ -122,6 +127,16 @@ end
     #@host =  "cdn.bx-cloud.com"
 
     #@isDelta = false #are the data to be pushed full data (reset index) or delta (add/modify index)?
+=======
+    @account = "boxalino_automated_tests"; # your account name
+    @password = "boxalino_automated_tests"; # your account password
+    @domain = "" # your web-site domain (e.g.: www.abc.com)
+    @logs = Array.new #optional, just used here in example to collect logs
+    @isDev = false #are the data to be pushed dev or prod data?
+    @host =  "cdn.bx-cloud.com"
+
+    @isDelta = false #are the data to be pushed full data (reset index) or delta (add/modify index)?
+>>>>>>> 880440f2e240a6f639cb461fa41a38ec829d04a7
     bxClient =BxClient.new(@account, @password, @domain ,  @isDev, @host)
     #To Check Below Line
     #bxClient.setRequestMap($_REQUEST);
@@ -156,7 +171,11 @@ end
 
       #be careful not to print the error message on your publish web-site as sensitive information like credentials might be indicated for debug purposes
       @message =  e
+<<<<<<< HEAD
       @exception = e
+=======
+      
+>>>>>>> 880440f2e240a6f639cb461fa41a38ec829d04a7
     end
   end
 
@@ -207,7 +226,11 @@ end
 
       #be careful not to print the error message on your publish web-site as sensitive information like credentials might be indicated for debug purposes
       @message =  e
+<<<<<<< HEAD
       @exception = e
+=======
+      
+>>>>>>> 880440f2e240a6f639cb461fa41a38ec829d04a7
     end
   end
 
@@ -274,7 +297,11 @@ end
 
       #be careful not to print the error message on your publish web-site as sensitive information like credentials might be indicated for debug purposes
       @message =  e
+<<<<<<< HEAD
       @exception = e
+=======
+      
+>>>>>>> 880440f2e240a6f639cb461fa41a38ec829d04a7
     end
   end
 
@@ -324,7 +351,11 @@ end
 
       #be careful not to print the error message on your publish web-site as sensitive information like credentials might be indicated for debug purposes
       @message =  e
+<<<<<<< HEAD
       @exception = e
+=======
+      
+>>>>>>> 880440f2e240a6f639cb461fa41a38ec829d04a7
     end
   end
 
@@ -375,7 +406,11 @@ end
 
       #be careful not to print the error message on your publish web-site as sensitive information like credentials might be indicated for debug purposes
       @message =  e
+<<<<<<< HEAD
       @exception = e
+=======
+      
+>>>>>>> 880440f2e240a6f639cb461fa41a38ec829d04a7
     end
   end
 
@@ -440,7 +475,11 @@ end
 
       #be careful not to print the error message on your publish web-site as sensitive information like credentials might be indicated for debug purposes
       @message =  e
+<<<<<<< HEAD
       @exception = e
+=======
+      
+>>>>>>> 880440f2e240a6f639cb461fa41a38ec829d04a7
     end
   end
 
@@ -513,7 +552,11 @@ end
 
       #be careful not to print the error message on your publish web-site as sensitive information like credentials might be indicated for debug purposes
       @message =  e
+<<<<<<< HEAD
       @exception = e
+=======
+      
+>>>>>>> 880440f2e240a6f639cb461fa41a38ec829d04a7
     end
   end
 
@@ -597,7 +640,11 @@ end
 
       #be careful not to print the error message on your publish web-site as sensitive information like credentials might be indicated for debug purposes
       @message = e
+<<<<<<< HEAD
       @exception = e
+=======
+      
+>>>>>>> 880440f2e240a6f639cb461fa41a38ec829d04a7
     end
   end
 
@@ -652,7 +699,11 @@ end
 
       #be careful not to print the error message on your publish web-site as sensitive information like credentials might be indicated for debug purposes
       @message =  e
+<<<<<<< HEAD
       @exception = e
+=======
+      
+>>>>>>> 880440f2e240a6f639cb461fa41a38ec829d04a7
     end
   end
 
@@ -701,7 +752,11 @@ end
 
       #be careful not to print the error message on your publish web-site as sensitive information like credentials might be indicated for debug purposes
       @message =  e
+<<<<<<< HEAD
       @exception = e
+=======
+      
+>>>>>>> 880440f2e240a6f639cb461fa41a38ec829d04a7
     end
   end
 
@@ -756,7 +811,11 @@ end
 
       #be careful not to print the error message on your publish web-site as sensitive information like credentials might be indicated for debug purposes
       @message =  e
+<<<<<<< HEAD
       @exception = e
+=======
+      
+>>>>>>> 880440f2e240a6f639cb461fa41a38ec829d04a7
     end
   end
 
@@ -799,7 +858,11 @@ end
 
       #be careful not to print the error message on your publish web-site as sensitive information like credentials might be indicated for debug purposes
       @message =  e
+<<<<<<< HEAD
       @exception = e
+=======
+      
+>>>>>>> 880440f2e240a6f639cb461fa41a38ec829d04a7
     end
   end
 
@@ -871,7 +934,11 @@ end
 
       #be careful not to print the error message on your publish web-site as sensitive information like credentials might be indicated for debug purposes
       @message =  e
+<<<<<<< HEAD
       @exception = e
+=======
+      
+>>>>>>> 880440f2e240a6f639cb461fa41a38ec829d04a7
     end
   end
 
@@ -942,7 +1009,11 @@ end
 
       #be careful not to print the error message on your publish web-site as sensitive information like credentials might be indicated for debug purposes
       @message =  e
+<<<<<<< HEAD
       @exception = e
+=======
+      
+>>>>>>> 880440f2e240a6f639cb461fa41a38ec829d04a7
     end
   end
 
@@ -1017,7 +1088,11 @@ end
 
       #be careful not to print the error message on your publish web-site as sensitive information like credentials might be indicated for debug purposes
       @message =  e
+<<<<<<< HEAD
       @exception = e
+=======
+      
+>>>>>>> 880440f2e240a6f639cb461fa41a38ec829d04a7
     end
   end
 
@@ -1070,7 +1145,11 @@ end
 
       #be careful not to print the error message on your publish web-site as sensitive information like credentials might be indicated for debug purposes
       @message =  e
+<<<<<<< HEAD
       @exception = e
+=======
+      
+>>>>>>> 880440f2e240a6f639cb461fa41a38ec829d04a7
     end
   end
 
@@ -1136,7 +1215,11 @@ end
 
       #be careful not to print the error message on your publish web-site as sensitive information like credentials might be indicated for debug purposes
       @message =  e
+<<<<<<< HEAD
       @exception = e
+=======
+      
+>>>>>>> 880440f2e240a6f639cb461fa41a38ec829d04a7
     end
   end
 
@@ -1192,7 +1275,11 @@ end
 
       #be careful not to print the error message on your publish web-site as sensitive information like credentials might be indicated for debug purposes
       @message =  e
+<<<<<<< HEAD
       @exception = e
+=======
+      
+>>>>>>> 880440f2e240a6f639cb461fa41a38ec829d04a7
     end
   end
 
@@ -1247,7 +1334,11 @@ end
 
       #be careful not to print the error message on your publish web-site as sensitive information like credentials might be indicated for debug purposes
       @message =  e
+<<<<<<< HEAD
       @exception = e
+=======
+      
+>>>>>>> 880440f2e240a6f639cb461fa41a38ec829d04a7
     end
   end
 
@@ -1305,7 +1396,11 @@ end
 
       #be careful not to print the error message on your publish web-site as sensitive information like credentials might be indicated for debug purposes
       @message =  e
+<<<<<<< HEAD
       @exception = e
+=======
+      
+>>>>>>> 880440f2e240a6f639cb461fa41a38ec829d04a7
     end
   end
 
@@ -1361,7 +1456,11 @@ end
 
       #be careful not to print the error message on your publish web-site as sensitive information like credentials might be indicated for debug purposes
       @message =  e
+<<<<<<< HEAD
       @exception = e
+=======
+      
+>>>>>>> 880440f2e240a6f639cb461fa41a38ec829d04a7
     end
   end
 end
