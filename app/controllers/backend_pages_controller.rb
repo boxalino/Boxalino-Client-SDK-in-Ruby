@@ -1,12 +1,19 @@
 class BackendPagesController < ApplicationController
+
+  def initialize(account = nil , password= nil, exception=nil)
+    @account = account
+    @password = password
+    @exception = exception
+  end
+
   def backend_data_basic
     #@message = "Hello, how are you today?"
     require 'json'
     require 'BxData'
     require 'BxClient'
     #required parameters you should set for this example to work
-    @account = ""; # your account name
-    @password = ""; # your account password
+    @account = "boxalino_automated_tests"; # your account name
+    @password = "boxalino_automated_tests"; # your account password
     @domain = "" # your web-site domain (e.g.: www.abc.com)
     @languages = ['en'] #declare the list of available languages
     @isDev = false #are the data to be pushed dev or prod data?
@@ -23,7 +30,7 @@ class BackendPagesController < ApplicationController
 
       #this part is only necessary to do when you push your data in full, as no specifications changes should not be published without a full data sync following next
       #even when you publish your data in full, you don't need to repush your data specifications if you know they didn't change, however, it is totally fine (and suggested) to push them everytime if you are not sure if something changed or not
-      if(!isDelta) 
+      if(!@isDelta)
 
         #declare the fields
         bxData.addSourceTitleField(sourceKey, {"en"=>"name_en"})
@@ -37,17 +44,17 @@ class BackendPagesController < ApplicationController
         bxData.pushDataSpecifications();
 
         @logs.push("publish the api owner changes") #if the specifications have changed since the last time they were pushed
-        $bxData.publishChanges()
+        bxData.publishChanges()
       end
 
       @logs.push("push the data for data sync")
       bxData.pushData()
       @message = @logs.join("<br/>")
-      
-    rescue Exception => e 
+
+    rescue Exception => e
 
       #be careful not to print the error message on your publish web-site as sensitive information like credentials might be indicated for debug purposes
-      @message =  JSON.parse(e.getMessage())
+      @message =  e
       
     end
   end
@@ -57,8 +64,8 @@ class BackendPagesController < ApplicationController
     require 'BxData'
     require 'BxClient'
     #required parameters you should set for this example to work
-    @account = ""; # your account name
-    @password = ""; # your account password
+    @account = "boxalino_automated_tests"; # your account name
+    @password = "boxalino_automated_tests"; # your account password
     @domain = "" # your web-site domain (e.g.: www.abc.com)
     @languages = ['en'] #declare the list of available languages
     @isDev = false #are the data to be pushed dev or prod data?
@@ -71,11 +78,11 @@ class BackendPagesController < ApplicationController
       itemIdColumn = 'id'; #the element of the xml with the unique id of each item
       xPath = '/products/product'; #path from the root to the products
       #add a csv file as main product file
-      sourceKey = bxData.addMainXMLItemFile(file, itemIdColumn, xPath)
+      sourceKey = bxData.addMainXmlItemFile(file, itemIdColumn, xPath)
 
       #this part is only necessary to do when you push your data in full, as no specifications changes should not be published without a full data sync following next
       #even when you publish your data in full, you don't need to repush your data specifications if you know they didn't change, however, it is totally fine (and suggested) to push them everytime if you are not sure if something changed or not
-      if(!isDelta) 
+      if(!@isDelta)
 
         #declare the fields
         bxData.addSourceTitleField(sourceKey, {"en"=>"name/translation[@locale='en']"})
@@ -99,7 +106,7 @@ class BackendPagesController < ApplicationController
     rescue Exception => e 
 
       #be careful not to print the error message on your publish web-site as sensitive information like credentials might be indicated for debug purposes
-      @message =  JSON.parse(e.getMessage())
+      @message =  e
       
     end
   end
@@ -161,7 +168,7 @@ class BackendPagesController < ApplicationController
     rescue Exception => e 
 
       #be careful not to print the error message on your publish web-site as sensitive information like credentials might be indicated for debug purposes
-      @message =  JSON.parse(e.getMessage())
+      @message =  e
       
     end
   end
@@ -225,7 +232,7 @@ class BackendPagesController < ApplicationController
     rescue Exception => e 
 
       #be careful not to print the error message on your publish web-site as sensitive information like credentials might be indicated for debug purposes
-      @message =  JSON.parse(e.getMessage())
+      @message =  e
       
     end
   end
@@ -278,7 +285,7 @@ class BackendPagesController < ApplicationController
     rescue Exception => e 
 
       #be careful not to print the error message on your publish web-site as sensitive information like credentials might be indicated for debug purposes
-      @message =  JSON.parse(e.getMessage())
+      @message =  e
       
     end
   end
@@ -319,7 +326,7 @@ class BackendPagesController < ApplicationController
     rescue Exception => e 
 
       #be careful not to print the error message on your publish web-site as sensitive information like credentials might be indicated for debug purposes
-      @message =  JSON.parse(e.getMessage())
+      @message =  e
       
     end
   end
@@ -328,6 +335,7 @@ class BackendPagesController < ApplicationController
     require 'json'
     require 'BxData'
     require 'BxClient'
+
     #required parameters you should set for this example to work
     @account = ""; # your account name
     @password = ""; # your account password
@@ -425,7 +433,7 @@ class BackendPagesController < ApplicationController
     rescue Exception => e 
 
       #be careful not to print the error message on your publish web-site as sensitive information like credentials might be indicated for debug purposes
-      @message =  JSON.parse(e.getMessage())
+      @message =  e
       
     end
   end
@@ -434,6 +442,8 @@ class BackendPagesController < ApplicationController
     require 'json'
     require 'BxData'
     require 'BxClient'
+    puts "Avinash"
+    @avi = "Singh"
     #required parameters you should set for this example to work
     @account = ""; # your account name
     @password = ""; # your account password
@@ -471,7 +481,7 @@ class BackendPagesController < ApplicationController
     rescue Exception => e 
 
       #be careful not to print the error message on your publish web-site as sensitive information like credentials might be indicated for debug purposes
-      @message =  JSON.parse(e.getMessage())
+      @message =  e
       
     end
   end
@@ -532,7 +542,7 @@ class BackendPagesController < ApplicationController
     rescue Exception => e 
 
       #be careful not to print the error message on your publish web-site as sensitive information like credentials might be indicated for debug purposes
-      @message =  JSON.parse(e.getMessage())
+      @message =  e
       
     end
   end
@@ -597,7 +607,7 @@ class BackendPagesController < ApplicationController
     rescue Exception => e 
 
       #be careful not to print the error message on your publish web-site as sensitive information like credentials might be indicated for debug purposes
-      @message =  JSON.parse(e.getMessage())
+      @message =  e
       
     end
   end
@@ -645,7 +655,7 @@ class BackendPagesController < ApplicationController
     rescue Exception => e 
 
       #be careful not to print the error message on your publish web-site as sensitive information like credentials might be indicated for debug purposes
-      @message =  JSON.parse(e.getMessage())
+      @message =  e
       
     end
   end
@@ -705,7 +715,7 @@ class BackendPagesController < ApplicationController
         bxData.pushDataSpecifications();
 
         @logs.push("publish the api owner changes") #if the specifications have changed since the last time they were pushed
-        $bxData.publishChanges()
+        bxData.publishChanges()
       end
 
       @logs.push("push the data for data sync")
@@ -715,7 +725,7 @@ class BackendPagesController < ApplicationController
     rescue Exception => e 
 
       #be careful not to print the error message on your publish web-site as sensitive information like credentials might be indicated for debug purposes
-      @message =  JSON.parse(e.getMessage())
+      @message =  e
       
     end
   end

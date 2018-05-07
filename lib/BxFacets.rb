@@ -73,8 +73,8 @@ class BxFacets
         @parameterPrefix = parameterPrefix
     end
 
-    protected function isCategories(fieldName) 
-        return fieldName.index(getCategoryFieldName()) != false 
+    def isCategories(fieldName)
+        return fieldName.index(getCategoryFieldName()) != false
     end
 
     def getFacetParameterName(fieldName) 
@@ -91,7 +91,7 @@ class BxFacets
         if (@searchResult && @facets.size != @searchResult.facetResponses.size) 
             @searchResult.facetResponses.each do |facetResponse|
                 if(! @facets.keys[facetResponse.fieldName]) 
-                    @facets[facetResponse->fieldName] = Array.new(
+                    @facets[facetResponse.fieldName] = Array.new(
                         'label' => facetResponse.fieldName,
                         'type' => facetResponse.numerical ? 'ranged' : 'list',
                         'order' => @facets.size,
@@ -333,7 +333,7 @@ class BxFacets
 
     def getFacetType(fieldName) 
         type = 'string'
-        if(@facets.keys[fieldName])) 
+        if(@facets.keys[fieldName])
             type = @facets[fieldName]['type']
         end
         return type
@@ -461,7 +461,7 @@ class BxFacets
 
     def getCategoryById(categoryId) 
         facetResponse = getFacetResponse(getCategoryFieldName())
-        if(facetResponse != nil)) 
+        if(facetResponse != nil)
             facetResponse.values.each do |bxFacet|
                 if(bxFacet.hierarchyId == categoryId) 
                     return categoryId
@@ -531,7 +531,7 @@ class BxFacets
                     end
                 end
             end
-        end
+
         overWriteRanking = getFacetExtraInfo(fieldName, "valueorderEnums")
         if(overWriteRanking == "counter") 
             ranking = 'counter'
@@ -721,13 +721,13 @@ class BxFacets
         return final
     end
 
-    def getParentCategoriesHitCount($id){
+    def getParentCategoriesHitCount(id)
         fieldName = getCategoryFieldName()
         facetResponse = getFacetResponse(fieldName)
         if(facetResponse == nil) 
             return 0
         end
-        tree = buildTree($facetResponse.values)
+        tree = buildTree(@facetResponse.values)
         treeEnd = getSelectedTreeNode(tree)
         if(treeEnd == nil) 
             return tree['node'].hitCount
@@ -910,8 +910,8 @@ class BxFacets
 
     def getSelectedPriceRange
         valueLabel = nil
-        if(@selectedPriceValues != nil && $this->selectedPriceValues != nil)
-            from = @selectedPriceValues[0]->rangeFromInclusive.round(2)
+        if(@selectedPriceValues != nil )
+            from = @selectedPriceValues[0].rangeFromInclusive.round(2)
             to = @selectedPriceValues[0].rangeToExclusive
             if(@priceRangeMargin) 
                 to = to - 0.01
@@ -994,7 +994,7 @@ class BxFacets
             if(language && icon.language != language) 
                 next
             end
-            if(facetValue == $icon-.value.downcase) 
+            if(facetValue == icon.value.downcase)
                 return icon.icon
             end
         end

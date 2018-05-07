@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<transactions>
+  <transaction>
+    <order_id>1</order_id>
+    <entity_id>1420</entity_id>
+    <customer_id>1</customer_id>
+    <guest_id>f73cf7e041c1e70216a4c9572b9a7cf86bfabc11</guest_id>
+    <price>0</price>
+    <discounted_price>0</discounted_price>
+    <quantity>1</quantity>
+    <total_order_value>34</total_order_value>
+    <shipping_costs>5</shipping_costs>
+    <order_date>2016-01-27 10:32:15</order_date>
+    <confirmation_date>2016-01-27 10:32:32</confirmation_date>
+    <shipping_date></shipping_date>
+    <status>processing</status>
+    <billing_entity_id>2</billing_entity_id>
+    <shipping_entity_id>1</shipping_entity_id>
+    <billing_parent_id>1</billing_parent_id>
+    <shipping_parent_id>1</shipping_parent_id>
+    <billing_customer_address_id>1</billing_customer_address_id>
+    <shipping_customer_address_id>1</shipping_customer_address_id>
+    <billing_quote_address_id></billing_quote_address_id>
+    <shipping_quote_address_id></shipping_quote_address_id>
+    <billing_region_id>33</billing_region_id>
+    <shipping_region_id>33</shipping_region_id>
+    <billing_customer_id></billing_customer_id>
+    <shipping_customer_id></shipping_customer_id>
+    <billing_fax></billing_fax>
+    <shipping_fax></shipping_fax>
+    <billing_region>Michigan</billing_region>
+    <shipping_region>Michigan</shipping_region>
+    <billing_postcode>49628-7978</billing_postcode>
+    <shipping_postcode>49628-7978</shipping_postcode>
+    <billing_lastname>Costello</billing_lastname>
+    <shipping_lastname>Costello</shipping_lastname>
+    <billing_street>6146 Honey Bluff Parkway</billing_street>
+    <shipping_street>6146 Honey Bluff Parkway</shipping_street>
+    <billing_city>Calder</billing_city>
+    <shipping_city>Calder</shipping_city>
+    <billing_email>roni_cost@example.com</billing_email>
+    <shipping_email>roni_cost@example.com</shipping_email>
+    <billing_telephone>(555) 229-3326</billing_telephone>
+    <shipping_telephone>(555) 229-3326</shipping_telephone>
+    <billing_country_id>US</billing_country_id>
+    <shipping_country_id>US</shipping_country_id>
+    <billing_firstname>Veronica</billing_firstname>
+    <shipping_firstname>Veronica</shipping_firstname>
+    <billing_address_type>billing</billing_address_type>
+    <shipping_address_type>shipping</shipping_address_type>
+    <billing_prefix></billing_prefix>
+    <shipping_prefix></shipping_prefix>
+    <billing_middlename></billing_middlename>
+    <shipping_middlename></shipping_middlename>
+    <billing_suffix></billing_suffix>
+    <shipping_suffix></shipping_suffix>
+    <billing_company></billing_company>
+    <shipping_company></shipping_company>
+    <billing_vat_id></billing_vat_id>
+    <shipping_vat_id></shipping_vat_id>
+    <billing_vat_is_valid></billing_vat_is_valid>
+    <shipping_vat_is_valid></shipping_vat_is_valid>
+    <billing_vat_request_id></billing_vat_request_id>
+    <shipping_vat_request_id></shipping_vat_request_id>
+    <billing_vat_request_date></billing_vat_request_date>
+    <shipping_vat_request_date></shipping_vat_request_date>
+    <billing_vat_request_success></billing_vat_request_success>
+    <shipping_vat_request_success></shipping_vat_request_success>
+  </transaction>
+  <transaction>
+    <order_id>2</order_id>
+    <entity_id>1483</entity_id>
+    <customer_id>1</customer_id>
+    <guest_id>f73cf7e041c1e70216a4c9572b9a7cf86bfabc11</guest_id>
+    <price>0</price>
+    <discounted_price>0</discounted_price>
+    <quantity>1</quantity>
+    <total_order_value>37</total_order_value>
+    <shipping_costs>5</shipping_costs>
+    <order_date>2016-01-27 10:32:44</order_date>
+    <confirmation_date></confirmation_date>
+    <shipping_date>2016-01-27 10:33:03</shipping_date>
+    <status>complete</status>
+    <billing_entity_id>4</billing_entity_id>
+    <shipping_entity_id>3</shipping_entity_id>
+    <billing_parent_id>2</billing_parent_id>
+    <shipping_parent_id>2</shipping_parent_id>
+    <billing_customer_address_id>1</billing_customer_address_id>
+    <shipping_customer_address_id>1</shipping_customer_address_id>
+    <billing_quote_address_id></billing_quote_address_id>
+    <shipping_quote_address_id></shipping_quote_address_id>
+    <billing_region_id>33</billing_region_id>
+    <shipping_region_id>33</shipping_region_id>
+    <billing_customer_id></billing_customer_id>
+    <shipping_customer_id></shipping_customer_id>
+    <billing_fax></billing_fax>
+    <shipping_fax></shipping_fax>
+    <billing_region>Michigan</billing_region>
+    <shipping_region>Michigan</shipping_region>
+    <billing_postcode>49628-7978</billing_postcode>
+    <shipping_postcode>49628-7978</shipping_postcode>
+    <billing_lastname>Costello</billing_lastname>
+    <shipping_lastname>Costello</shipping_lastname>
+    <billing_street>6146 Honey Bluff Parkway</billing_street>
+    <shipping_street>6146 Honey Bluff Parkway</shipping_street>
+    <billing_city>Calder</billing_city>
+    <shipping_city>Calder</shipping_city>
+    <billing_email>roni_cost@example.com</billing_email>
+    <shipping_email>roni_cost@example.com</shipping_email>
+    <billing_telephone>(555) 229-3326</billing_telephone>
+    <shipping_telephone>(555) 229-3326</shipping_telephone>
+    <billing_country_id>US</billing_country_id>
+    <shipping_country_id>US</shipping_country_id>
+    <billing_firstname>Veronica</billing_firstname>
+    <shipping_firstname>Veronica</shipping_firstname>
+    <billing_address_type>billing</billing_address_type>
+    <shipping_address_type>shipping</shipping_address_type>
+    <billing_prefix></billing_prefix>
+    <shipping_prefix></shipping_prefix>
+    <billing_middlename></billing_middlename>
+    <shipping_middlename></shipping_middlename>
+    <billing_suffix></billing_suffix>
+    <shipping_suffix></shipping_suffix>
+    <billing_company></billing_company>
+    <shipping_company></shipping_company>
+    <billing_vat_id></billing_vat_id>
+    <shipping_vat_id></shipping_vat_id>
+    <billing_vat_is_valid></billing_vat_is_valid>
+    <shipping_vat_is_valid></shipping_vat_is_valid>
+    <billing_vat_request_id></billing_vat_request_id>
+    <shipping_vat_request_id></shipping_vat_request_id>
+    <billing_vat_request_date></billing_vat_request_date>
+    <shipping_vat_request_date></shipping_vat_request_date>
+    <billing_vat_request_success></billing_vat_request_success>
+    <shipping_vat_request_success></shipping_vat_request_success>
+  </transaction>
+</transactions>

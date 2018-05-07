@@ -3,179 +3,181 @@ class BxRequest
 	require 'p13n_types'
 	
 
-    def initialize(language, choiceId, max=10, min=0)
-    	@language, @groupBy, @choiceId, @min, @max, @withRelaxation , @indexId ,	@requestMap , returnFields = Array.new
-		@offset = 0
-		@queryText = ""
-		@bxFacets = nil
-		@bxSortFields = nil
-		@bxFilters = Array.new
-		@orFilters = false
-	    @hitsGroupsAsHits = nil
-	    @groupFacets = nil
-	    @requestContextParameters = Array.new()
-    	if (choiceId == '')
-			raise  'BxRequest created with null choiceId'
-		end
-		@language = language
-		@choiceId = choiceId
-		@min = Float(min)
-		@max = Float(max)
-		if(@max == 0) 
-			@max = 1
-		end
-		@withRelaxation = choiceId == 'search'
+  def initialize(language, choiceId, max=10, min=0)
+    	@language, @groupBy, @choiceId, @min, @max, @withRelaxation , @indexId ,	@requestMap , returnFields = Array.new, @indexId
+			@offset = 0
+			@queryText = ""
+			@bxFacets = nil
+
+			@bxSortFields = nil
+			@bxFilters = Array.new
+			@orFilters = false
+			@hitsGroupsAsHits = nil
+			@groupFacets = nil
+			@requestContextParameters = Array.new()
+			if (choiceId == '')
+					raise  'BxRequest created with null choiceId'
+			end
+			@language = language
+			@choiceId = choiceId
+			@min = Float(min)
+			@max = Float(max)
+			if(@max == 0)
+					@max = 1
+			end
+			@withRelaxation = choiceId == 'search'
+			@contextItems = Array.new
     end
 	
 	def getWithRelaxation
 
-		return self.withRelaxation
+		return @withRelaxation
 		
 	end
 
 	def setWithRelaxation(withRelaxation)
-		self.withRelaxation = withRelaxation
+		@withRelaxation = withRelaxation
 	end
 
 	def getReturnFields
 
-		return self.returnFields
+		return @returnFields
 		
 	end
 
 	def setReturnFields(returnFields)
 		
-		self.returnFields  = returnFields 
+		@returnFields  = returnFields 
 
 	end
 
 	def getOffset
-		return self.offset
+		return @offset
 	end
 
 	def setOffset(offset)
-		self.offset = offset
+		@offset = offset
 	end
 	def getQuerytext
-		return self.queryText
+		return @queryText
 	end
 	def setQuerytext(queryText)
-		self.queryText = queryText
+		@queryText = queryText
 	end
 	def getFacets
-		return self.bxFacets
+		return @bxFacets
 	end
 	def setFacets(bxFacets)
-		self.bxFacets = bxFacets
+		@bxFacets = bxFacets
 	end
 	def getSortFields
-		return self.bxSortFields
+		return @bxSortFields
 	end
 	def setSortFields(bxSortFields)
-		self.bxSortFields =bxSortFields
+		@bxSortFields =bxSortFields
 	end
 	def getFilters
-		filters  = self.bxFilters
-		if (self.getFacets())
-			self.getFacets().getFilters().each do |filter|
+		filters  = @bxFilters
+		if (getFacets())
+			getFacets().getFilters().each do |filter|
 				filters.push(filter)
 			end			
 		end
-		return self.bxFilters		
+		return @bxFilters		
 	end
 
 	def setFilters(bxFilters)
-		self.bxFilters = bxFilters
+		@bxFilters = bxFilters
 	end
 
 	def addFilter(bxFilter)
-		self.bxFilters[bxFilter.getFieldName()] = bxFilter
+		@bxFilters[@bxFilter.getFieldName()] = bxFilter
 	end
 
 	def getOrFilters
 
-		return self.orFilters
+		return @orFilters
 		
 	end
 	def setOrFilters(orFilters)
-		return self.orFilters = orFilters
+		return @orFilters = orFilters
 	end
 	def addSortField(field, reverse = false)
-		if(self.bxSortFields == nil) 
-			self.bxSortFields = BxSortFields.new
+		if(@bxSortFields == nil) 
+			@bxSortFields = BxSortFields.new
 		end
-		self.bxSortFields.push(field, reverse)
+		@bxSortFields.push(field, reverse)
 	end
 	def getChoiceId
-		return self.choiceId
+		return @choiceId
 	end
 	def setChoiceId(choiceId)
-		self.choiceId = choiceId
+		@choiceId = choiceId
 	end
 	def getMax
-		return self.max
+		return @max
 	end
 	def setMax(max)
-		self.max = max
+		@max = max
 	end
 	def getMin
-		return self.min
+		return @min
 	end
 	def setMin(min)
-		self.min = min
+		@min = min
 	end
 	def getIndexId
-		return self.indexId
+		return @indexId
 	end
 	def setIndexId(indexId)
-		self.indexId = indexId
-		self.contextItems.each do |k, contextItem|
+		@indexId = indexId
+		@contextItems.each do | contextItem, k|
 			if contextItem.indexId == nil
-				self.contextItems[k].indexId = indexId
+				@contextItems[k]['indexId']= indexId
 			end
 		end
 	end
 
 	def setDefaultIndexId(indexId)
-		if self.indexId== nil
-			self.setIndexId(indexId)
+		if @indexId== nil
+			setIndexId(indexId)
 		end
 	end
 	def setDefaultRequestMap(requestMap)
-		if self.requestMap == nil
-			self.requestMap = requestMap
+		if @requestMap == nil
+			@requestMap = requestMap
 		end
 	end
 	def getLanguage
-		return self.language
+		return @language
 	end
 	def setLanguage(language)
-		self.language = language
+		@language = language
 	end
 	def getGroupBy
-		return self.groupBy
+		return @groupBy
 	end
 	def setGroupBy(groupBy)
-		self.groupBy = groupBy
+		@groupBy = groupBy
 	end
 	def setHitsGroupsAsHits(groupsAsHits)
-		self.hitsGroupsAsHits = groupsAsHits
+		@hitsGroupsAsHits = groupsAsHits
 	end
 	def setGroupFacets(groupFacets)
-		self.groupFacets = groupFacets
+		@groupFacets = groupFacets
 	end
 	def getSimpleSearchQuery
-		searchQuery  = SimpleSearchQuery()
+		searchQuery  = SimpleSearchQuery.new()
 		searchQuery.indexId = getIndexId()
 		searchQuery.language = getLanguage()
 		searchQuery.returnFields = getReturnFields()
 		searchQuery.offset = getOffset()
 		searchQuery.hitCount = getMax()
 		searchQuery.queryText = getQueryText()
-		searchQuery.groupFacets = (self.groupFacets == nil ) ? false : self.groupFacets
-		searchQuery.groupBy = self.groupBy
-		if self.hitsGroupsAsHits != nil
-			searchQuery.hitsGroupsAsHits = self.hitsGroupsAsHits
+		searchQuery.groupFacets = (@groupFacets == nil ) ? false : @groupFacets
+		searchQuery.groupBy = @groupBy
+		if @hitsGroupsAsHits != nil
+			searchQuery.hitsGroupsAsHits = @hitsGroupsAsHits
 		end
 		if getFilters().length >0
 			searchQuery.filters = Array.new
@@ -192,54 +194,56 @@ class BxRequest
 		end
 		return $searchQuery;
 	end
-	contextItems = Array.new 
+
 	def setProductContext(fieldName, contextItemId, role = 'mainProduct', relatedProducts = Array.new() , relatedProductField = 'id')
-		contextItem = new ContextItem()
+		contextItem = ContextItem.new()
 		contextItem.indexId = getIndexId()
 		contextItem.fieldName = fieldName
 		contextItem.contextItemId = contextItemId
 		contextItem.role = role
-		contextItems[] = contextItem
+		@contextItems.push(contextItem)
 		addRelatedProducts(relatedProducts, relatedProductField)
 	end
 	def setBasketProductWithPrices(fieldName, basketContent, role = 'mainProduct', subRole = 'mainProduct', relatedProducts = Array.new() , relatedProductField='id')
 		if (basketContent != false && basketContent.length > 0) 
 			
 			# Sort basket content by price
-			basketContent.sort_by { |item| item.price }
+			basketContent.sort_by { |k| k[:price] }
 			basketItem = basketContent.shift
 			
-			contextItem = new ContextItem()
+			contextItem = ContextItem.new()
 			contextItem.indexId = getIndexId()
 			contextItem.fieldName = fieldName
 			contextItem.contextItemId = basketItem['id']
 			contextItem.role = role
-			contextItems.push(contextItem)
+			@contextItems.push(contextItem)
 			basketContent.each do |basketItem| 
-				contextItem = new ContextItem()
+				contextItem = ContextItem.new()
 				contextItem.indexId = getIndexId()
 				contextItem.fieldName = fieldName
 				contextItem.contextItemId = basketItem['id']
 				contextItem.role = $subRole
-				contextItems.push(contextItem)
+				@contextItems.push(contextItem)
 			end
 		end
 		addRelatedProducts(relatedProducts, relatedProductField)
 	end
 
 	def addRelatedProducts(relatedProducts, relatedProductField='id') 
-        relatedProducts.each do |productId , related| 
-            key = "bx_{"+self.choiceId+"}_"+productId
-            self.requestContextParameters[key] = related
-        end
+        if(!relatedProducts.empty?)
+					relatedProducts.each do |productId , related|
+							key = "bx_{"+@choiceId+"}_"+productId
+							@requestContextParameters[key] = related
+					end
+				end
     end
 
     def getContextItems 
-		return self.contextItems
+		return @contextItems
 	end
 	
 	def getRequestContextParameters
-		return self.requestContextParameters
+		return @requestContextParameters
 	end
 	
 	def retrieveHitFieldValues(item, field, items, fields) 

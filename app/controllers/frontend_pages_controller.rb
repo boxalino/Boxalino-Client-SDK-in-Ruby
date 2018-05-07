@@ -1,17 +1,29 @@
 class FrontendPagesController < ApplicationController
+
+  def initialize(account = "" , password= "", exception1=nil, host="cdn.bx-cloud.com")
+    @account = account
+    @password = password
+    @host = host
+    @exception = exception1
+    @domain = "" # your web-site domain (e.g.: www.abc.com)
+    @logs = Array.new #optional, just used here in example to collect logs
+    @isDev = false #are the data to be pushed dev or prod data?
+    @isDelta = false #are the data to be pushed full data (reset index) or delta (add/modify index)?
+  end
+
   def frontend_parametrized_request
     require 'json'
     require 'BxClient'
     require 'BxParametrizedRequest'
     #required parameters you should set for this example to work
-    @account = ""; # your account name
-    @password = ""; # your account password
-    @domain = "" # your web-site domain (e.g.: www.abc.com)
-    @logs = Array.new #optional, just used here in example to collect logs
-    @isDev = false #are the data to be pushed dev or prod data?
-    @host =  "cdn.bx-cloud.com"
+    # @account = ""; # your account name
+    # @password = ""; # your account password
+    # @domain = "" # your web-site domain (e.g.: www.abc.com)
+    # @logs = Array.new #optional, just used here in example to collect logs
+    # @isDev = false #are the data to be pushed dev or prod data?
+    # @host =  "cdn.bx-cloud.com"
 
-    @isDelta = false #are the data to be pushed full data (reset index) or delta (add/modify index)?
+    #@isDelta = false #are the data to be pushed full data (reset index) or delta (add/modify index)?
     bxClient =BxClient.new(@account, @password, @domain ,  @isDev, @host)
     #To Check Below Line
     #bxClient.setRequestMap($_REQUEST);
@@ -53,7 +65,7 @@ class FrontendPagesController < ApplicationController
       
       @logs.push("<h3>filters</h3>")
       bxRequest.getFilters().each do |bxFilter|
-        @logs.push(bxFilter.getFieldName() + ": " + .bxFilter.getValues().join(',') + " :" + bxFilter.isNegative())
+        @logs.push(bxFilter.getFieldName() + ": " + bxFilter.getValues().join(',') + " :" + bxFilter.isNegative())
       end
       @logs.push("..")
       
@@ -80,12 +92,12 @@ class FrontendPagesController < ApplicationController
     rescue Exception => e 
 
       #be careful not to print the error message on your publish web-site as sensitive information like credentials might be indicated for debug purposes
-      @message =  JSON.parse(e.getMessage())
-      
+      @message =  e
+      @exception = e
     end
   end
 
-def getItemFieldsCB(ids, fieldNames) 
+  def getItemFieldsCB(ids, fieldNames)
   #todo your code here to retrieve the fields values
   values = Array.new
   ids.each do |id|
@@ -102,14 +114,14 @@ end
     require 'BxClient'
     require 'BxRecommendationRequest'
     #required parameters you should set for this example to work
-    @account = ""; # your account name
-    @password = ""; # your account password
-    @domain = "" # your web-site domain (e.g.: www.abc.com)
-    @logs = Array.new #optional, just used here in example to collect logs
-    @isDev = false #are the data to be pushed dev or prod data?
-    @host =  "cdn.bx-cloud.com"
+    # @account = ""; # your account name
+    # @password = ""; # your account password
+    #@domain = "" # your web-site domain (e.g.: www.abc.com)
+    #@logs = Array.new #optional, just used here in example to collect logs
+    #@isDev = false #are the data to be pushed dev or prod data?
+    #@host =  "cdn.bx-cloud.com"
 
-    @isDelta = false #are the data to be pushed full data (reset index) or delta (add/modify index)?
+    #@isDelta = false #are the data to be pushed full data (reset index) or delta (add/modify index)?
     bxClient =BxClient.new(@account, @password, @domain ,  @isDev, @host)
     #To Check Below Line
     #bxClient.setRequestMap($_REQUEST);
@@ -118,33 +130,33 @@ end
       language = "en" # a valid language code (e.g.: "en", "fr", "de", "it", ...)
       choiceId = "basket" #the recommendation choice id (standard choice ids are: "similar" => similar products on product detail page, "complementary" => complementary products on product detail page, "basket" => cross-selling recommendations on basket page, "search"=>search results, "home" => home page personalized suggestions, "category" => category page suggestions, "navigation" => navigation product listing pages suggestions)
       itemFieldId = "id" # the field you want to use to define the id of the product (normally id, but could also be a group id if you have a difference between group id and sku)
-      itemFieldIdValuesPrices = [{"id"=>"1940", "price"=>10.80}, {"id"=>"1234", "price"=>130.5}] #the product ids and their prices that the user currently has in his basket
+      itemFieldIdValuesPrices = [{:id=>"1234", :price=>130.5},{:id=>"1940", :price=>10.80}] #the product ids and their prices that the user currently has in his basket
       hitCount = 10 #a maximum number of recommended result to return in one page
 
       #//create similar recommendations request
       bxRequest = BxRecommendationRequest.new(language, choiceId, hitCount)
-      
+
       #//indicate the products the user currently has in his basket (reference of products for the recommendations)
       bxRequest.setBasketProductWithPrices(itemFieldId, itemFieldIdValuesPrices)
-      
+
       #//add the request
       bxClient.addRequest(bxRequest)
-      
+
       #//make the query to Boxalino server and get back the response for all requests
       bxResponse = bxClient.getResponse()
-      
+
       #//loop on the recommended response hit ids and print them
       bxResponse.getHitIds().each do |i , id|
         @logs.push(i+": returned id "+id)
       end
 
       @message = @logs.join("<br/>")
-      
-    rescue Exception => e 
+
+    rescue Exception => e
 
       #be careful not to print the error message on your publish web-site as sensitive information like credentials might be indicated for debug purposes
-      @message =  JSON.parse(e.getMessage())
-      
+      @message =  e
+      @exception = e
     end
   end
 
@@ -153,14 +165,14 @@ end
     require 'BxClient'
     require 'BxRecommendationRequest'
     #required parameters you should set for this example to work
-    @account = ""; # your account name
-    @password = ""; # your account password
-    @domain = "" # your web-site domain (e.g.: www.abc.com)
-    @logs = Array.new #optional, just used here in example to collect logs
-    @isDev = false #are the data to be pushed dev or prod data?
-    @host =  "cdn.bx-cloud.com"
-
-    @isDelta = false #are the data to be pushed full data (reset index) or delta (add/modify index)?
+    # @account = ""; # your account name
+    # @password = ""; # your account password
+    # @domain = "" # your web-site domain (e.g.: www.abc.com)
+    # @logs = Array.new #optional, just used here in example to collect logs
+    # @isDev = false #are the data to be pushed dev or prod data?
+    # @host =  "cdn.bx-cloud.com"
+    #
+    # @isDelta = false #are the data to be pushed full data (reset index) or delta (add/modify index)?
     bxClient =BxClient.new(@account, @password, @domain ,  @isDev, @host)
     #To Check Below Line
     #bxClient.setRequestMap($_REQUEST);
@@ -194,8 +206,8 @@ end
     rescue Exception => e 
 
       #be careful not to print the error message on your publish web-site as sensitive information like credentials might be indicated for debug purposes
-      @message =  JSON.parse(e.getMessage())
-      
+      @message =  e
+      @exception = e
     end
   end
 
@@ -204,14 +216,14 @@ end
     require 'BxClient'
     require 'BxRecommendationRequest'
     #required parameters you should set for this example to work
-    @account = ""; # your account name
-    @password = ""; # your account password
-    @domain = "" # your web-site domain (e.g.: www.abc.com)
-    @logs = Array.new #optional, just used here in example to collect logs
-    @isDev = false #are the data to be pushed dev or prod data?
-    @host =  "cdn.bx-cloud.com"
+    # @account = ""; # your account name
+    # @password = ""; # your account password
+    # @domain = "" # your web-site domain (e.g.: www.abc.com)
+    # @logs = Array.new #optional, just used here in example to collect logs
+    # @isDev = false #are the data to be pushed dev or prod data?
+    # @host =  "cdn.bx-cloud.com"
 
-    @isDelta = false #are the data to be pushed full data (reset index) or delta (add/modify index)?
+    #@isDelta = false #are the data to be pushed full data (reset index) or delta (add/modify index)?
     bxClient =BxClient.new(@account, @password, @domain ,  @isDev, @host)
     #To Check Below Line
     #bxClient.setRequestMap($_REQUEST);
@@ -261,8 +273,8 @@ end
     rescue Exception => e 
 
       #be careful not to print the error message on your publish web-site as sensitive information like credentials might be indicated for debug purposes
-      @message =  JSON.parse(e.getMessage())
-      
+      @message =  e
+      @exception = e
     end
   end
 
@@ -271,14 +283,14 @@ end
     require 'BxClient'
     require 'BxSearchRequest'
     #required parameters you should set for this example to work
-    @account = ""; # your account name
-    @password = ""; # your account password
-    @domain = "" # your web-site domain (e.g.: www.abc.com)
-    @logs = Array.new #optional, just used here in example to collect logs
-    @isDev = false #are the data to be pushed dev or prod data?
-    @host =  "cdn.bx-cloud.com"
+    # @account = ""; # your account name
+    # @password = ""; # your account password
+    # @domain = "" # your web-site domain (e.g.: www.abc.com)
+    # @logs = Array.new #optional, just used here in example to collect logs
+    # @isDev = false #are the data to be pushed dev or prod data?
+    # @host =  "cdn.bx-cloud.com"
 
-    @isDelta = false #are the data to be pushed full data (reset index) or delta (add/modify index)?
+    #@isDelta = false #are the data to be pushed full data (reset index) or delta (add/modify index)?
     bxClient =BxClient.new(@account, @password, @domain ,  @isDev, @host)
     #To Check Below Line
     #bxClient.setRequestMap($_REQUEST);
@@ -311,8 +323,8 @@ end
     rescue Exception => e 
 
       #be careful not to print the error message on your publish web-site as sensitive information like credentials might be indicated for debug purposes
-      @message =  JSON.parse(e.getMessage())
-      
+      @message =  e
+      @exception = e
     end
   end
 
@@ -321,14 +333,14 @@ end
     require 'BxClient'
     require 'BxAutocompleteRequest'
     #required parameters you should set for this example to work
-    @account = ""; # your account name
-    @password = ""; # your account password
-    @domain = "" # your web-site domain (e.g.: www.abc.com)
-    @logs = Array.new #optional, just used here in example to collect logs
-    @isDev = false #are the data to be pushed dev or prod data?
-    @host =  "cdn.bx-cloud.com"
-
-    @isDelta = false #are the data to be pushed full data (reset index) or delta (add/modify index)?
+    # @account = ""; # your account name
+    # @password = ""; # your account password
+    # @domain = "" # your web-site domain (e.g.: www.abc.com)
+    # @logs = Array.new #optional, just used here in example to collect logs
+    # @isDev = false #are the data to be pushed dev or prod data?
+    # @host =  "cdn.bx-cloud.com"
+    #
+    # @isDelta = false #are the data to be pushed full data (reset index) or delta (add/modify index)?
     bxClient =BxClient.new(@account, @password, @domain ,  @isDev, @host)
     #To Check Below Line
     #bxClient.setRequestMap($_REQUEST);
@@ -345,7 +357,7 @@ end
       bxClient.setAutocompleteRequest(bxRequest)
       
       #//make the query to Boxalino server and get back the response for all requests
-      bxAutocompleteResponse = bxClient.getAutocompleteResponse()
+      bxAutoompleteResponse = bxClient.getAutocompleteResponse()
       
       #//loop on the search response hit ids and print them
       @logs.push("textual suggestions for "+queryText+":")
@@ -362,8 +374,8 @@ end
     rescue Exception => e 
 
       #be careful not to print the error message on your publish web-site as sensitive information like credentials might be indicated for debug purposes
-      @message =  JSON.parse(e.getMessage())
-      
+      @message =  e
+      @exception = e
     end
   end
 
@@ -373,14 +385,14 @@ end
     require 'BxAutocompleteRequest'
     require 'BxFacets'
     #required parameters you should set for this example to work
-    @account = ""; # your account name
-    @password = ""; # your account password
-    @domain = "" # your web-site domain (e.g.: www.abc.com)
-    @logs = Array.new #optional, just used here in example to collect logs
-    @isDev = false #are the data to be pushed dev or prod data?
-    @host =  "cdn.bx-cloud.com"
-
-    @isDelta = false #are the data to be pushed full data (reset index) or delta (add/modify index)?
+    # @account = ""; # your account name
+    # @password = ""; # your account password
+    # @domain = "" # your web-site domain (e.g.: www.abc.com)
+    # @logs = Array.new #optional, just used here in example to collect logs
+    # @isDev = false #are the data to be pushed dev or prod data?
+    # @host =  "cdn.bx-cloud.com"
+    #
+    # @isDelta = false #are the data to be pushed full data (reset index) or delta (add/modify index)?
     bxClient =BxClient.new(@account, @password, @domain ,  @isDev, @host)
     #To Check Below Line
     #bxClient.setRequestMap($_REQUEST);
@@ -427,8 +439,8 @@ end
     rescue Exception => e 
 
       #be careful not to print the error message on your publish web-site as sensitive information like credentials might be indicated for debug purposes
-      @message =  JSON.parse(e.getMessage())
-      
+      @message =  e
+      @exception = e
     end
   end
 
@@ -437,14 +449,14 @@ end
     require 'BxClient'
     require 'BxAutocompleteRequest'
     #required parameters you should set for this example to work
-    @account = ""; # your account name
-    @password = ""; # your account password
-    @domain = "" # your web-site domain (e.g.: www.abc.com)
-    @logs = Array.new #optional, just used here in example to collect logs
-    @isDev = false #are the data to be pushed dev or prod data?
-    @host =  "cdn.bx-cloud.com"
-
-    @isDelta = false #are the data to be pushed full data (reset index) or delta (add/modify index)?
+    # @account = ""; # your account name
+    # @password = ""; # your account password
+    # @domain = "" # your web-site domain (e.g.: www.abc.com)
+    # @logs = Array.new #optional, just used here in example to collect logs
+    # @isDev = false #are the data to be pushed dev or prod data?
+    # @host =  "cdn.bx-cloud.com"
+    #
+    # @isDelta = false #are the data to be pushed full data (reset index) or delta (add/modify index)?
     bxClient =BxClient.new(@account, @password, @domain ,  @isDev, @host)
     #To Check Below Line
     #bxClient.setRequestMap($_REQUEST);
@@ -490,7 +502,7 @@ end
       bxAutocompleteResponse.getBxSearchResponse().getHitFieldValues(fieldNames).each do |id ,fieldValueMap|
         item = id
         fieldValueMap.each do |fieldName , fieldValues|
-          item = item + " - "+fieldName+": " + fieldValues.join(',')) + "<br>"
+          item = item + " - "+fieldName+": " + fieldValues.join(',') + "<br>"
         end
         @logs.push(item)
       end
@@ -500,8 +512,8 @@ end
     rescue Exception => e 
 
       #be careful not to print the error message on your publish web-site as sensitive information like credentials might be indicated for debug purposes
-      @message =  JSON.parse(e.getMessage())
-      
+      @message =  e
+      @exception = e
     end
   end
 
@@ -510,14 +522,14 @@ end
     require 'BxClient'
     require 'BxAutocompleteRequest'
     #required parameters you should set for this example to work
-    @account = ""; # your account name
-    @password = ""; # your account password
-    @domain = "" # your web-site domain (e.g.: www.abc.com)
-    @logs = Array.new #optional, just used here in example to collect logs
-    @isDev = false #are the data to be pushed dev or prod data?
-    @host =  "cdn.bx-cloud.com"
-
-    @isDelta = false #are the data to be pushed full data (reset index) or delta (add/modify index)?
+    # @account = ""; # your account name
+    # @password = ""; # your account password
+    # @domain = "" # your web-site domain (e.g.: www.abc.com)
+    # @logs = Array.new #optional, just used here in example to collect logs
+    # @isDev = false #are the data to be pushed dev or prod data?
+    # @host =  "cdn.bx-cloud.com"
+    #
+    # @isDelta = false #are the data to be pushed full data (reset index) or delta (add/modify index)?
     bxClient =BxClient.new(@account, @password, @domain ,  @isDev, @host)
     #To Check Below Line
     #bxClient.setRequestMap($_REQUEST);
@@ -584,8 +596,8 @@ end
     rescue Exception => e 
 
       #be careful not to print the error message on your publish web-site as sensitive information like credentials might be indicated for debug purposes
-      @message =  JSON.parse(e.getMessage())
-      
+      @message = e
+      @exception = e
     end
   end
 
@@ -594,14 +606,14 @@ end
     require 'BxClient'
     require 'BxAutocompleteRequest'
     #required parameters you should set for this example to work
-    @account = ""; # your account name
-    @password = ""; # your account password
-    @domain = "" # your web-site domain (e.g.: www.abc.com)
-    @logs = Array.new #optional, just used here in example to collect logs
-    @isDev = false #are the data to be pushed dev or prod data?
-    @host =  "cdn.bx-cloud.com"
-
-    @isDelta = false #are the data to be pushed full data (reset index) or delta (add/modify index)?
+    # @account = ""; # your account name
+    # @password = ""; # your account password
+    # @domain = "" # your web-site domain (e.g.: www.abc.com)
+    # @logs = Array.new #optional, just used here in example to collect logs
+    # @isDev = false #are the data to be pushed dev or prod data?
+    # @host =  "cdn.bx-cloud.com"
+    #
+    # @isDelta = false #are the data to be pushed full data (reset index) or delta (add/modify index)?
     bxClient =BxClient.new(@account, @password, @domain ,  @isDev, @host)
     #To Check Below Line
     #bxClient.setRequestMap($_REQUEST);
@@ -639,24 +651,24 @@ end
     rescue Exception => e 
 
       #be careful not to print the error message on your publish web-site as sensitive information like credentials might be indicated for debug purposes
-      @message =  JSON.parse(e.getMessage())
-      
+      @message =  e
+      @exception = e
     end
   end
 
-  def frontend_search_basic
+  def frontend_search_basic(queryText ="")
     require 'json'
     require 'BxClient'
     require 'BxSearchRequest'
     #required parameters you should set for this example to work
-    @account = ""; # your account name
-    @password = ""; # your account password
-    @domain = "" # your web-site domain (e.g.: www.abc.com)
-    @logs = Array.new #optional, just used here in example to collect logs
-    @isDev = false #are the data to be pushed dev or prod data?
-    @host =  "cdn.bx-cloud.com"
-
-    @isDelta = false #are the data to be pushed full data (reset index) or delta (add/modify index)?
+    # @account = ""; # your account name
+    # @password = ""; # your account password
+    # @domain = "" # your web-site domain (e.g.: www.abc.com)
+    # @logs = Array.new #optional, just used here in example to collect logs
+    # @isDev = false #are the data to be pushed dev or prod data?
+    # @host =  "cdn.bx-cloud.com"
+    #
+    # @isDelta = false #are the data to be pushed full data (reset index) or delta (add/modify index)?
     bxClient =BxClient.new(@account, @password, @domain ,  @isDev, @host)
     #To Check Below Line
     #bxClient.setRequestMap($_REQUEST);
@@ -688,8 +700,8 @@ end
     rescue Exception => e 
 
       #be careful not to print the error message on your publish web-site as sensitive information like credentials might be indicated for debug purposes
-      @message =  JSON.parse(e.getMessage())
-      
+      @message =  e
+      @exception = e
     end
   end
 
@@ -698,14 +710,14 @@ end
     require 'BxClient'
     require 'BxSearchRequest'
     #required parameters you should set for this example to work
-    @account = ""; # your account name
-    @password = ""; # your account password
-    @domain = "" # your web-site domain (e.g.: www.abc.com)
-    @logs = Array.new #optional, just used here in example to collect logs
-    @isDev = false #are the data to be pushed dev or prod data?
-    @host =  "cdn.bx-cloud.com"
-
-    @isDelta = false #are the data to be pushed full data (reset index) or delta (add/modify index)?
+    # @account = ""; # your account name
+    # @password = ""; # your account password
+    # @domain = "" # your web-site domain (e.g.: www.abc.com)
+    # @logs = Array.new #optional, just used here in example to collect logs
+    # @isDev = false #are the data to be pushed dev or prod data?
+    # @host =  "cdn.bx-cloud.com"
+    #
+    # @isDelta = false #are the data to be pushed full data (reset index) or delta (add/modify index)?
     bxClient =BxClient.new(@account, @password, @domain ,  @isDev, @host)
     #To Check Below Line
     #bxClient.setRequestMap($_REQUEST);
@@ -743,8 +755,8 @@ end
     rescue Exception => e 
 
       #be careful not to print the error message on your publish web-site as sensitive information like credentials might be indicated for debug purposes
-      @message =  JSON.parse(e.getMessage())
-      
+      @message =  e
+      @exception = e
     end
   end
 
@@ -753,14 +765,14 @@ end
     require 'BxClient'
     require 'BxSearchRequest'
     #required parameters you should set for this example to work
-    @account = ""; # your account name
-    @password = ""; # your account password
-    @domain = "" # your web-site domain (e.g.: www.abc.com)
-    @logs = Array.new #optional, just used here in example to collect logs
-    @isDev = false #are the data to be pushed dev or prod data?
-    @host =  "cdn.bx-cloud.com"
-
-    @isDelta = false #are the data to be pushed full data (reset index) or delta (add/modify index)?
+    # @account = ""; # your account name
+    # @password = ""; # your account password
+    # @domain = "" # your web-site domain (e.g.: www.abc.com)
+    # @logs = Array.new #optional, just used here in example to collect logs
+    # @isDev = false #are the data to be pushed dev or prod data?
+    # @host =  "cdn.bx-cloud.com"
+    #
+    # @isDelta = false #are the data to be pushed full data (reset index) or delta (add/modify index)?
     bxClient =BxClient.new(@account, @password, @domain ,  @isDev, @host)
     #To Check Below Line
     #bxClient.setRequestMap($_REQUEST);
@@ -786,8 +798,8 @@ end
     rescue Exception => e 
 
       #be careful not to print the error message on your publish web-site as sensitive information like credentials might be indicated for debug purposes
-      @message =  JSON.parse(e.getMessage())
-      
+      @message =  e
+      @exception = e
     end
   end
 
@@ -797,14 +809,14 @@ end
     require 'BxSearchRequest'
     require 'BxFacets'
     #required parameters you should set for this example to work
-    @account = ""; # your account name
-    @password = ""; # your account password
-    @domain = "" # your web-site domain (e.g.: www.abc.com)
-    @logs = Array.new #optional, just used here in example to collect logs
-    @isDev = false #are the data to be pushed dev or prod data?
-    @host =  "cdn.bx-cloud.com"
-
-    @isDelta = false #are the data to be pushed full data (reset index) or delta (add/modify index)?
+    # @account = ""; # your account name
+    # @password = ""; # your account password
+    # @domain = "" # your web-site domain (e.g.: www.abc.com)
+    # @logs = Array.new #optional, just used here in example to collect logs
+    # @isDev = false #are the data to be pushed dev or prod data?
+    # @host =  "cdn.bx-cloud.com"
+    #
+    # @isDelta = false #are the data to be pushed full data (reset index) or delta (add/modify index)?
     bxClient =BxClient.new(@account, @password, @domain ,  @isDev, @host)
     #To Check Below Line
     #bxClient.setRequestMap($_REQUEST);
@@ -858,8 +870,8 @@ end
     rescue Exception => e 
 
       #be careful not to print the error message on your publish web-site as sensitive information like credentials might be indicated for debug purposes
-      @message =  JSON.parse(e.getMessage())
-      
+      @message =  e
+      @exception = e
     end
   end
 
@@ -869,14 +881,14 @@ end
     require 'BxSearchRequest'
     require 'BxFacets'
     #required parameters you should set for this example to work
-    @account = ""; # your account name
-    @password = ""; # your account password
-    @domain = "" # your web-site domain (e.g.: www.abc.com)
-    @logs = Array.new #optional, just used here in example to collect logs
-    @isDev = false #are the data to be pushed dev or prod data?
-    @host =  "cdn.bx-cloud.com"
-
-    @isDelta = false #are the data to be pushed full data (reset index) or delta (add/modify index)?
+    # @account = ""; # your account name
+    # @password = ""; # your account password
+    # @domain = "" # your web-site domain (e.g.: www.abc.com)
+    # @logs = Array.new #optional, just used here in example to collect logs
+    # @isDev = false #are the data to be pushed dev or prod data?
+    # @host =  "cdn.bx-cloud.com"
+    #
+    # @isDelta = false #are the data to be pushed full data (reset index) or delta (add/modify index)?
     bxClient =BxClient.new(@account, @password, @domain ,  @isDev, @host)
     #To Check Below Line
     #bxClient.setRequestMap($_REQUEST);
@@ -929,8 +941,8 @@ end
     rescue Exception => e 
 
       #be careful not to print the error message on your publish web-site as sensitive information like credentials might be indicated for debug purposes
-      @message =  JSON.parse(e.getMessage())
-      
+      @message =  e
+      @exception = e
     end
   end
 
@@ -943,14 +955,14 @@ end
     require 'BxSearchRequest'
     require 'BxFacets'
     #required parameters you should set for this example to work
-    @account = ""; # your account name
-    @password = ""; # your account password
-    @domain = "" # your web-site domain (e.g.: www.abc.com)
-    @logs = Array.new #optional, just used here in example to collect logs
-    @isDev = false #are the data to be pushed dev or prod data?
-    @host =  "cdn.bx-cloud.com"
-
-    @isDelta = false #are the data to be pushed full data (reset index) or delta (add/modify index)?
+    # @account = ""; # your account name
+    # @password = ""; # your account password
+    # @domain = "" # your web-site domain (e.g.: www.abc.com)
+    # @logs = Array.new #optional, just used here in example to collect logs
+    # @isDev = false #are the data to be pushed dev or prod data?
+    # @host =  "cdn.bx-cloud.com"
+    #
+    # @isDelta = false #are the data to be pushed full data (reset index) or delta (add/modify index)?
     bxClient =BxClient.new(@account, @password, @domain ,  @isDev, @host)
     #To Check Below Line
     #bxClient.setRequestMap($_REQUEST);
@@ -1004,8 +1016,8 @@ end
     rescue Exception => e 
 
       #be careful not to print the error message on your publish web-site as sensitive information like credentials might be indicated for debug purposes
-      @message =  JSON.parse(e.getMessage())
-      
+      @message =  e
+      @exception = e
     end
   end
 
@@ -1015,14 +1027,14 @@ end
     require 'BxSearchRequest'
     require 'BxFilter'
     #required parameters you should set for this example to work
-    @account = ""; # your account name
-    @password = ""; # your account password
-    @domain = "" # your web-site domain (e.g.: www.abc.com)
-    @logs = Array.new #optional, just used here in example to collect logs
-    @isDev = false #are the data to be pushed dev or prod data?
-    @host =  "cdn.bx-cloud.com"
-
-    @isDelta = false #are the data to be pushed full data (reset index) or delta (add/modify index)?
+    # @account = ""; # your account name
+    # @password = ""; # your account password
+    # @domain = "" # your web-site domain (e.g.: www.abc.com)
+    # @logs = Array.new #optional, just used here in example to collect logs
+    # @isDev = false #are the data to be pushed dev or prod data?
+    # @host =  "cdn.bx-cloud.com"
+    #
+    # @isDelta = false #are the data to be pushed full data (reset index) or delta (add/modify index)?
     bxClient =BxClient.new(@account, @password, @domain ,  @isDev, @host)
     #To Check Below Line
     #bxClient.setRequestMap($_REQUEST);
@@ -1057,8 +1069,8 @@ end
     rescue Exception => e 
 
       #be careful not to print the error message on your publish web-site as sensitive information like credentials might be indicated for debug purposes
-      @message =  JSON.parse(e.getMessage())
-      
+      @message =  e
+      @exception = e
     end
   end
 
@@ -1068,14 +1080,14 @@ end
     require 'BxSearchRequest'
     require 'BxFilter'
     #required parameters you should set for this example to work
-    @account = ""; # your account name
-    @password = ""; # your account password
-    @domain = "" # your web-site domain (e.g.: www.abc.com)
-    @logs = Array.new #optional, just used here in example to collect logs
-    @isDev = false #are the data to be pushed dev or prod data?
-    @host =  "cdn.bx-cloud.com"
-
-    @isDelta = false #are the data to be pushed full data (reset index) or delta (add/modify index)?
+    # @account = ""; # your account name
+    # @password = ""; # your account password
+    # @domain = "" # your web-site domain (e.g.: www.abc.com)
+    # @logs = Array.new #optional, just used here in example to collect logs
+    # @isDev = false #are the data to be pushed dev or prod data?
+    # @host =  "cdn.bx-cloud.com"
+    #
+    # @isDelta = false #are the data to be pushed full data (reset index) or delta (add/modify index)?
     bxClient =BxClient.new(@account, @password, @domain ,  @isDev, @host)
     #To Check Below Line
     #bxClient.setRequestMap($_REQUEST);
@@ -1114,7 +1126,7 @@ end
       bxResponse.getHitFieldValues(fieldNames).each do |id , fieldValueMap|
         @logs.push("<h3>"+id+"</h3>")
         fieldValueMap.each do |fieldName , fieldValues|
-          @logs.push(fieldName+": " + fieldValues.join(',')))
+          @logs.push(fieldName+": " + fieldValues.join(','))
         end
       end
 
@@ -1123,8 +1135,8 @@ end
     rescue Exception => e 
 
       #be careful not to print the error message on your publish web-site as sensitive information like credentials might be indicated for debug purposes
-      @message =  JSON.parse(e.getMessage())
-      
+      @message =  e
+      @exception = e
     end
   end
 
@@ -1133,14 +1145,14 @@ end
     require 'BxClient'
     require 'BxSearchRequest'
     #required parameters you should set for this example to work
-    @account = ""; # your account name
-    @password = ""; # your account password
-    @domain = "" # your web-site domain (e.g.: www.abc.com)
-    @logs = Array.new #optional, just used here in example to collect logs
-    @isDev = false #are the data to be pushed dev or prod data?
-    @host =  "cdn.bx-cloud.com"
-
-    @isDelta = false #are the data to be pushed full data (reset index) or delta (add/modify index)?
+    # @account = ""; # your account name
+    # @password = ""; # your account password
+    # @domain = "" # your web-site domain (e.g.: www.abc.com)
+    # @logs = Array.new #optional, just used here in example to collect logs
+    # @isDev = false #are the data to be pushed dev or prod data?
+    # @host =  "cdn.bx-cloud.com"
+    #
+    # @isDelta = false #are the data to be pushed full data (reset index) or delta (add/modify index)?
     bxClient =BxClient.new(@account, @password, @domain ,  @isDev, @host)
     #To Check Below Line
     #bxClient.setRequestMap($_REQUEST);
@@ -1167,11 +1179,11 @@ end
       bxResponse = bxClient.getResponse()
       
       #//indicate the search made with the number of results found
-      @logs.push("Results for query \"" + queryText + "\" (" + bxResponse.getTotalHitCount() + "):<br>"
+      @logs.push("Results for query \"" + queryText + "\" (" + bxResponse.getTotalHitCount() + "):<br>")
 
       #//loop on the search response hit ids and print them
-      bxResponse.getHitIds().each do |i , id|
-        @logs.push(i+": returned id "+id)
+      bxResponse.getHitIds().each do |i,iid|
+        @logs.push(i+": returned id "+iid)
       end
 
       @message = @logs.join("<br/>")
@@ -1179,8 +1191,8 @@ end
     rescue Exception => e 
 
       #be careful not to print the error message on your publish web-site as sensitive information like credentials might be indicated for debug purposes
-      @message =  JSON.parse(e.getMessage())
-      
+      @message =  e
+      @exception = e
     end
   end
 
@@ -1189,14 +1201,14 @@ end
     require 'BxClient'
     require 'BxSearchRequest'
     #required parameters you should set for this example to work
-    @account = ""; # your account name
-    @password = ""; # your account password
-    @domain = "" # your web-site domain (e.g.: www.abc.com)
-    @logs = Array.new #optional, just used here in example to collect logs
-    @isDev = false #are the data to be pushed dev or prod data?
-    @host =  "cdn.bx-cloud.com"
-
-    @isDelta = false #are the data to be pushed full data (reset index) or delta (add/modify index)?
+    # @account = ""; # your account name
+    # @password = ""; # your account password
+    # @domain = "" # your web-site domain (e.g.: www.abc.com)
+    # @logs = Array.new #optional, just used here in example to collect logs
+    # @isDev = false #are the data to be pushed dev or prod data?
+    # @host =  "cdn.bx-cloud.com"
+    #
+    # @isDelta = false #are the data to be pushed full data (reset index) or delta (add/modify index)?
     bxClient =BxClient.new(@account, @password, @domain ,  @isDev, @host)
     #To Check Below Line
     #bxClient.setRequestMap($_REQUEST);
@@ -1224,7 +1236,7 @@ end
       bxResponse.getHitFieldValues(fieldNames).each do |id , fieldValueMap|
         entity = "<h3>"+id+"</h3>";
         fieldValueMap.each do |fieldName , fieldValues|
-          entity = entity + fieldName+": " fieldValues.join(',')
+          entity = entity + fieldName+": " + fieldValues.join(',')
         end
         @logs.push(entity)
       end
@@ -1234,8 +1246,8 @@ end
     rescue Exception => e 
 
       #be careful not to print the error message on your publish web-site as sensitive information like credentials might be indicated for debug purposes
-      @message =  JSON.parse(e.getMessage())
-      
+      @message =  e
+      @exception = e
     end
   end
 
@@ -1244,14 +1256,14 @@ end
     require 'BxClient'
     require 'BxSearchRequest'
     #required parameters you should set for this example to work
-    @account = ""; # your account name
-    @password = ""; # your account password
-    @domain = "" # your web-site domain (e.g.: www.abc.com)
-    @logs = Array.new #optional, just used here in example to collect logs
-    @isDev = false #are the data to be pushed dev or prod data?
-    @host =  "cdn.bx-cloud.com"
-
-    @isDelta = false #are the data to be pushed full data (reset index) or delta (add/modify index)?
+    # @account = ""; # your account name
+    # @password = ""; # your account password
+    # @domain = "" # your web-site domain (e.g.: www.abc.com)
+    # @logs = Array.new #optional, just used here in example to collect logs
+    # @isDev = false #are the data to be pushed dev or prod data?
+    # @host =  "cdn.bx-cloud.com"
+    #
+    # @isDelta = false #are the data to be pushed full data (reset index) or delta (add/modify index)?
     bxClient =BxClient.new(@account, @password, @domain ,  @isDev, @host)
     #To Check Below Line
     #bxClient.setRequestMap($_REQUEST);
@@ -1292,8 +1304,8 @@ end
     rescue Exception => e 
 
       #be careful not to print the error message on your publish web-site as sensitive information like credentials might be indicated for debug purposes
-      @message =  JSON.parse(e.getMessage())
-      
+      @message =  e
+      @exception = e
     end
   end
 
@@ -1302,14 +1314,14 @@ end
     require 'BxClient'
     require 'BxSearchRequest'
     #required parameters you should set for this example to work
-    @account = ""; # your account name
-    @password = ""; # your account password
-    @domain = "" # your web-site domain (e.g.: www.abc.com)
-    @logs = Array.new #optional, just used here in example to collect logs
-    @isDev = false #are the data to be pushed dev or prod data?
-    @host =  "cdn.bx-cloud.com"
-
-    @isDelta = false #are the data to be pushed full data (reset index) or delta (add/modify index)?
+    # @account = ""; # your account name
+    # @password = ""; # your account password
+    # @domain = "" # your web-site domain (e.g.: www.abc.com)
+    # @logs = Array.new #optional, just used here in example to collect logs
+    # @isDev = false #are the data to be pushed dev or prod data?
+    # @host =  "cdn.bx-cloud.com"
+    #
+    # @isDelta = false #are the data to be pushed full data (reset index) or delta (add/modify index)?
     bxClient =BxClient.new(@account, @password, @domain ,  @isDev, @host)
     #To Check Below Line
     #bxClient.setRequestMap($_REQUEST);
@@ -1348,8 +1360,8 @@ end
     rescue Exception => e 
 
       #be careful not to print the error message on your publish web-site as sensitive information like credentials might be indicated for debug purposes
-      @message =  JSON.parse(e.getMessage())
-      
+      @message =  e
+      @exception = e
     end
   end
 end

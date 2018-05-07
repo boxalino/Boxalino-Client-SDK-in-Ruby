@@ -14,22 +14,24 @@ class BxData
     URL_ZIP = '/frontend/dbmind/en/dbmind/api/data/push'
 	URL_EXECUTE_TASK = '/frontend/dbmind/en/dbmind/files/task/execute'
 
-    @@bxClient = ""
-    @@languages = ""
-    @@isDev = ""
-    @@isDelta =""
+    @bxClient = ""
+    @languages = ""
+    @isDev = ""
+    @isDelta =""
 
-    @@sources = Array.new
+    @sources = Hash.new()
+    @sourceIdContainers = Hash.new()
 
-    @@host = 'http://di1.bx-cloud.com'
 
-    @@owner = 'bx_client_data_api'
 
     def initialize(bxClient, languages = Array.new, isDev=false, isDelta=false) 
         @bxClient = bxClient
         @languages = languages
         @isDev = isDev
         @isDelta = isDelta
+        @host = 'http://di1.bx-cloud.com'
+        @ftpSources = Hash.new()
+        @owner = 'bx_client_data_api'
     end
 
     def setLanguages(languages) 
@@ -61,8 +63,8 @@ class BxData
         return sourceKey
     end
 
-    def addCSVItemFile(filePath,itemIdColumn, encoding = 'UTF-8', delimiter = ',', enclosure = "\&", escape = "\\\\", lineSeparator = "\\n", sourceId = nil, container = 'products', validate=true, maxLength=23) 
-        params = Array.new('itemIdColumn'=>itemIdColumn, 'encoding'=>encoding, 'delimiter'=>delimiter, 'enclosure'=>enclosure, 'escape'=>escape, 'lineSeparator'=>lineSeparator)
+    def addCSVItemFile(filePath,itemIdColumn, encoding = 'UTF-8', delimiter = ',', enclosure = "&", escape = "\\\\", lineSeparator = "\\n", sourceId = nil, container = 'products', validate=true, maxLength=23)
+        params = {'itemIdColumn'=>itemIdColumn, 'encoding'=>encoding, 'delimiter'=>delimiter, 'enclosure'=>enclosure, 'escape'=>escape, 'lineSeparator'=>lineSeparator}
         if(sourceId == nil) 
             sourceId = getSourceIdFromFileNameFromPath(filePath, container, maxLength, true)
         end
@@ -70,7 +72,7 @@ class BxData
     end
 
     def addXMLItemFile(filePath, itemIdColumn, xPath, encoding = 'UTF-8', sourceId = nil, container = 'products', validate=true, maxLength=23)
-        params = Array.new('itemIdColumn'=>itemIdColumn, 'encoding'=>encoding, 'baseXPath'=>xPath)
+        params = {'itemIdColumn'=>itemIdColumn, 'encoding'=>encoding, 'baseXPath'=>xPath}
         if(sourceId == nil) 
             sourceId = getSourceIdFromFileNameFromPath(filePath, container, maxLength, true)
         end
@@ -86,12 +88,12 @@ class BxData
     end
 
     def addCategoryFile(filePath, categoryIdColumn, parentIdColumn, categoryLabelColumns, encoding = 'UTF-8', delimiter = ',', enclosure = "\&", escape = "\\\\", lineSeparator = "\\n", sourceId = 'resource_categories', container = 'products', validate=true) 
-        params = Array.ew('referenceIdColumn'=>categoryIdColumn, 'parentIdColumn'=>parentIdColumn, 'labelColumns'=>categoryLabelColumns, 'encoding'=>encoding, 'delimiter'=>delimiter, 'enclosure'=>enclosure, 'escape'=>escape, 'lineSeparator'=>lineSeparator)
+        params = {'referenceIdColumn'=>categoryIdColumn, 'parentIdColumn'=>parentIdColumn, 'labelColumns'=>categoryLabelColumns, 'encoding'=>encoding, 'delimiter'=>delimiter, 'enclosure'=>enclosure, 'escape'=>escape, 'lineSeparator'=>lineSeparator}
         return addSourceFile(filePath, sourceId, container, 'hierarchical', 'CSV', params, validate)
     end
 
     def addResourceFile(filePath, categoryIdColumn, labelColumns, encoding = 'UTF-8', delimiter = ',', enclosure = "\&", escape = "\\\\", lineSeparator = "\\n", sourceId = nil, container = 'products', validate=true, maxLength=23) 
-        params = Array.new('referenceIdColumn'=>categoryIdColumn, 'labelColumns'=>labelColumns, 'encoding'=>encoding, 'delimiter'=>delimiter, 'enclosure'=>enclosure, 'escape'=>escape, 'lineSeparator'=>lineSeparator)
+        params = {'referenceIdColumn'=>categoryIdColumn, 'labelColumns'=>labelColumns, 'encoding'=>encoding, 'delimiter'=>delimiter, 'enclosure'=>enclosure, 'escape'=>escape, 'lineSeparator'=>lineSeparator}
         if(sourceId == nil) 
             sourceId = 'resource_' + getSourceIdFromFileNameFromPath(filePath, container, maxLength, true)
         end
@@ -102,7 +104,7 @@ class BxData
 
     def setCSVTransactionFile(filePath, orderIdColumn, productIdColumn, customerIdColumn, orderDateIdColumn, totalOrderValueColumn, productListPriceColumn, productDiscountedPriceColumn, productIdField='bx_item_id', customerIdField='bx_customer_id', productsContainer = 'products', customersContainer = 'customers', fformat = 'CSV', encoding = 'UTF-8', delimiter = ',', enclosure = '"', escape = "\\\\", lineSeparator = "\\n",container = 'transactions', sourceId = 'transactions', validate=true) 
 
-        params = Array.new('encoding'=>encoding, 'delimiter'=>delimiter, 'enclosure'=>enclosure, 'escape'=>escape, 'lineSeparator'=>lineSeparator)
+        params = {'encoding'=>encoding, 'delimiter'=>delimiter, 'enclosure'=>enclosure, 'escape'=>escape, 'lineSeparator'=>lineSeparator}
 
         params['file'] = getFileNameFromPath(filePath)
         params['orderIdColumn'] = orderIdColumn
@@ -122,17 +124,21 @@ class BxData
         if(getLanguages().size==0) 
             raise "trying to add a source before having declared the languages with method setLanguages"
         end
-        if(sources[container] != nil) 
-            sources[container] = Array.new
+        if(@sources != nil and @sources[container] != nil) 
+            @sources[container] = Array.new
+        else
+          @sources= Hash.new()
+          @sourceIdContainers = Hash.new()
         end
         params['filePath'] = filePath
         params['format'] = fformat
         params['type'] = type
-        sources[container][sourceId] = params
+        @sources[container] = Hash.new()
+        @sources[container][sourceId] = params
         if(validate) 
             validateSource(container, sourceId)
         end
-        sourceIdContainers[sourceId] = container
+        @sourceIdContainers[sourceId] = container
         return encodesourceKey(container, sourceId)
     end
 
@@ -147,12 +153,12 @@ class BxData
 
     def getSourceCSVRow(container, sourceId, row=0, maxRow = 2) 
         if(@sources[container][sourceId]['rows'] == nil) 
-            csv_text = File.read(sources[container][sourceId]['filePath'])
+            csv_text = File.read(@sources[container][sourceId]['filePath'])
             csv = CSV.parse(csv_text, :headers => true)
             count = 1;
-            sources[container][sourceId]['rows'] = Array.new
+            @sources[container][sourceId]['rows'] = Array.new
             csv.each do |row|
-                sources[container][sourceId]['rows'].push(row)
+                @sources[container][sourceId]['rows'].push(row)
                 count = count+1
                 if( count >= maxRow) 
                     break
@@ -226,17 +232,18 @@ class BxData
     def addSourceField(sourceKey, fieldName, type, localized, colMap, referenceSourceKey=nil, validate=true) 
         container = decodeSourceKey(sourceKey)[0]
         sourceId = decodeSourceKey(sourceKey)[1]
-        if(sources[container][sourceId]['fields']== nil) 
-            @sources[container][sourceId]['fields'] = Array.new
+        if(@sources[container][sourceId]['fields']== nil) 
+            @sources[container][sourceId]['fields'] = Hash.new()
         end
-        @sources[container][sourceId]['fields'][fieldName] = Array.new('type'=>type, 'localized'=>localized, 'map'=>colMap, 'referenceSourceKey'=>referenceSourceKey)
+        @sources[container][sourceId]['fields'][fieldName] = {'type'=>type, 'localized'=>localized, 'map'=>colMap, 'referenceSourceKey'=>referenceSourceKey}
         if(@sources[container][sourceId]['format'] == 'CSV') 
             if(localized && referenceSourceKey == nil) 
-                if(!colMap.kind_of?(Array)) 
+                if(!colMap.kind_of?(Hash))
                     raise "'fieldName': invalid column field name for a localized field (expect an array with a column name for each language array(lang=>colName)): " + YAML::dump(colMap)
                 end
-                getLanguages().each do |lang| 
-                    if(colMap[lang] != nil) 
+                getLanguages().each do |lang|
+
+                    if(colMap[lang] == nil)
                         raise "'fieldName': no language column provided for language 'lang' in provided column map): " + YAML::dump(colMap)
                     end
                     if(!colMap[lang].kind_of?(String)) 
@@ -268,34 +275,34 @@ class BxData
     def addSourceParameter(sourceKey, parameterName, parameterValue) 
         container = decodeSourceKey(sourceKey)[0]
         sourceId = decodeSourceKey(sourceKey)[1]
-        if(sources[container][sourceId]== nil) 
+        if(@sources[container][sourceId]== nil) 
             raise "trying to add a source parameter on sourceId 'sourceId', container 'container' while this source doesn't exist"
         end
-        sources[container][sourceId][parameterName] = parameterValue
+        @sources[container][sourceId][parameterName] = parameterValue
     end
 
     def addFieldParameter(sourceKey, fieldName, parameterName, parameterValue) 
         container = decodeSourceKey(sourceKey)[0]
         sourceId = decodeSourceKey(sourceKey)[1]
-        if(sources[container][sourceId]['fields'][fieldName] == nil) 
+        if(@sources[container][sourceId]['fields'][fieldName] == nil) 
             raise s"trying to add a field parameter on sourceId 'sourceId', container 'container', fieldName 'fieldName' while this field doesn't exist"
         end
-        if(sources[container][sourceId]['fields'][fieldName]['fieldParameters']== nil) 
-            sources[container][sourceId]['fields'][fieldName]['fieldParameters'] = Array.new
+        if(@sources[container][sourceId]['fields'][fieldName]['fieldParameters']== nil) 
+            @sources[container][sourceId]['fields'][fieldName]['fieldParameters'] = Array.new
         end
-        sources[container][sourceId]['fields'][fieldName]['fieldParameters'][parameterName] = parameterValue
+        @sources[container][sourceId]['fields'][fieldName]['fieldParameters'][parameterName] = parameterValue
     end
 
-    ftpSources = Array.new
+
     def setFtpSource(sourceKey, host="di1.bx-cloud.com", port=21, user=nil, password=nil, remoteDir = '/sources/production', protocol=0, type=0, logontype=1,
                                  timezoneoffset=0, pasvMode='MODE_DEFAULT', maximumMultipeConnections=0, encodingType='Auto', bypassProxy=0, syncBrowsing=0) 
 
         if(user==nil)
-            user = bxClient.getAccount(false)
+            user = @bxClient.getAccount(false)
         end
 
         if(password==nil)
-            password = bxClient.getPassword()
+            password = @bxClient.getPassword()
         end
 
         params = Array.new
@@ -321,195 +328,204 @@ class BxData
 
     def getXML() 
 
-       # xml = new \SimpleXMLElement('<root/>');
         xml = Builder::XmlMarkup.new( :target => $stdout, :indent => 2 )
+        xml.instruct! :xml, :version=>"1.0"
         #languages
-        xml.languages do 
-            getLanguages().each do | lang |
-                xml.language( lang, 'id' => lang )
+        xml.root do
+            xml.languages do
+                getLanguages().each do | lang |
+                    xml.language( lang, 'id' => lang )
+                end
             end
-        end
-      
-        #containers
-        xml.containers do 
-            @sources.each do | containerName , containerSources |
-                xml.container(  'id' => containerName, 'type' => containerName ) do
-                    # adding sources
-                    xml.sources do
-                        # Adding Source
-                        containerSources.each do |sourceId , sourceValues|    
 
-                            if(sourceValues['additional_item_source'] != nil)
-                                if(@ftpSources[sourceId] != nil)
-                                    xml.source("id" => sourceId, "type" => sourceValues['type'] ,'additional_item_source'=> sourceValues['additional_item_source']) do
-                                        xml.location('type'=>'ftp')
-                                        xml.ftp('name'=>'ftp')
-                                        # @ftpSources[sourceId].each do |ftpPn , ftpPv|  
-                                        #     ftp->ftpPn = ftpPv
-                                        # end
-                                    end
-                                else
-                                    #To check Below line
-                                    xml.source('id' => sourceId, 'type' => sourceValues['type'] ,'additional_item_source'=> sourceValues['additional_item_source'])
-                                end
-                            else
-                                 if(@ftpSources[sourceId] != nil)
-                                    xml.source('id' => sourceId, 'type' => sourceValues['type'])
-                                    xml.location('type'=>'ftp')
-                                    xml.ftp('name'=>'ftp')    
-                                else
-                                    xml.source('id' => sourceId, 'type' => sourceValues['type'])
-                                end
-                            end
-                            
-                             
+            #containers
+            xml.containers do
+                @sources.each do | containerName , containerSources |
+                    xml.container(  'id' => containerName, 'type' => containerName ) do
+                        # adding sources
+                        xml.sources do
+                            # Adding Source
+                            containerSources.each do |sourceId , sourceValues|
 
-                                
-                            
-                            sourceValues['file'] = getFileNameFromPath(sourceValues['filePath'])
-                            if(sourceValues['format'] == 'CSV') 
-                                parameters = Array.new({
-                                    'file'=>false,
-                                    'format'=>'CSV',
-                                    'encoding'=>'UTF-8',
-                                    'delimiter'=>',',
-                                    'enclosure'=>'"',
-                                    'escape'=>'\\\\',
-                                    'lineSeparator'=>"\\n"
-                                })
-                            elsif(sourceValues['format'] == 'XML') 
-                                parameters = Array.new({
-                                    'file'=>false,
-                                    'format'=> sourceValues['format'],
-                                    'encoding'=> sourceValues['encoding'],
-                                    'baseXPath'=> sourceValues['baseXPath']
-                                })
-                            end
-
-                            case sourceValues['type'] 
-                                when 'item_data_file'
-                                    parameters['itemIdColumn'] = false
-
-                                when 'hierarchical'
-                                    parameters['referenceIdColumn'] = false
-                                    parameters['parentIdColumn'] = false
-                                    parameters['labelColumns'] = false
-                                    
-                                when 'resource'
-                                    parameters['referenceIdColumn'] = false
-                                    parameters['itemIdColumn'] = false
-                                    parameters['labelColumns'] = false
-                                    sourceValues['itemIdColumn'] = sourceValues['referenceIdColumn']                                    
-
-                                when 'transactions'
-                                    parameters = sourceValues
-                                    parameters.delete('filePath')
-                                    parameters.delete('type')
-                                    parameters.delete('product_property_id')
-                                    parameters.delete('customer_property_id')   
-                            end
-                            parameters.each do |parameter , defaultValue|
-                                value = !sourceValues[parameter].kind_of?(nil) ? sourceValues[parameter] : defaultValue
-                                if(value == false) 
-                                    raise "source parameter 'parameter' required but not defined in source id 'sourceId' for container 'containerName'"
-                                end
-                                
-
-                                if(value.kind_of?(Array))
-                                    if(sourceValues['type'] == 'transactions')
-                                        if(parameter =='productIdColumn')
-                                            xml.tag!(parameter , 'product_property_id'=>  sourceValues['product_property_id']) do
-                                                value.each do |language , languageColumn|
-                                                    xml.language('name' => language, 'value' => languageColumn )
-                                                end
-                                           end
-                                        elsif(parameter == 'customerIdColumn' && sourceValues['guest_property_id'] != nil)
-                                            xml.tag!(parameter ,'customer_property_id'=> sourceValues['customer_property_id'] ,'guest_property_id'=>sourceValues['guest_property_id']) do
-                                                value.each do |language , languageColumn|
-                                                    xml.language('name' => language, 'value' => languageColumn )
-                                                end
-                                           end
-                                        elsif(parameter == 'customerIdColumn')
-                                            xml.tag!(parameter ,'customer_property_id'=> sourceValues['customer_property_id']) do
-                                                value.each do |language , languageColumn|
-                                                    xml.language('name' => language, 'value' => languageColumn )
-                                                end
-                                           end
-                                        else
-                                            xml.tag!(parameter) do
-                                                value.each do |language , languageColumn|
-                                                    xml.language('name' => language, 'value' => languageColumn )
-                                                end
-                                           end
+                                if(sourceValues['additional_item_source'] != nil)
+                                    if(@ftpSources[sourceId] != nil)
+                                        xml.source("id" => sourceId, "type" => sourceValues['type'] ,'additional_item_source'=> sourceValues['additional_item_source']) do
+                                            xml.location('type'=>'ftp')
+                                            xml.ftp('name'=>'ftp')
+                                            # @ftpSources[sourceId].each do |ftpPn , ftpPv|
+                                            #     ftp->ftpPn = ftpPv
+                                            # end
                                         end
                                     else
-                                       xml.tag!(parameter) do
-                                            value.each do |language , languageColumn|
-                                                xml.language('name' => language, 'value' => languageColumn )
-                                            end
-                                       end
-                                   end
+                                        #To check Below line
+                                        xml.source('id' => sourceId, 'type' => sourceValues['type'] ,'additional_item_source'=> sourceValues['additional_item_source'])
+                                    end
                                 else
-                                    xml.tag!(parameter,'value'=>value)
+                                    if(@ftpSources == nil)
+                                        @ftpSources = Hash.new()
+                                    end
+                                    if(@ftpSources[sourceId] != nil)
+                                        xml.source('id' => sourceId, 'type' => sourceValues['type'])
+                                        xml.location('type'=>'ftp')
+                                        xml.ftp('name'=>'ftp')
+                                    else
+                                        xml.source('id' => sourceId, 'type' => sourceValues['type'])
+                                    end
                                 end
 
-                            end
-                        end
 
-                    end
-                    #Adding Properties
-                    xml.properties do
-                        #Adding 
-                        if(sourceValues['fields'] != nil)
-                            sourceValues['fields'].each do |fieldId , fieldValues|
-                                xml.property('id'=>fieldId, 'type'=>fieldValues) do
-                                    xml.transform() do
-                                        #xml.logic('source'=> sourceId);
-                                        referenceSourceKey = fieldValues['referenceSourceKey'] != nil ? fieldValues['referenceSourceKey'] : nil
-                                        logicType = ((sourceValues['format'] == 'XML') ? "xpath" : (referenceSourceKey == nil ? 'direct' : 'reference'))
-                                        if(logicType == 'direct') 
-                                            if(fieldValues['fieldParameters'] != nil) 
-                                                fieldValues['fieldParameters'].each do |parameterName , parameterValue| 
-                                                    case parameterName 
-                                                        when  'pc_fields'
-                                                        when 'pc_tables'
-                                                            logicType = 'advanced'
+
+
+
+                                sourceValues['file'] = getFileNameFromPath(sourceValues['filePath'])
+                                if(sourceValues['format'] == 'CSV')
+                                    parameters = {
+                                        'file'=>false,
+                                        'format'=>'CSV',
+                                        'encoding'=>'UTF-8',
+                                        'delimiter'=>',',
+                                        'enclosure'=>'"',
+                                        'escape'=>'\\\\',
+                                        'lineSeparator'=>"\\n"
+                                    }
+                                elsif(sourceValues['format'] == 'XML')
+                                    parameters = {
+                                        'file'=>false,
+                                        'format'=> sourceValues['format'],
+                                        'encoding'=> sourceValues['encoding'],
+                                        'baseXPath'=> sourceValues['baseXPath']
+                                    }
+                                end
+
+                                case sourceValues['type']
+                                    when 'item_data_file'
+                                        parameters['itemIdColumn'] = false
+
+                                    when 'hierarchical'
+                                        parameters['referenceIdColumn'] = false
+                                        parameters['parentIdColumn'] = false
+                                        parameters['labelColumns'] = false
+
+                                    when 'resource'
+                                        parameters['referenceIdColumn'] = false
+                                        parameters['itemIdColumn'] = false
+                                        parameters['labelColumns'] = false
+                                        sourceValues['itemIdColumn'] = sourceValues['referenceIdColumn']
+
+                                    when 'transactions'
+                                        parameters = sourceValues
+                                        parameters.delete('filePath')
+                                        parameters.delete('type')
+                                        parameters.delete('product_property_id')
+                                        parameters.delete('customer_property_id')
+                                end
+                                parameters.each do |parameter , defaultValue|
+                                    value = sourceValues[parameter] != nil ? sourceValues[parameter] : defaultValue
+                                    if(value == false)
+                                        raise "source parameter 'parameter' required but not defined in source id 'sourceId' for container 'containerName'"
+                                    end
+
+
+                                    if(value.kind_of?(Array))
+                                        if(sourceValues['type'] == 'transactions')
+                                            if(parameter =='productIdColumn')
+                                                xml.tag!(parameter , 'product_property_id'=>  sourceValues['product_property_id']) do
+                                                    value.each do |language , languageColumn|
+                                                        xml.language('name' => language, 'value' => languageColumn )
+                                                    end
+                                               end
+                                            elsif(parameter == 'customerIdColumn' && sourceValues['guest_property_id'] != nil)
+                                                xml.tag!(parameter ,'customer_property_id'=> sourceValues['customer_property_id'] ,'guest_property_id'=>sourceValues['guest_property_id']) do
+                                                    value.each do |language , languageColumn|
+                                                        xml.language('name' => language, 'value' => languageColumn )
+                                                    end
+                                               end
+                                            elsif(parameter == 'customerIdColumn')
+                                                xml.tag!(parameter ,'customer_property_id'=> sourceValues['customer_property_id']) do
+                                                    value.each do |language , languageColumn|
+                                                        xml.language('name' => language, 'value' => languageColumn )
+                                                    end
+                                               end
+                                            else
+                                                xml.tag!(parameter) do
+                                                    value.each do |language , languageColumn|
+                                                        xml.language('name' => language, 'value' => languageColumn )
+                                                    end
+                                               end
+                                            end
+                                        else
+                                           xml.tag!(parameter) do
+                                                value.each do |language , languageColumn|
+                                                    xml.language('name' => language, 'value' => languageColumn )
+                                                end
+                                           end
+                                       end
+                                    else
+                                        xml.tag!(parameter,'value'=>value)
+                                    end
+
+                                end
+                            end
+
+                        end
+                        #Adding Properties
+                        xml.properties do
+                            #Adding Properties
+                          containerSources.each do |sourceId , sourceValues|
+                              if(sourceValues['fields'] != nil)
+                                    sourceValues['fields'].each do |fieldId , fieldValues|
+                                        xml.property('id'=>fieldId, 'type'=>fieldValues['type']) do
+                                            xml.transform() do
+                                                #xml.logic('source'=> sourceId);
+                                                referenceSourceKey = fieldValues['referenceSourceKey'] != nil ? fieldValues['referenceSourceKey'] : nil
+                                                logicType = ((sourceValues['format'] == 'XML') ? "xpath" : (referenceSourceKey == nil ? 'direct' : 'reference'))
+                                                if(logicType == 'direct')
+                                                    if(fieldValues['fieldParameters'] != nil)
+                                                        fieldValues['fieldParameters'].each do |parameterName , parameterValue|
+                                                            case parameterName
+                                                                when  'pc_fields'
+                                                                when 'pc_tables'
+                                                                    logicType = 'advanced'
+                                                            end
+                                                        end
                                                     end
                                                 end
-                                            end
-                                        end
-                                       # logic->addAttribute('type', logicType);
-                                        if(fieldValues['map'].kind_of?(Array)) 
-                                            xml.logic('source'=> sourceId, 'type' => logicType) do
-                                                getLanguages().each do |lang| 
-                                                    xml.field('column'=> fieldValues['map'][lang], 'language'=> lang)
+                                               # logic->addAttribute('type', logicType);
+                                                if(fieldValues['map'].kind_of?(Hash))
+                                                    xml.logic('source'=> sourceId, 'type' => logicType) do
+                                                        getLanguages().each do |lang|
+                                                            xml.field('column'=> fieldValues['map'][lang], 'language'=> lang)
+                                                        end
+                                                    end
+                                                else
+                                                    xml.logic('source'=> sourceId, 'type' => logicType) do
+                                                        xml.field('column'=> fieldValues['map'])
+                                                    end
                                                 end
-                                            end
-                                        else 
-                                            xml.logic('source'=> sourceId, 'type' => logicType) do
-                                                xml.field('column'=> fieldValues['map'])
-                                            end
-                                        end
-                                    end
 
-                                    if(referenceSourceKey) 
-                                        xml.params do
-                                            referenceSourceId = decodeSourceKey(referenceSourceKey)[1]
-                                            xml.referenceSource('value' => referenceSourceId)
-                                            if(fieldValues['fieldParameters'] != nil) 
-                                                fieldValues['fieldParameters'].each do |parameterName , parameterValue| 
-                                                    xml.fieldParameter('name' => parameterName, 'value' => parameterValue)
+                                                if (referenceSourceKey)
+                                                  xml.params do
+                                                    referenceSourceId = decodeSourceKey(referenceSourceKey)[1]
+                                                    xml.referenceSource('value' => referenceSourceId)
+                                                    if(fieldValues['fieldParameters'] != nil)
+                                                      fieldValues['fieldParameters'].each do |parameterName , parameterValue|
+                                                        xml.fieldParameter('name' => parameterName, 'value' => parameterValue)
+                                                      end
+                                                    end
+                                                  end
+                                                elsif (fieldValues['fieldParameters'] != nil)
+                                                  xml.params do
+                                                    fieldValues['fieldParameters'].each do |parameterName , parameterValue|
+                                                      xml.fieldParameter('name' => parameterName, 'value' => parameterValue)
+                                                    end
+                                                  end
                                                 end
                                             end
-                                        end
-                                    elsif (fieldValues['fieldParameters'] != nil) 
-                                        xml.params do
-                                            fieldValues['fieldParameters'].each do |parameterName , parameterValue| 
-                                                xml.fieldParameter('name' => parameterName, 'value' => parameterValue)
-                                            end
+
+
                                         end
                                     end
-                                end
+                              end
                             end
                         end
                     end
@@ -522,13 +538,17 @@ class BxData
     def callAPI(fields, url, temporaryFilePath=nil, timeout=60)
     
         uri = URI(url)
+        if uri.scheme == "https"
+          uri.port = 443
+        end
         http = Net::HTTP.new(uri.host, uri.port)
-        http.use_ssl = true
-
+        #http.use_ssl = true
         request = Net::HTTP::Post.new(uri.path, {'Content-Type' => 'application/json'})
 
-        request.body = "[ #{fields} ]" # SOME JSON DATA
+        request.form_data = fields # SOME JSON DATA
+       # puts fields['xml'];
 
+        #request.body = fields # SOME JSON DATA
         response = http.request(request)
         checkResponseBody(response, url)
     end
@@ -541,9 +561,10 @@ class BxData
         if(responseBody == nil) 
             raise "API response of call to url is empty string, this is an error!"
         end
-        value = ActiveSupport::JSON.decode(responseBody)
-        if(value.size != 1 || value['token']== nil) 
-            if(value['changes']== nil) 
+        value = ActiveSupport::JSON.decode(responseBody.body)
+        if(responseBody.body['token']== nil)
+
+            if(value['changes']== nil)
                 raise responseBody
             end
         end
@@ -552,17 +573,18 @@ class BxData
 
     def pushDataSpecifications(ignoreDeltaException=false) 
 
-        if(!ignoreDeltaException && @isDelta) 
+        if(!ignoreDeltaException && @isDelta)
             raise "You should not push specifications when you are pushing a delta file. Only do it when you are preparing full files. Set method parameter ignoreDeltaException to true to ignore this exception and publish anyway."
         end
-
-        fields = Array.new(
-            'username' => bxClient.getUsername(),
-            'password' => bxClient.getPassword(),
-            'account' => bxClient.getAccount(false),
+        doc = File.open('sample_data/properties.xml') { |f| Nokogiri::XML(f) }
+        fields = {
+            'username' => @bxClient.getUsername(),
+            'password' => @bxClient.getPassword(),
+            'account' => @bxClient.getAccount(false),
             'owner' => @owner,
-            'xml' => getXML()
-        )
+            'xml' => doc
+            #'xml' => getXML()
+        }
 
         url = @host + URL_XML;
         return callAPI(fields, url)
@@ -580,32 +602,32 @@ class BxData
         if(@isDev) 
             publish = false
         end
-        fields = Array.new(
-            'username' => bxClient.getUsername(),
-            'password' => bxClient.getPassword(),
-            'account' => bxClient.getAccount(false),
+        fields = {
+            'username' => @bxClient.getUsername(),
+            'password' => @bxClient.getPassword(),
+            'account' => @bxClient.getAccount(false),
             'owner' => @owner,
             'publish' => (publish ? 'true' : 'false')
-        )
+        }
 
         url = @host + URL_PUBLISH_CONFIGURATION_CHANGES
         return callAPI(fields, url)
     end
 
     def verifyCredentials 
-        fields = Array.new(
-            'username' => bxClient.getUsername(),
-            'password' => bxClient.getPassword(),
-            'account' => bxClient.getAccount(false),
+        fields = {
+            'username' => @bxClient.getUsername(),
+            'password' => @bxClient.getPassword(),
+            'account' => @bxClient.getAccount(false),
             'owner' => @owner
-        )
+        }
 
         url = host + URL_VERIFY_CREDENTIALS
         return callAPI(fields, url)
     end
 
     def alreadyExistingSourceId(sourceId, container) 
-        return sources[container][sourceId] != nil
+        return @sources[container][sourceId] != nil
     end
 
     def getUnusedSourceIdPostFix(sourceId, container) 
@@ -650,13 +672,13 @@ class BxData
     end
 
     def getFiles 
-        files = Array.new
-        @sources.each do |container , containerSources| 
+        files = Hash.new
+        @sources.each do | container , containerSources|
             containerSources.each do |sourceId , sourceValues| 
-                if(ftpSources[sourceId] != nil) 
+                if(@ftpSources.key?(sourceId) )
                     next
                 end
-                if(sourceValues['file']== nil) 
+                if(!sourceValues.key?('file'))
                     sourceValues['file'] = getFileNameFromPath(sourceValues['filePath'])
                 end
                 files[sourceValues['file']] = sourceValues['filePath']
@@ -725,16 +747,16 @@ class BxData
     def pushData(temporaryFilePath=nil, timeout=60) 
 
         zipFile = createZip(temporaryFilePath)
-        fields = array(
-            'username' => bxClient.getUsername(),
-            'password' => bxClient.getPassword(),
-            'account' => bxClient.getAccount(false),
+        fields = {
+            'username' => @bxClient.getUsername(),
+            'password' => @bxClient.getPassword(),
+            'account' => @bxClient.getAccount(false),
             'owner' => @owner,
             'dev' => (@isDev ? 'true' : 'false'),
             'delta' => (@isDelta ? 'true' : 'false'),
             'data' => zipFile+"type=application/zip"
            # 'data' => getCurlFile(zipFile, "application/zip")
-        )
+        }
 
         url = host + URL_ZIP
         return callAPI(fields, url, temporaryFilePath, timeout)
@@ -751,7 +773,7 @@ class BxData
     # end
 
     def getTaskExecuteUrl(taskName) 
-        return host + URL_EXECUTE_TASK + '?iframeAccount=' + bxClient.getAccount() + '&task_process=' + taskName
+        return host + URL_EXECUTE_TASK + '?iframeAccount=' + @bxClient.getAccount() + '&task_process=' + taskName
     end
 
     def publishChoices(isTest = false, taskName="generate_optimization") 

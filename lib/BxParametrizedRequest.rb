@@ -1,7 +1,7 @@
 require 'BxRequest'
-class BxParametrizedRequest extend BxRequest
+class BxParametrizedRequest < BxRequest
 	
-	@bxReturnFields = Array.new('id')
+	@bxReturnFields = ['id']
 	@getItemFieldsCB = nil
 	@requestParametersPrefix = ""
 	@requestWeightedParametersPrefix = "bxrpw_"
@@ -126,7 +126,7 @@ class BxParametrizedRequest extend BxRequest
 		params.each do |nname , values|
 			if (nname == @requestContextItemFieldName) 
 				value = values
-				if (value.kind_of?(Array)) && value.length > 0) 
+				if (value.kind_of?(Array) && value.length > 0)
 					value = values[0]
 				end
 				contextItemFieldName = value

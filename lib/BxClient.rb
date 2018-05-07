@@ -1,5 +1,5 @@
 class BxClient
-	require 'p13n_service'
+	#require 'p13n_service'
 	require 'pp'
 	 @isTest = nil
 	 @autocompleteRequests = nil
