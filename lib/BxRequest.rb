@@ -64,6 +64,9 @@ class BxRequest
 	def setQuerytext(queryText)
 		@queryText = queryText
 	end
+	def setQueryText(queryText)
+		@queryText = queryText
+	end
 	def getFacets
 		return @bxFacets
 	end
@@ -139,7 +142,6 @@ class BxRequest
 			end
 		end
 	end
-
 
 	def setDefaultIndexId(indexId)
 		if @indexId== nil

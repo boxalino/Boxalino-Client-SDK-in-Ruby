@@ -1,9 +1,15 @@
 class BackendPagesController < ApplicationController
 
-  def initialize(account = nil , password= nil, exception=nil)
+  def initialize(account = "csharp_unittest" , password= "csharp_unittest", exception1=nil, host="cdn.bx-cloud.com")
     @account = account
     @password = password
-    @exception = exception
+    @host = host
+    @exception = exception1
+    @domain = "" # your web-site domain (e.g.: www.abc.com)
+    @logs = Array.new #optional, just used here in example to collect logs
+    @isDev = false #are the data to be pushed dev or prod data?
+    @isDelta = false #are the data to be pushed full data (reset index) or delta (add/modify index)?
+    @languages = ['en']
   end
 
   def backend_data_basic
@@ -12,12 +18,12 @@ class BackendPagesController < ApplicationController
     require 'BxData'
     require 'BxClient'
     #required parameters you should set for this example to work
-    @account = "boxalino_automated_tests"; # your account name
-    @password = "boxalino_automated_tests"; # your account password
-    @domain = "" # your web-site domain (e.g.: www.abc.com)
-    @languages = ['en'] #declare the list of available languages
-    @isDev = false #are the data to be pushed dev or prod data?
-    @isDelta = false #are the data to be pushed full data (reset index) or delta (add/modify index)?
+    # @account = "boxalino_automated_tests"; # your account name
+    # @password = "boxalino_automated_tests"; # your account password
+    # @domain = "" # your web-site domain (e.g.: www.abc.com)
+    # @languages = ['en'] #declare the list of available languages
+    # @isDev = false #are the data to be pushed dev or prod data?
+    # @isDelta = false #are the data to be pushed full data (reset index) or delta (add/modify index)?
     @logs = Array.new #optional, just used here in example to collect logs
     bxData = BxData.new(BxClient.new(@account, @password, @domain) , @languages, @isDev, @isDelta)
     begin
@@ -64,13 +70,13 @@ class BackendPagesController < ApplicationController
     require 'BxData'
     require 'BxClient'
     #required parameters you should set for this example to work
-    @account = "boxalino_automated_tests"; # your account name
-    @password = "boxalino_automated_tests"; # your account password
-    @domain = "" # your web-site domain (e.g.: www.abc.com)
-    @languages = ['en'] #declare the list of available languages
-    @isDev = false #are the data to be pushed dev or prod data?
-    @isDelta = false #are the data to be pushed full data (reset index) or delta (add/modify index)?
-    @logs = Array.new #optional, just used here in example to collect logs
+    # @account = "boxalino_automated_tests"; # your account name
+    # @password = "boxalino_automated_tests"; # your account password
+    # @domain = "" # your web-site domain (e.g.: www.abc.com)
+    # @languages = ['en'] #declare the list of available languages
+    # @isDev = false #are the data to be pushed dev or prod data?
+    # @isDelta = false #are the data to be pushed full data (reset index) or delta (add/modify index)?
+    # @logs = Array.new #optional, just used here in example to collect logs
     bxData = BxData.new(BxClient.new(@account, @password, @domain) , @languages, @isDev, @isDelta)
     begin
 
@@ -116,13 +122,13 @@ class BackendPagesController < ApplicationController
     require 'BxData'
     require 'BxClient'
     #required parameters you should set for this example to work
-    @account = ""; # your account name
-    @password = ""; # your account password
-    @domain = "" # your web-site domain (e.g.: www.abc.com)
-    @languages = ['en'] #declare the list of available languages
-    @isDev = false #are the data to be pushed dev or prod data?
-    @isDelta = false #are the data to be pushed full data (reset index) or delta (add/modify index)?
-    @logs = Array.new #optional, just used here in example to collect logs
+    # @account = ""; # your account name
+    # @password = ""; # your account password
+    # @domain = "" # your web-site domain (e.g.: www.abc.com)
+    # @languages = ['en'] #declare the list of available languages
+    # @isDev = false #are the data to be pushed dev or prod data?
+    # @isDelta = false #are the data to be pushed full data (reset index) or delta (add/modify index)?
+    # @logs = Array.new #optional, just used here in example to collect logs
     bxData = BxData.new(BxClient.new(@account, @password, @domain) , @languages, @isDev, @isDelta)
     begin
 
@@ -178,13 +184,13 @@ class BackendPagesController < ApplicationController
     require 'BxData'
     require 'BxClient'
     #required parameters you should set for this example to work
-    @account = ""; # your account name
-    @password = ""; # your account password
-    @domain = "" # your web-site domain (e.g.: www.abc.com)
-    @languages = ['en'] #declare the list of available languages
-    @isDev = false #are the data to be pushed dev or prod data?
-    @isDelta = false #are the data to be pushed full data (reset index) or delta (add/modify index)?
-    @logs = Array.new #optional, just used here in example to collect logs
+    # @account = ""; # your account name
+    # @password = ""; # your account password
+    # @domain = "" # your web-site domain (e.g.: www.abc.com)
+    # @languages = ['en'] #declare the list of available languages
+    # @isDev = false #are the data to be pushed dev or prod data?
+    # @isDelta = false #are the data to be pushed full data (reset index) or delta (add/modify index)?
+    # @logs = Array.new #optional, just used here in example to collect logs
     bxData = BxData.new(BxClient.new(@account, @password, @domain) , @languages, @isDev, @isDelta)
     begin
 
@@ -242,13 +248,13 @@ class BackendPagesController < ApplicationController
     require 'BxData'
     require 'BxClient'
     #required parameters you should set for this example to work
-    @account = ""; # your account name
-    @password = ""; # your account password
-    @domain = "" # your web-site domain (e.g.: www.abc.com)
-    @languages = ['en'] #declare the list of available languages
-    @isDev = false #are the data to be pushed dev or prod data?
-    @isDelta = false #are the data to be pushed full data (reset index) or delta (add/modify index)?
-    @logs = Array.new #optional, just used here in example to collect logs
+    # @account = ""; # your account name
+    # @password = ""; # your account password
+    # @domain = "" # your web-site domain (e.g.: www.abc.com)
+    # @languages = ['en'] #declare the list of available languages
+    # @isDev = false #are the data to be pushed dev or prod data?
+    # @isDelta = false #are the data to be pushed full data (reset index) or delta (add/modify index)?
+    # @logs = Array.new #optional, just used here in example to collect logs
     bxData = BxData.new(BxClient.new(@account, @password, @domain) , @languages, @isDev, @isDelta)
     begin
 
@@ -295,13 +301,13 @@ class BackendPagesController < ApplicationController
     require 'BxData'
     require 'BxClient'
     #required parameters you should set for this example to work
-    @account = ""; # your account name
-    @password = ""; # your account password
-    @domain = "" # your web-site domain (e.g.: www.abc.com)
-    @languages = ['en'] #declare the list of available languages
-    @isDev = false #are the data to be pushed dev or prod data?
-    @isDelta = false #are the data to be pushed full data (reset index) or delta (add/modify index)?
-    @logs = Array.new #optional, just used here in example to collect logs
+    # @account = ""; # your account name
+    # @password = ""; # your account password
+    # @domain = "" # your web-site domain (e.g.: www.abc.com)
+    # @languages = ['en'] #declare the list of available languages
+    # @isDev = false #are the data to be pushed dev or prod data?
+    # @isDelta = false #are the data to be pushed full data (reset index) or delta (add/modify index)?
+    # @logs = Array.new #optional, just used here in example to collect logs
     bxData = BxData.new(BxClient.new(@account, @password, @domain) , @languages, @isDev, @isDelta)
     begin
 
@@ -337,13 +343,13 @@ class BackendPagesController < ApplicationController
     require 'BxClient'
 
     #required parameters you should set for this example to work
-    @account = ""; # your account name
-    @password = ""; # your account password
-    @domain = "" # your web-site domain (e.g.: www.abc.com)
-    @languages = ['en'] #declare the list of available languages
-    @isDev = false #are the data to be pushed dev or prod data?
-    @isDelta = false #are the data to be pushed full data (reset index) or delta (add/modify index)?
-    @logs = Array.new #optional, just used here in example to collect logs
+    # @account = ""; # your account name
+    # @password = ""; # your account password
+    # @domain = "" # your web-site domain (e.g.: www.abc.com)
+    # @languages = ['en'] #declare the list of available languages
+    # @isDev = false #are the data to be pushed dev or prod data?
+    # @isDelta = false #are the data to be pushed full data (reset index) or delta (add/modify index)?
+    # @logs = Array.new #optional, just used here in example to collect logs
     bxData = BxData.new(BxClient.new(@account, @password, @domain) , @languages, @isDev, @isDelta)
     begin
 
@@ -442,16 +448,14 @@ class BackendPagesController < ApplicationController
     require 'json'
     require 'BxData'
     require 'BxClient'
-    puts "Avinash"
-    @avi = "Singh"
     #required parameters you should set for this example to work
-    @account = ""; # your account name
-    @password = ""; # your account password
-    @domain = "" # your web-site domain (e.g.: www.abc.com)
-    @languages = ['en'] #declare the list of available languages
-    @isDev = false #are the data to be pushed dev or prod data?
-    @isDelta = false #are the data to be pushed full data (reset index) or delta (add/modify index)?
-    @logs = Array.new #optional, just used here in example to collect logs
+    # @account = ""; # your account name
+    # @password = ""; # your account password
+    # @domain = "" # your web-site domain (e.g.: www.abc.com)
+    # @languages = ['en'] #declare the list of available languages
+    # @isDev = false #are the data to be pushed dev or prod data?
+    # @isDelta = false #are the data to be pushed full data (reset index) or delta (add/modify index)?
+    # @logs = Array.new #optional, just used here in example to collect logs
     bxData = BxData.new(BxClient.new(@account, @password, @domain) , @languages, @isDev, @isDelta)
     begin
 
@@ -460,13 +464,13 @@ class BackendPagesController < ApplicationController
       #*/
       #//your choie configuration can be generated in 3 possible ways: dev (using dev data), prod (using prod data as on your live web-site), prod-test (using prod data but not affecting your live web-site)
       isTest = false
-      @logs.push("force the publish of your choices configuration: it does it either for dev or prod (above "+isDev+" parameter) and, if isDev is false, you can do it in prod or prod-test<br>")
+      @logs.push("force the publish of your choices configuration: it does it either for dev or prod (above "+@isDev.to_s+" parameter) and, if isDev is false, you can do it in prod or prod-test<br>")
       bxData.publishChoices(isTest)
       
       #/**
       #* Prepare corpus index
       #*/
-      logs.push("force the preparation of a corpus index based on all the terms of the last data you sent ==> you need to have published your data before and you will need to publish them again that the corpus is sent to the index<br>")
+      @logs.push("force the preparation of a corpus index based on all the terms of the last data you sent ==> you need to have published your data before and you will need to publish them again that the corpus is sent to the index<br>")
       bxData.prepareCorpusIndex()
       
       #/**
@@ -477,12 +481,12 @@ class BackendPagesController < ApplicationController
       fields = ["products_color"]
       @logs.push("force the preparation of an autocompletion index based on all the terms of the last data you sent ==> you need to have published your data before and you will need to publish them again that the corpus is sent to the index<br>")
       bxData.prepareAutocompleteIndex(fields)
-       @message = $logs.join('<br/>')
-    rescue Exception => e 
+       @message = @logs.join('<br/>')
+    rescue Exception => e
 
       #be careful not to print the error message on your publish web-site as sensitive information like credentials might be indicated for debug purposes
       @message =  e
-      
+
     end
   end
 
@@ -491,13 +495,13 @@ class BackendPagesController < ApplicationController
     require 'BxData'
     require 'BxClient'
     #required parameters you should set for this example to work
-    @account = ""; # your account name
-    @password = ""; # your account password
-    @domain = "" # your web-site domain (e.g.: www.abc.com)
-    @languages = ['en'] #declare the list of available languages
-    @isDev = false #are the data to be pushed dev or prod data?
-    @isDelta = false #are the data to be pushed full data (reset index) or delta (add/modify index)?
-    @logs = Array.new #optional, just used here in example to collect logs
+    # @account = ""; # your account name
+    # @password = ""; # your account password
+    # @domain = "" # your web-site domain (e.g.: www.abc.com)
+     @languages = ['en'] #declare the list of available languages
+    # @isDev = false #are the data to be pushed dev or prod data?
+    # @isDelta = false #are the data to be pushed full data (reset index) or delta (add/modify index)?
+    # @logs = Array.new #optional, just used here in example to collect logs
     bxData = BxData.new(BxClient.new(@account, @password, @domain) , @languages, @isDev, @isDelta)
     begin
 
@@ -522,17 +526,18 @@ class BackendPagesController < ApplicationController
       #this part is only necessary to do when you push your data in full, as no specifications changes should not be published without a full data sync following next
       #even when you publish your data in full, you don't need to repush your data specifications if you know they didn't change, however, it is totally fine (and suggested) to push them everytime if you are not sure if something changed or not
   
-      if(!isDelta) 
+      if(!@isDelta)
 
         #declare the color field as a localized textual field with a resource source key
         bxData.addSourceLocalizedTextField(productToColorsSourceKey, "color", colorIdColumn, colorSourceKey)
-    
+        @xmlOut = '' #bxData.getXML()
 
         @logs.push("publish the data specifications")
         bxData.pushDataSpecifications();
 
         @logs.push("publish the api owner changes") #if the specifications have changed since the last time they were pushed
-        $bxData.publishChanges()
+        bxData.publishChanges()
+
       end
 
       @logs.push("push the data for data sync")
@@ -552,13 +557,13 @@ class BackendPagesController < ApplicationController
     require 'BxData'
     require 'BxClient'
     #required parameters you should set for this example to work
-    @account = ""; # your account name
-    @password = ""; # your account password
-    @domain = "" # your web-site domain (e.g.: www.abc.com)
-    @languages = ['en'] #declare the list of available languages
-    @isDev = false #are the data to be pushed dev or prod data?
-    @isDelta = false #are the data to be pushed full data (reset index) or delta (add/modify index)?
-    @logs = Array.new #optional, just used here in example to collect logs
+    # @account = ""; # your account name
+    # @password = ""; # your account password
+    # @domain = "" # your web-site domain (e.g.: www.abc.com)
+    # @languages = ['en'] #declare the list of available languages
+    # @isDev = false #are the data to be pushed dev or prod data?
+    # @isDelta = false #are the data to be pushed full data (reset index) or delta (add/modify index)?
+    # @logs = Array.new #optional, just used here in example to collect logs
     bxData = BxData.new(BxClient.new(@account, @password, @domain) , @languages, @isDev, @isDelta)
     begin
 
@@ -617,13 +622,13 @@ class BackendPagesController < ApplicationController
     require 'BxData'
     require 'BxClient'
     #required parameters you should set for this example to work
-    @account = ""; # your account name
-    @password = ""; # your account password
-    @domain = "" # your web-site domain (e.g.: www.abc.com)
-    @languages = ['en'] #declare the list of available languages
-    @isDev = false #are the data to be pushed dev or prod data?
-    @isDelta = false #are the data to be pushed full data (reset index) or delta (add/modify index)?
-    @logs = Array.new #optional, just used here in example to collect logs
+    # @account = ""; # your account name
+    # @password = ""; # your account password
+    # @domain = "" # your web-site domain (e.g.: www.abc.com)
+    # @languages = ['en'] #declare the list of available languages
+    # @isDev = false #are the data to be pushed dev or prod data?
+    # @isDelta = false #are the data to be pushed full data (reset index) or delta (add/modify index)?
+    # @logs = Array.new #optional, just used here in example to collect logs
     bxData = BxData.new(BxClient.new(@account, @password, @domain) , @languages, @isDev, @isDelta)
     begin
 
@@ -665,13 +670,13 @@ class BackendPagesController < ApplicationController
     require 'BxData'
     require 'BxClient'
     #required parameters you should set for this example to work
-    @account = ""; # your account name
-    @password = ""; # your account password
-    @domain = "" # your web-site domain (e.g.: www.abc.com)
-    @languages = ['en'] #declare the list of available languages
-    @isDev = false #are the data to be pushed dev or prod data?
-    @isDelta = false #are the data to be pushed full data (reset index) or delta (add/modify index)?
-    @logs = Array.new #optional, just used here in example to collect logs
+    # @account = ""; # your account name
+    # @password = ""; # your account password
+    # @domain = "" # your web-site domain (e.g.: www.abc.com)
+    # @languages = ['en'] #declare the list of available languages
+    # @isDev = false #are the data to be pushed dev or prod data?
+    # @isDelta = false #are the data to be pushed full data (reset index) or delta (add/modify index)?
+    # @logs = Array.new #optional, just used here in example to collect logs
     bxData = BxData.new(BxClient.new(@account, @password, @domain) , @languages, @isDev, @isDelta)
     begin
 

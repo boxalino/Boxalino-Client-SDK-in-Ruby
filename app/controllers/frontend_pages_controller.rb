@@ -1,6 +1,6 @@
 class FrontendPagesController < ApplicationController
 
-  def initialize(account = "" , password= "", exception1=nil, host="cdn.bx-cloud.com")
+  def initialize(account = "csharp_unittest" , password= "csharp_unittest", exception1=nil, host="cdn.bx-cloud.com")
     @account = account
     @password = password
     @host = host
@@ -92,7 +92,7 @@ class FrontendPagesController < ApplicationController
     rescue Exception => e 
 
       #be careful not to print the error message on your publish web-site as sensitive information like credentials might be indicated for debug purposes
-     @message =  e
+      @message =  e
       @exception = e
     end
   end
@@ -675,7 +675,7 @@ end
     begin
 
       language = "en" # a valid language code (e.g.: "en", "fr", "de", "it", ...)
-      queryText =  queryText.kind_of?nil ?  "women" : queryText  # a search query
+      queryText =  queryText == "" ?  "women" : queryText  # a search query
       hitCount = 10 #a maximum number of search result to return in one page
       
       #//create search request

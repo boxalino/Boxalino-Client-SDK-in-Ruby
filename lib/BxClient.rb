@@ -5,17 +5,17 @@ class BxClient
 	 @autocompleteRequests = nil
 	 @autocompleteResponses = nil
 	
-	 @chooseRequests = Array.new() 
+
 	 @chooseResponses = nil
-	 @bundleChooseRequests = Array.new() 
+	 @bundleChooseRequests = Array.new
 	VISITOR_COOKIE_TIME = 31536000
 	 _timeout = 2
-	 @requestContextParameters = Array.new() 
+	 @requestContextParameters = Array.new
 	
 	 @sessionId = nil
 	 @profileId = nil
 	
-	 @requestMap = Array.new()
+	 @requestMap = Array.new
 	
 	 @socketHost = nil
 	 @socketPort = nil
@@ -58,7 +58,8 @@ class BxClient
 			@p13n_password = "tkZ8EXfzeZc6SdXZntCU"
 		end
 		@domain = domain
-	end
+		@chooseRequests = Array.new
+		end
 
 	def setHost(host) 
 	    @host = host
@@ -279,7 +280,7 @@ class BxClient
 			pieceMsg  = parts[0]
 			pieces = pieceMsg.split(' at ')
 			choiceId = pieces[0]
-			choiceId [':'] =""
+			choiceId[':'] = ""
 			raise "Configuration not live on account " + getAccount() + ": choice $choiceId doesn't exist. NB: If you get a message indicating that the choice doesn't exist, go to http://intelligence.bx-cloud.com, log in your account and make sure that the choice id you want to use is published."
 		end
 
@@ -293,7 +294,7 @@ class BxClient
 			piecesMsg = parts[1]
 			pieces = piecesMsg.split(' at ')
 			field = pieces[0] 
-			field [':'] = ""
+			field[":"] = ""
 			raise "You request in your filter or facets a non-existing field of your account " + getAccount() + ": field $field doesn't exist."
 		end
 		if(e.getMessage().index('All choice variants are excluded') != nil) 
@@ -343,7 +344,7 @@ class BxClient
 	def addRequest(request) 
 		request.setDefaultIndexId(getAccount())
 		request.setDefaultRequestMap(@requestMap)
-		@chooseRequests[] = request
+		@chooseRequests.insert(request)
 	end
 	
 	def addBundleRequest(requests) 
@@ -385,7 +386,7 @@ class BxClient
 		return requests
 	end
 	
-	def getThriftChoiceRequest
+	def getThriftChoiceRequest(ssize=0)
 		
 		if(@chooseRequests.size == 0 && @autocompleteRequests.size > 0) 
 			@sessionid = getSessionAndProfile()[0]
@@ -457,21 +458,21 @@ class BxClient
     end
 
 
-	def choose(chooseAll=false, size=0)
+	def choose(chooseAll=false, ssize=0)
 		if(chooseAll == true) 
-	        bundleResponse = p13nchooseAll(getThriftBundleChoiceRequest())
-            variants = Array.new()
-	        bundleResponse.responses.each do  |choiceResponse|
-                variants = variants.merge(choiceResponse.variants)
-            end
+			bundleResponse = p13nchooseAll(getThriftBundleChoiceRequest())
+				variants = Array.new
+			bundleResponse.responses.each do  |choiceResponse|
+						variants = variants.merge(choiceResponse.variants)
+				end
 
-            response = ChoiceResponse.new(['variants' => variants])
-        else 
-            response = p13nchoose(getThriftChoiceRequest(size))
-            if(size > 0) 
-                response.variants = response.variants.merge(chooseResponses.variants)
-            end
-        end
+				response = ChoiceResponse.new(['variants' => variants])
+		else
+				response = p13nchoose(getThriftChoiceRequest(ssize))
+				if(ssize > 0)
+						response.variants = response.variants.merge(chooseResponses.variants)
+				end
+		end
 		@chooseResponses = p13nchoose(getThriftChoiceRequest())
 	end
 	
@@ -481,12 +482,16 @@ class BxClient
 	end
 	
 	def getResponse(chooseAll=false)
-		if(@chooseResponses == true) 
+    _chResponseSize = 0
+    if not @chooseResponses.nil?
+      _chResponseSize = @chooseResponses.variants.size
+    end
+		if( (@chooseResponses == nil || !@chooseResponses.any?) == true)
 			choose()
-		elsif (@size = chooseRequests.size - @chooseResponses.variants.size) 
+		elsif (@size = @chooseRequests.size - _chResponseSize)
             choose(chooseAll, @size);
 		end
-        bxChooseResponse = BxChooseResponse.new(@chooseResponses, chooseRequests)
+        bxChooseResponse = BxChooseResponse.new(@chooseResponses, @chooseRequests)
         bxChooseResponse.setNotificationMode(getNotificationMode())
 		return bxChooseResponse
 	end

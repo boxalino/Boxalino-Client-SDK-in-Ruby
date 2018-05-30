@@ -33,7 +33,7 @@ class BxChooseResponse
     def getNotifications
         finalNotifications = @notifications
         @bxRequests.each do |bxRequest|
-            finalNotifications.push(Array.new('name'=>'bxFacet', 'parameters'=>$bxRequest->getChoiceId()))
+            finalNotifications.push(Array.new('name'=>'bxFacet', 'parameters'=>bxRequest.getChoiceId()))
             bxRequest.getFacets().getNotifications().each do |notification|
                 finalNotifications.push(notification)
             end
@@ -130,12 +130,12 @@ class BxChooseResponse
 						return item.field
 					end
 				end
-			elsif(isset($searchResult->hitsGroups)) {
-				foreach($searchResult->hitsGroups as $hitGroup) {
-					if($hitGroup->groupValue == $hitId) {
-						return $hitGroup->hits[0]->$field;
-					}
-				}
+			elsif(searchResult.key?(:hitsGroups))
+				searchResult.hitsGroups.each do |hitGroup|
+					if(hitGroup.groupValue == hitId)
+						return hitGroup.hits[0].field
+					end
+				end
 			end
 		end
 		return nil
@@ -281,7 +281,8 @@ class BxChooseResponse
         end
         count = 0
         getHitFieldValues(fieldNames, choice, true, count, maxDistance).each do |id , fieldValueMap|
-            if(count++ < hitIndex) 
+            count += 1
+            if(count < hitIndex)
                 next
             end
             fieldValueMap.each do |fieldName , fieldValues|
@@ -371,9 +372,9 @@ class BxChooseResponse
     end
 
     def getSubPhraseHitIds(queryText, choice=nil, count=0, fieldId='id') 
-        searchResult = $this->getSubPhraseSearchResult($queryText, $choice, $count);
-        if($searchResult) {
-            return $this->getSearchResultHitIds($searchResult, $fieldId);
+        searchResult = getSubPhraseSearchResult(queryText, choice, count)
+        if(searchResult)
+            return getSearchResultHitIds(searchResult, fieldId)
         end
         return Array.new
     end
@@ -411,7 +412,7 @@ class BxChooseResponse
 
     def getVariantExtraInfo(variant, extraInfoKey, defaultExtraInfoValue = nil) 
         if(variant) 
-            if(variant.extraInfo.kind_of?(Array) && variant.extraInfo.size > 0 && variant->extraInfo.keys[extraInfoKey]) 
+            if(variant.extraInfo.kind_of?(Array) && variant.extraInfo.size > 0 && variant.extraInfo.keys[extraInfoKey])
                 return variant.extraInfo[extraInfoKey]
             end
             return defaultExtraInfoValue

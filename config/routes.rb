@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+
   get 'frontend_pages/frontend_parametrized_request'
 
   get 'frontend_pages/frontend_recommendations_basket'
