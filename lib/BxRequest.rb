@@ -1,20 +1,21 @@
+require 'BxFacets'
+require 'BxSortFields'
 class BxRequest
-#	require 'BxSortFields'
 	require 'p13n_types'
-	
 
+	@@returnFields = nil
   def initialize(language, choiceId, max=10, min=0)
     	@language, @groupBy, @choiceId, @min, @max, @withRelaxation , @indexId ,	@requestMap , returnFields = Array.new, @indexId
 			@offset = 0
 			@queryText = ""
-			@bxFacets = nil
+			@bxFacets = BxFacets.new
 
-			@bxSortFields = nil
-			@bxFilters = Array.new
+			@bxSortFields = BxSortFields.new #Array.new
+			@bxFilters = Hash.new
 			@orFilters = false
 			@hitsGroupsAsHits = nil
 			@groupFacets = nil
-			@requestContextParameters = Array.new()
+			@requestContextParameters = Array.new
 			if (choiceId == '')
 					raise  'BxRequest created with null choiceId'
 			end
@@ -27,8 +28,9 @@ class BxRequest
 			end
 			@withRelaxation = choiceId == 'search'
 			@contextItems = Array.new
+			@@returnFields= Array.new
     end
-	
+
 	def getWithRelaxation
 
 		return @withRelaxation
@@ -41,13 +43,13 @@ class BxRequest
 
 	def getReturnFields
 
-		return @returnFields
+		return @@returnFields
 		
 	end
 
 	def setReturnFields(returnFields)
 		
-		@returnFields  = returnFields 
+		@@returnFields  = returnFields
 
 	end
 
@@ -94,7 +96,7 @@ class BxRequest
 	end
 
 	def addFilter(bxFilter)
-		@bxFilters[@bxFilter.getFieldName()] = bxFilter
+		@bxFilters[bxFilter.getFieldName()] = bxFilter
 	end
 
 	def getOrFilters
@@ -177,27 +179,32 @@ class BxRequest
 		searchQuery.language = getLanguage()
 		searchQuery.returnFields = getReturnFields()
 		searchQuery.offset = getOffset()
-		searchQuery.hitCount = getMax()
-		searchQuery.queryText = getQueryText()
+		searchQuery.hitCount = getMax().to_i
+		searchQuery.queryText = getQuerytext()
 		searchQuery.groupFacets = (@groupFacets == nil ) ? false : @groupFacets
 		searchQuery.groupBy = @groupBy
 		if @hitsGroupsAsHits != nil
 			searchQuery.hitsGroupsAsHits = @hitsGroupsAsHits
 		end
-		if getFilters().length >0
-			searchQuery.filters = Array.new
-			getFilters().each do |filter|
-				searchQuery.filters.push(filter.getThriftFilter())
+		_temp =getFilters()
+		if(!_temp.nil?)
+			if (_temp.length >0)
+				searchQuery.filters = Array.new
+				getFilters()
+				getFilters().value each do |filter|
+					searchQuery.filters.push(filter.getThriftFilter())
+				end
 			end
 		end
 		searchQuery.orFilters = getOrFilters()
-		if (getFacets()) 
+    _temp2 = getFacets()
+		if (_temp2 )
 			searchQuery.facetRequests = getFacets().getThriftFacets()
 		end
-		if(getSortFields()) 
-			searchQuery.sortFields = getSortFields().getThriftSortFields()
+		if(getSortFields())
+      searchQuery.sortFields = getSortFields().getThriftSortFields()
 		end
-		return $searchQuery;
+		return searchQuery
 	end
 
 	def setProductContext(fieldName, contextItemId, role = 'mainProduct', relatedProducts = Array.new() , relatedProductField = 'id')

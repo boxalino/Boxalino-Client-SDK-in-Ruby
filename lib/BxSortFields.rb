@@ -1,12 +1,12 @@
 class BxSortFields
 
-	sorts = Array.new()
+	@sorts = Array.new
 
     def  initialize(field=nil, reverse=false)
     
-		if(field) 
-			push(field, reverse)
-		end
+			if(field)
+				push(field, reverse)
+			end
     end
 
     #/**
@@ -20,22 +20,26 @@ class BxSortFields
     end
 
     def getSortFields
-		return sorts.keys
+			if(@sorts.nil?)
+				return Array.new
+
+			end
+		return @sorts.keys
     end
 	
 	def isFieldReverse(field) 
-		if(@sorts.key?(field) && sorts[field]) 
+		if(@sorts.key?(field) && @sorts[field])
 			return true;
 		end
 		return false;
 	end
 	
 	def getThriftSortFields
-		sortFields = Array.new()
+		@sortFields = Array.new
 		getSortFields().each do |field|
-			sortFields.push(SortField(Array.new('fieldName' => field,'reverse' => isFieldReverse(field))))
+			@sortFields.push(SortField(Array.new('fieldName' => field,'reverse' => isFieldReverse(field))))
 		end
-		return sortFields
+		return @sortFields
 	end
 	
 end

@@ -1,6 +1,7 @@
+
 class FrontendPagesController < ApplicationController
 
-  def initialize(account = "csharp_unittest" , password= "csharp_unittest", exception1=nil, host="cdn.bx-cloud.com")
+  def initialize(account = "boxalino_automated_tests" , password= "boxalino_automated_tests", exception1=nil, host="cdn.bx-cloud.com")
     @account = account
     @password = password
     @host = host
@@ -24,7 +25,7 @@ class FrontendPagesController < ApplicationController
     # @host =  "cdn.bx-cloud.com"
 
     #@isDelta = false #are the data to be pushed full data (reset index) or delta (add/modify index)?
-    bxClient =BxClient.new(@account, @password, @domain ,  @isDev, @host)
+    bxClient =BxClient.new(@account, @password, @domain ,  @isDev, @host, request)
     #To Check Below Line
     #bxClient.setRequestMap($_REQUEST);
     begin
@@ -122,7 +123,7 @@ end
     #@host =  "cdn.bx-cloud.com"
 
     #@isDelta = false #are the data to be pushed full data (reset index) or delta (add/modify index)?
-    bxClient =BxClient.new(@account, @password, @domain ,  @isDev, @host)
+    bxClient =BxClient.new(@account, @password, @domain ,  @isDev, @host, request)
     #To Check Below Line
     #bxClient.setRequestMap($_REQUEST);
     begin
@@ -173,7 +174,7 @@ end
     # @host =  "cdn.bx-cloud.com"
     #
     # @isDelta = false #are the data to be pushed full data (reset index) or delta (add/modify index)?
-    bxClient =BxClient.new(@account, @password, @domain ,  @isDev, @host)
+    bxClient =BxClient.new(@account, @password, @domain ,  @isDev, @host, request)
     #To Check Below Line
     #bxClient.setRequestMap($_REQUEST);
     begin
@@ -224,7 +225,7 @@ end
     # @host =  "cdn.bx-cloud.com"
 
     #@isDelta = false #are the data to be pushed full data (reset index) or delta (add/modify index)?
-    bxClient =BxClient.new(@account, @password, @domain ,  @isDev, @host)
+    bxClient =BxClient.new(@account, @password, @domain ,  @isDev, @host, request)
     #To Check Below Line
     #bxClient.setRequestMap($_REQUEST);
     begin
@@ -291,7 +292,7 @@ end
     # @host =  "cdn.bx-cloud.com"
 
     #@isDelta = false #are the data to be pushed full data (reset index) or delta (add/modify index)?
-    bxClient =BxClient.new(@account, @password, @domain ,  @isDev, @host)
+    bxClient =BxClient.new(@account, @password, @domain ,  @isDev, @host, request)
     #To Check Below Line
     #bxClient.setRequestMap($_REQUEST);
     begin
@@ -341,7 +342,7 @@ end
     # @host =  "cdn.bx-cloud.com"
     #
     # @isDelta = false #are the data to be pushed full data (reset index) or delta (add/modify index)?
-    bxClient =BxClient.new(@account, @password, @domain ,  @isDev, @host)
+    bxClient =BxClient.new(@account, @password, @domain ,  @isDev, @host, request)
     #To Check Below Line
     #bxClient.setRequestMap($_REQUEST);
     begin
@@ -393,7 +394,7 @@ end
     # @host =  "cdn.bx-cloud.com"
     #
     # @isDelta = false #are the data to be pushed full data (reset index) or delta (add/modify index)?
-    bxClient =BxClient.new(@account, @password, @domain ,  @isDev, @host)
+    bxClient =BxClient.new(@account, @password, @domain ,  @isDev, @host, request)
     #To Check Below Line
     #bxClient.setRequestMap($_REQUEST);
     begin
@@ -457,7 +458,7 @@ end
     # @host =  "cdn.bx-cloud.com"
     #
     # @isDelta = false #are the data to be pushed full data (reset index) or delta (add/modify index)?
-    bxClient =BxClient.new(@account, @password, @domain ,  @isDev, @host)
+    bxClient =BxClient.new(@account, @password, @domain ,  @isDev, @host, request)
     #To Check Below Line
     #bxClient.setRequestMap($_REQUEST);
     begin
@@ -530,7 +531,7 @@ end
     # @host =  "cdn.bx-cloud.com"
     #
     # @isDelta = false #are the data to be pushed full data (reset index) or delta (add/modify index)?
-    bxClient =BxClient.new(@account, @password, @domain ,  @isDev, @host)
+    bxClient =BxClient.new(@account, @password, @domain ,  @isDev, @host, request)
     #To Check Below Line
     #bxClient.setRequestMap($_REQUEST);
     begin
@@ -614,7 +615,7 @@ end
     # @host =  "cdn.bx-cloud.com"
     #
     # @isDelta = false #are the data to be pushed full data (reset index) or delta (add/modify index)?
-    bxClient =BxClient.new(@account, @password, @domain ,  @isDev, @host)
+    bxClient =BxClient.new(@account, @password, @domain ,  @isDev, @host, request)
     #To Check Below Line
     #bxClient.setRequestMap($_REQUEST);
     begin
@@ -660,6 +661,7 @@ end
     require 'json'
     require 'BxClient'
     require 'BxSearchRequest'
+    j = ActiveSupport::JSON
     #required parameters you should set for this example to work
     # @account = ""; # your account name
     # @password = ""; # your account password
@@ -669,11 +671,11 @@ end
     # @host =  "cdn.bx-cloud.com"
     #
     # @isDelta = false #are the data to be pushed full data (reset index) or delta (add/modify index)?
-    bxClient =BxClient.new(@account, @password, @domain ,  @isDev, @host)
+    bxClient =BxClient.new(@account, @password, @domain ,  @isDev, @host, request)
     #To Check Below Line
     #bxClient.setRequestMap($_REQUEST);
-    begin
 
+    begin
       language = "en" # a valid language code (e.g.: "en", "fr", "de", "it", ...)
       queryText =  queryText == "" ?  "women" : queryText  # a search query
       hitCount = 10 #a maximum number of search result to return in one page
@@ -683,10 +685,11 @@ end
       
       #//add the request
       bxClient.addRequest(bxRequest)
-      
+
+      @message = j.encode(bxClient.getThriftChoiceRequest())
       #//make the query to Boxalino server and get back the response for all requests
       bxResponse = bxClient.getResponse()
-      
+
       #//indicate the search made with the number of results found
       @logs.push("Results for query " + queryText + " (" + bxResponse.getTotalHitCount() + "):")
       
@@ -695,12 +698,12 @@ end
         @logs.push(i+": returned id "+id)
       end
 
-      @message = @logs.join("<br/>")
+       # @message = @logs.join("<br/>")
       
     rescue Exception => e 
 
       #be careful not to print the error message on your publish web-site as sensitive information like credentials might be indicated for debug purposes
-      @message =  e
+         @message =  e
       @exception = e
     end
   end
@@ -718,7 +721,7 @@ end
     # @host =  "cdn.bx-cloud.com"
     #
     # @isDelta = false #are the data to be pushed full data (reset index) or delta (add/modify index)?
-    bxClient =BxClient.new(@account, @password, @domain ,  @isDev, @host)
+    bxClient =BxClient.new(@account, @password, @domain ,  @isDev, @host, request)
     #To Check Below Line
     #bxClient.setRequestMap($_REQUEST);
     begin
@@ -773,7 +776,7 @@ end
     # @host =  "cdn.bx-cloud.com"
     #
     # @isDelta = false #are the data to be pushed full data (reset index) or delta (add/modify index)?
-    bxClient =BxClient.new(@account, @password, @domain ,  @isDev, @host)
+    bxClient =BxClient.new(@account, @password, @domain ,  @isDev, @host, request)
     #To Check Below Line
     #bxClient.setRequestMap($_REQUEST);
     begin
@@ -817,7 +820,7 @@ end
     # @host =  "cdn.bx-cloud.com"
     #
     # @isDelta = false #are the data to be pushed full data (reset index) or delta (add/modify index)?
-    bxClient =BxClient.new(@account, @password, @domain ,  @isDev, @host)
+    bxClient =BxClient.new(@account, @password, @domain ,  @isDev, @host, request)
     #To Check Below Line
     #bxClient.setRequestMap($_REQUEST);
     begin
@@ -889,7 +892,7 @@ end
     # @host =  "cdn.bx-cloud.com"
     #
     # @isDelta = false #are the data to be pushed full data (reset index) or delta (add/modify index)?
-    bxClient =BxClient.new(@account, @password, @domain ,  @isDev, @host)
+    bxClient =BxClient.new(@account, @password, @domain ,  @isDev, @host, request)
     #To Check Below Line
     #bxClient.setRequestMap($_REQUEST);
     begin
@@ -963,7 +966,7 @@ end
     # @host =  "cdn.bx-cloud.com"
     #
     # @isDelta = false #are the data to be pushed full data (reset index) or delta (add/modify index)?
-    bxClient =BxClient.new(@account, @password, @domain ,  @isDev, @host)
+    bxClient =BxClient.new(@account, @password, @domain ,  @isDev, @host, request)
     #To Check Below Line
     #bxClient.setRequestMap($_REQUEST);
     begin
@@ -1035,7 +1038,7 @@ end
     # @host =  "cdn.bx-cloud.com"
     #
     # @isDelta = false #are the data to be pushed full data (reset index) or delta (add/modify index)?
-    bxClient =BxClient.new(@account, @password, @domain ,  @isDev, @host)
+    bxClient =BxClient.new(@account, @password, @domain ,  @isDev, @host, request)
     #To Check Below Line
     #bxClient.setRequestMap($_REQUEST);
     begin
@@ -1088,7 +1091,7 @@ end
     # @host =  "cdn.bx-cloud.com"
     #
     # @isDelta = false #are the data to be pushed full data (reset index) or delta (add/modify index)?
-    bxClient =BxClient.new(@account, @password, @domain ,  @isDev, @host)
+    bxClient =BxClient.new(@account, @password, @domain ,  @isDev, @host, request)
     #To Check Below Line
     #bxClient.setRequestMap($_REQUEST);
     begin
@@ -1153,7 +1156,7 @@ end
     # @host =  "cdn.bx-cloud.com"
     #
     # @isDelta = false #are the data to be pushed full data (reset index) or delta (add/modify index)?
-    bxClient =BxClient.new(@account, @password, @domain ,  @isDev, @host)
+    bxClient =BxClient.new(@account, @password, @domain ,  @isDev, @host, request)
     #To Check Below Line
     #bxClient.setRequestMap($_REQUEST);
     begin
@@ -1209,7 +1212,7 @@ end
     # @host =  "cdn.bx-cloud.com"
     #
     # @isDelta = false #are the data to be pushed full data (reset index) or delta (add/modify index)?
-    bxClient =BxClient.new(@account, @password, @domain ,  @isDev, @host)
+    bxClient =BxClient.new(@account, @password, @domain ,  @isDev, @host, request)
     #To Check Below Line
     #bxClient.setRequestMap($_REQUEST);
     begin
@@ -1264,7 +1267,7 @@ end
     # @host =  "cdn.bx-cloud.com"
     #
     # @isDelta = false #are the data to be pushed full data (reset index) or delta (add/modify index)?
-    bxClient =BxClient.new(@account, @password, @domain ,  @isDev, @host)
+    bxClient =BxClient.new(@account, @password, @domain ,  @isDev, @host, request)
     #To Check Below Line
     #bxClient.setRequestMap($_REQUEST);
     begin
@@ -1276,7 +1279,7 @@ end
       sortDesc = true #sort in an ascending / descending way
 
       #//create search request
-      bxRequest = new BxSearchRequest(language, queryText, hitCount)
+      bxRequest = BxSearchRequest.new(language, queryText, hitCount)
       
       #//add a sort field in the provided direction
       bxRequest.addSortField(sortField, sortDesc)
@@ -1322,7 +1325,7 @@ end
     # @host =  "cdn.bx-cloud.com"
     #
     # @isDelta = false #are the data to be pushed full data (reset index) or delta (add/modify index)?
-    bxClient =BxClient.new(@account, @password, @domain ,  @isDev, @host)
+    bxClient =BxClient.new(@account, @password, @domain ,  @isDev, @host, request)
     #To Check Below Line
     #bxClient.setRequestMap($_REQUEST);
     begin
@@ -1332,7 +1335,7 @@ end
       hitCount = 10 #a maximum number of search result to return in one page
      
       #//create search request
-      bxRequest = new BxSearchRequest(language, queryText, hitCount)
+      bxRequest = BxSearchRequest.new(language, queryText, hitCount)
       
       #//add a sort field in the provided direction
       bxRequest.addSortField(sortField, sortDesc)

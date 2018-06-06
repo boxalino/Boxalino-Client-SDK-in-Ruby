@@ -445,7 +445,7 @@ class BxChooseResponse
     end
 
     def getExtraInfoLocalizedValue(extraInfoKey, language=nil, defaultExtraInfoValue = nil, prettyPrint=false, choice=nil, considerRelaxation=true, count=0, maxDistance=10, discardIfSubPhrases = true) 
-        jsonLabel = getExtraInfo(extraInfoKey, defaultExtraInfoValue, choice, considerRelaxation, count, maxDistance, discardIfSubPhrases, defaultValue=nil)
+        jsonLabel = getExtraInfo(extraInfoKey, defaultExtraInfoValue, choice, considerRelaxation, count, maxDistance, discardIfSubPhrases)
         if(jsonLabel == nil) 
             return prettyPrintLabel(defaultValue, prettyPrint)
         end
@@ -495,7 +495,7 @@ class BxChooseResponse
         return getExtraInfo('search_message_side_image_style', defaultExtraInfoValue, choice, considerRelaxation, count, maxDistance, discardIfSubPhrases)
     end
 
-    def getSearchMessageMainImageStyle(defaultExtraInfoValue = nil, prettyPrint=false, choice=nil,, considerRelaxation=true, count=0, maxDistance=10, discardIfSubPhrases = true) 
+    def getSearchMessageMainImageStyle(defaultExtraInfoValue = nil, prettyPrint=false, choice=nil, considerRelaxation=true, count=0, maxDistance=10, discardIfSubPhrases = true)
         return getExtraInfo('search_message_main_image_style', defaultExtraInfoValue, choice, considerRelaxation, count, maxDistance, discardIfSubPhrases)
     end
 
