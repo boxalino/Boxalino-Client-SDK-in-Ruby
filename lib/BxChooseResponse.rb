@@ -64,7 +64,7 @@ class BxChooseResponse
     def getChoiceIdResponseVariant(id=0) 
         response = getResponse();
          if ( response.variants !=''  && !response.variants.nil?)
-            return response.variants[id]
+            return response.variants[id-1]
         end
         #autocompletion case (no variants)
         if(response.class.name == 'SearchResult') 
