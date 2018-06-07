@@ -686,19 +686,21 @@ end
       #//add the request
       bxClient.addRequest(bxRequest)
 
-      @message = j.encode(bxClient.getThriftChoiceRequest())
+      #@message = j.encode(bxClient.getThriftChoiceRequest())
       #//make the query to Boxalino server and get back the response for all requests
       bxResponse = bxClient.getResponse()
 
       #//indicate the search made with the number of results found
-      @logs.push("Results for query " + queryText + " (" + bxResponse.getTotalHitCount() + "):")
+      @logs.push("Results for query " + queryText + " (" + bxResponse.getTotalHitCount().to_s + "):")
       
       #//loop on the search response hit ids and print them
-      bxResponse.getHitIds().each do |i , id|
-        @logs.push(i+": returned id "+id)
+      @i=0
+      bxResponse.getHitIds().each do |id|
+        @logs.push(@i.to_s+": returned id "+id.to_s)
+        @i +=1
       end
 
-       # @message = @logs.join("<br/>")
+       @message = @logs.join("<br/>")
       
     rescue Exception => e 
 

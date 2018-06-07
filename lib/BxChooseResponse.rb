@@ -45,22 +45,25 @@ class BxChooseResponse
         return @response
     end
 
-    def getChoiceResponseVariant(choice=nil, count=0) 
-
-        @bxRequests.each do |k , bxRequest|
+     def getChoiceResponseVariant(choice=nil, count=0) 
+        @k =0
+        @bxRequests.each do | bxRequest|
+            @k += 1
             if (choice == nil || choice == bxRequest.getChoiceId()) 
+
                 if (count > 0)
-                    count--
+                    count -= 1
                     next
                 end
-                return getChoiceIdResponseVariant(k)
+
+                return getChoiceIdResponseVariant(@k)
             end
         end
     end
 
     def getChoiceIdResponseVariant(id=0) 
         response = getResponse();
-        if ( response.variants !=''  && response.variants.key?(id)) 
+         if ( response.variants !=''  && !response.variants.nil?)
             return response.variants[id]
         end
         #autocompletion case (no variants)
@@ -119,7 +122,7 @@ class BxChooseResponse
         if(considerRelaxation && variant.searchResult.totalHitCount == 0 && !(discardIfSubPhrases && areThereSubPhrases())) 
            correctedResult = getFirstPositiveSuggestionSearchResult(variant, maxDistance)
         end
-        return correctedResult == nil ? correctedResult : searchResult
+       return !correctedResult.nil? ? correctedResult : searchResult
     end
 	
 	def getSearchResultHitVariable(searchResult, hitId, field) 
@@ -301,7 +304,7 @@ class BxChooseResponse
     def getTotalHitCount(choice=nil, considerRelaxation=true,count=0, maxDistance=10, discardIfSubPhrases = true) 
         variant = getChoiceResponseVariant(choice, count)
         searchResult = getVariantSearchResult(variant, considerRelaxation, maxDistance, discardIfSubPhrases)
-        if($searchResult == nil) 
+        if(searchResult == nil) 
             return 0;
         end
         return searchResult.totalHitCount
