@@ -1,7 +1,11 @@
 class BxFacets
-
+    attr_accessor :values
+    attr_reader :values
+    attr_accessor :extraInfo
+    attr_reader :extraInfo
 	def initialize
-		@facets = Array.new
+
+		@facets = Hash.new
 	    @searchResult = nil
 	    @selectedPriceValues = nil
 	    @parameterPrefix = ''
@@ -23,7 +27,7 @@ class BxFacets
 
     def addNotification(nname, parameters) 
         if(@notificationMode) 
-            @notificationLog.push(Array.new('name'=>nname, 'parameters'=>parameters))
+            @notificationLog.push({'name'=>nname, 'parameters'=>parameters})
         end
     end
 
@@ -66,7 +70,7 @@ class BxFacets
         if(selectedValue != nil) 
             selectedValues = selectedValue.kind_of?(Array) ? selectedValue : [selectedValue]
         end
-        @facets[fieldName] = Array.new('label'=>label, 'type'=>type, 'order'=>order, 'selectedValues'=>selectedValues, 'boundsOnly'=>boundsOnly, 'maxCount'=>maxCount, 'andSelectedValues' => andSelectedValues)
+        @facets[fieldName] = {'label'=>label, 'type'=>type, 'order'=>order, 'selectedValues'=>selectedValues, 'boundsOnly'=>boundsOnly, 'maxCount'=>maxCount, 'andSelectedValues' => andSelectedValues}
     end
 
     def setParameterPrefix(parameterPrefix) 
@@ -178,9 +182,9 @@ class BxFacets
 
     def getFacetResponseExtraInfo(facetResponse, extraInfoKey, defaultExtraInfoValue = nil) 
         if(facetResponse) 
-            if(facetResponse.extraInfo .kind_of?(Array) && facetResponse.extraInfo.size > 0 && facetResponse.extraInfo.keys[extraInfoKey])
-                return facetResponse.extraInfo[extraInfoKey]
-            end
+            # if(facetResponse.extraInfo.kind_of?(Array) && facetResponse.extraInfo.size > 0 && facetResponse.extraInfo.keys[extraInfoKey])
+            #     return facetResponse.extraInfo[extraInfoKey]
+            # end
             return defaultExtraInfoValue
         end
         return defaultExtraInfoValue
@@ -218,10 +222,10 @@ class BxFacets
         end
         begin
             extraInfo = getFacetResponseExtraInfo(getFacetResponse(fieldName), extraInfoKey, defaultExtraInfoValue)
-            addNotification('getFacetResponseExtraInfo', ActiveSupport::JSON.encode(Array.new(fieldName,extraInfoKey, defaultExtraInfoValue, extraInfo)))
+            addNotification('getFacetResponseExtraInfo', ActiveSupport::JSON.encode(Array.new([fieldName,extraInfoKey, defaultExtraInfoValue, extraInfo])))
             return extraInfo
         rescue => ex
-            addNotification('Exception - getFacetResponseExtraInfo', ActiveSupport::JSON.encode(Array.new(fieldName, extraInfoKey, defaultExtraInfoValue)))
+            addNotification('Exception - getFacetResponseExtraInfo', ActiveSupport::JSON.encode(Array.new([fieldName, extraInfoKey, defaultExtraInfoValue])))
             return defaultExtraInfoValue
         end
         return defaultExtraInfoValue
@@ -282,7 +286,7 @@ class BxFacets
     end
 
     def getTotalHitCount
-        return searchResult.totalHitCount
+        return @searchResult.totalHitCount
     end
 
     def getFacetCoverage(fieldName) 
@@ -321,8 +325,8 @@ class BxFacets
     end
 
     def getFacetResponse(fieldName) 
-        if(searchResult != nil && searchResult.facetResponses != nil) 
-            searchResult.facetResponses.each do |facetResponse| 
+        if(@searchResult != nil && @searchResult.facetResponses != nil)
+            @searchResult.facetResponses.each do |facetResponse|
                 if(facetResponse.fieldName == fieldName) 
                     return facetResponse
                 end
@@ -333,14 +337,14 @@ class BxFacets
 
     def getFacetType(fieldName) 
         type = 'string'
-        if(@facets.keys[fieldName])
+        if(@facets.key?(fieldName))
             type = @facets[fieldName]['type']
         end
         return type
     end
 
     def buildTree(response, parents = Array.new, parentLevel = 0) 
-        if(parents.sixe==0) 
+        if(parents.size==0)
             parents = Array.new
             response.each do |node|
                 if(node.hierarchy.size == 1) 
@@ -474,9 +478,10 @@ class BxFacets
     @facetKeyValuesCache = Array.new
 
     def getFacetKeysValues(fieldName, ranking='alphabetical', minCategoryLevel=0) 
-
-        if(@facetKeyValuesCache[fieldName+'_'+minCategoryLevel]) 
-            return @facetKeyValuesCache[fieldName+'_'+$minCategoryLevel]
+        if(!@facetKeyValuesCache.nil?)
+            if(@facetKeyValuesCache[fieldName+'_'+minCategoryLevel])
+                return @facetKeyValuesCache[fieldName+'_'+$minCategoryLevel]
+            end
         end
         if(fieldName == "") 
             return Array.new
@@ -510,13 +515,14 @@ class BxFacets
                     facetValues[facetValue.rangeFromInclusive + '-' + facetValue.rangeToExclusive] = facetValue
                 end
             else
-
-                facetResponse.values.each do |facetValue|
-                    facetValues[facetValue.stringValue] = facetValue
+                if(facetResponse.values)
+                    facetResponse.values.each do |facetValue|
+                        facetValues[facetValue.stringValue] = facetValue
+                    end
                 end
 
-                if(facets[fieldName]['selectedValues'].lind_of?(Array)) 
-                    facets[fieldName]['selectedValues'].each do |value|
+                if(@facets[fieldName]['selectedValues'].kind_of?(Array))
+                    @facets[fieldName]['selectedValues'].each do |value|
                         if(facetValues[value] == nil) 
                             newValue = FacetValue.new()
                             newValue.rangeFromInclusive = nil
@@ -1009,7 +1015,7 @@ class BxFacets
             order = facet['order'];
             maxCount = facet['maxCount'];
             andSelectedValues =  facet['andSelectedValues']
-            if(fieldName == priceFieldName)
+            if(fieldName == @priceFieldName)
                 selectedPriceValues = facetSelectedValue(fieldName, type)
             end
 
@@ -1060,7 +1066,7 @@ class BxFacets
     def getParentId(fieldName, id)
         hierarchy = Array.new
 
-        searchResult.facetResponses.each do |response|
+        @searchResult.facetResponses.each do |response|
             if(response.fieldName == fieldName)
                 response.values.each do |item|
                     if(item.hierarchyId == id)

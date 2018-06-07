@@ -742,13 +742,15 @@ end
       bxResponse = bxClient.getResponse()
       
       #//if the query is corrected, then print the corrrect query text
-      if(bxResponse.areResultsCorrected()) 
+      if(bxResponse.areResultsCorrected())
         @logs.push("Corrected query " + queryText + " into " + bxResponse.getCorrectedQuery())
       end
       
       #//loop on the search response hit ids and print them
-      bxResponse.getHitIds().each do |i , id|
-        @logs.push(i+": returned id "+id)
+      @i=0
+      bxResponse.getHitIds().each do |id|
+        @logs.push(@i.to_s+": returned id "+id.to_s)
+        @i +=1
       end
       
       if(bxResponse.getHitIds().size == 0) 
@@ -769,6 +771,7 @@ end
     require 'json'
     require 'BxClient'
     require 'BxSearchRequest'
+    j = ActiveSupport::JSON
     #required parameters you should set for this example to work
     # @account = ""; # your account name
     # @password = ""; # your account password
@@ -797,8 +800,8 @@ end
       bxResponse = bxClient.getResponse()
       
       #//print the request object which is sent to our server (please provide it to Boxalino in all your support requests)
-        
-      @message = bxClient.getThriftChoiceRequest()
+
+      @message = j.encode(bxClient.getThriftChoiceRequest())
       
     rescue Exception => e 
 
