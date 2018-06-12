@@ -1,7 +1,7 @@
 
 class FrontendPagesController < ApplicationController
 
-  def initialize(account = "boxalino_automated_tests" , password= "boxalino_automated_tests", exception1=nil, host="cdn.bx-cloud.com")
+  def initialize(account = "csharp_unittest" , password= "csharp_unittest", exception1=nil, host="cdn.bx-cloud.com")
     @account = account
     @password = password
     @host = host
@@ -198,8 +198,10 @@ end
       bxResponse = bxClient.getResponse()
       
       #//loop on the recommended response hit ids and print them
-      bxResponse.getHitIds().each do |i , id|
-        @logs.push(i+": returned id "+id)
+      i = 0
+      bxResponse.getHitIds().each do | id|
+        @logs.push(i.to_s+": returned id "+id.to_s)
+        i += 1
       end
 
       @message = @logs.join("<br/>")
@@ -257,16 +259,20 @@ end
       
       #//loop on the recommended response hit ids and print them
       @logs.push("recommendations of similar items:")
-      bxResponse.getHitIds(choiceIdSimilar).each do |i , id|
-        @logs.push(i+": returned id "+id)
+      i = 0
+      bxResponse.getHitIds(choiceIdSimilar).each do |iid|
+        @logs.push(i.to_s + ": returned id " + iid.to_s )
+        i += 1
       end
       @logs.push("")
 
       #//retrieve the recommended responses object of the complementary request
       @logs.push("recommendations of complementary items:")
       #//loop on the recommended response hit ids and print them
-      bxResponse.getHitIds(choiceIdComplementary).each do |i , id|
-        @logs.push(i+": returned id "+id)
+      i = 0
+      bxResponse.getHitIds(choiceIdComplementary).each do |iid|
+        @logs.push(i.to_s+": returned id "+iid.to_s)
+        i += 1
       end
 
       @message = @logs.join("<br/>")
@@ -315,8 +321,9 @@ end
       bxResponse = bxClient.getResponse()
       
       #//loop on the search response hit ids and print them
-      bxResponse.getHitIds().each do |i , id|
-        @logs.push(i+": returned id "+id)
+      i = 0
+      bxResponse.getHitIds().each do |id|
+        @logs.push(i.to_s+": returned id "+id.to_s)
       end
 
       @message = @logs.join("<br/>")
@@ -358,12 +365,15 @@ end
       bxClient.setAutocompleteRequest(bxRequest)
       
       #//make the query to Boxalino server and get back the response for all requests
-      bxAutoompleteResponse = bxClient.getAutocompleteResponse()
+      bxAutocompleteResponse = bxClient.getAutocompleteResponse()
       
       #//loop on the search response hit ids and print them
       @logs.push("textual suggestions for "+queryText+":")
-      bxAutocompleteResponse.getTextualSuggestions().each do |suggestion|
-        @logs.push(bxAutocompleteResponse.getTextualSuggestionHighlighted(suggestion))
+      if(!bxAutocompleteResponse.nil?)
+        _temp = bxAutocompleteResponse.getTextualSuggestions()
+        _temp.each do |suggestion|
+          @logs.push(bxAutocompleteResponse.getTextualSuggestionHighlighted(suggestion))
+        end
       end
       
       if(bxAutocompleteResponse.getTextualSuggestions().size== 0) 
@@ -816,6 +826,7 @@ end
     require 'BxClient'
     require 'BxSearchRequest'
     require 'BxFacets'
+    j = ActiveSupport::JSON
     #required parameters you should set for this example to work
     # @account = ""; # your account name
     # @password = ""; # your account password
@@ -856,11 +867,11 @@ end
 
       #get the facet responses
       facets = bxResponse.getFacets()
-      
+
       #//loop on the search response hit ids and print them
       facets.getFacetValues(facetField).each do |fieldValue|
-        @logs.push("<a href=\"?bx_" + facetField + "=" + facets.getFacetValueParameterValue(facetField, fieldValue) + "\">" + facets.getFacetValueLabel(facetField, fieldValue) + "</a> (" + facets.getFacetValueCount(facetField, fieldValue) + ")")
-        if(facets.isFacetValueSelected(facetField, fieldValue)) 
+        @logs.push("<a href=\"?bx_" + facetField + "=" + facets.getFacetValueParameterValue(facetField, fieldValue) + "\">" + facets.getFacetValueLabel(facetField, fieldValue) + "</a> (" + facets.getFacetValueCount(facetField, fieldValue).to_s + ")")
+        if(facets.isFacetValueSelected(facetField, fieldValue))
           @logs.push("<a href=\"?\">[X]</a>");
         end
       end
@@ -940,8 +951,10 @@ end
        @logs.push(" ")
       
       #//loop on the search response hit ids and print them
-      bxResponse.getHitIds().each do |i , id|
-        @logs.push(i+": returned id "+id)
+      i = 0
+      bxResponse.getHitIds().each do |id|
+        @logs.push(i.to_s+": returned id "+id.to_s)
+        i += 1
       end
 
       @message = @logs.join("<br/>")
@@ -1004,7 +1017,7 @@ end
 
       #//loop on the search response hit ids and print them
       facets.getPriceRanges().each do |fieldValue|
-        range = "<a href=\"?bx_price=" + facets.getPriceValueParameterValue(fieldValue) + "\">" + facets.getPriceValueLabel(fieldValue) + "</a> (" + facets.getPriceValueCount(fieldValue) + ")"
+        range = "<a href=\"?bx_price=" + facets.getPriceValueParameterValue(fieldValue) + "\">" + facets.getPriceValueLabel(fieldValue) + "</a> (" + facets.getPriceValueCount(fieldValue).to_s + ")"
         if(facets.isPriceValueSelected(fieldValue)) 
           range = range+  "<a href=\"?\">[X]</a>"
         end
@@ -1068,8 +1081,10 @@ end
       bxResponse = bxClient.getResponse()
       
       #//loop on the search response hit ids and print them
-      bxResponse.getHitIds().each do |i , id|
-        @logs.push(i+": returned id "+id)
+      i = 0
+      bxResponse.getHitIds().each do |id|
+        @logs.push(i.to_s+": returned id "+id)
+        i += 1
       end
 
       @message = @logs.join("<br/>")
@@ -1187,11 +1202,13 @@ end
       bxResponse = bxClient.getResponse()
       
       #//indicate the search made with the number of results found
-      @logs.push("Results for query \"" + queryText + "\" (" + bxResponse.getTotalHitCount() + "):<br>")
+      @logs.push("Results for query \"" + queryText + "\" (" + bxResponse.getTotalHitCount().to_s + "):<br>")
 
       #//loop on the search response hit ids and print them
-      bxResponse.getHitIds().each do |i,iid|
-        @logs.push(i+": returned id "+iid)
+      i =0
+      bxResponse.getHitIds().each do |iid|
+        @logs.push(i.to_s+": returned id "+iid)
+        i += 1
       end
 
       @message = @logs.join("<br/>")

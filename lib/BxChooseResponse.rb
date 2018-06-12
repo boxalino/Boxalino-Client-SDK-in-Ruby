@@ -3,7 +3,7 @@
     	
     	def initialize(response, bxRequests=Array.new) 
             @response = response
-            @bxRequests = bxRequests.kind_of?(Array) ? bxRequests : Array.new(bxRequests)
+            @bxRequests = bxRequests.kind_of?(Array) ? bxRequests : [bxRequests]
         end
 
         @notificationLog = Array.new
@@ -62,11 +62,14 @@
         end
 
         def getChoiceIdResponseVariant(id=0) 
-            response = getResponse();
-            if ( response.variants !=''  && !response.variants.nil?)
-                return response.variants[id-1]
+            response = getResponse()
+            begin
+                if ( response.variants !=''  && !response.variants.nil?)
+                    return response.variants[id-1]
+                end
+            rescue Exception => e
             end
-            #autocompletion case (no variants)
+                #autocompletion case (no variants)
             if(response.class.name == 'SearchResult') 
                 variant = Variant.new()
                 variant.searchResult = response
@@ -116,7 +119,7 @@
     		d[m][n]
     	end
 
-        def getVariantSearchResult(variant, considerRelaxation=true, maxDistance=10, discardIfSubPhrases = true) 
+        def getVariantSearchResult(variant, considerRelaxation=true, maxDistance=10, discardIfSubPhrases = true)
 
             searchResult = variant.searchResult
             if(considerRelaxation && variant.searchResult.totalHitCount == 0 && !(discardIfSubPhrases && areThereSubPhrases())) 
@@ -213,7 +216,7 @@
         end
 
         def getSearchHitFieldValues(searchResult, fields=nil) 
-            fieldValues = Array.new
+            fieldValues = Hash.new
             if(searchResult) 
                 hits = searchResult.hits
                 if(searchResult.hits == nil)
@@ -232,6 +235,9 @@
                     finalFields.each do |field|
                         if (item.values[field] != nil) 
                             if (item.values[field] != "") 
+                                if(fieldValues[item.values['id'][0]].nil?)
+                                    fieldValues[item.values['id'][0]] = Hash.new
+                                end
                                 fieldValues[item.values['id'][0]][field] = item.values[field]
                             end
                         end

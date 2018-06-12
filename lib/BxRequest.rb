@@ -137,10 +137,12 @@ class BxRequest
 	def setIndexId(indexId)
 		@indexId = indexId
 		if @contextItems != nil
-			@contextItems.each do | contextItem, k|
+			k =0
+			@contextItems.each do | contextItem|
 				if contextItem.indexId == nil
-					@contextItems[k]['indexId']= indexId
+					@contextItems[k].indexId = indexId
 				end
+				k += 1
 			end
 		end
 	end
@@ -190,9 +192,8 @@ class BxRequest
 		if(!_temp.nil?)
 			if (_temp.length >0)
 				searchQuery.filters = Array.new
-				getFilters()
-				getFilters().value each do |filter|
-					searchQuery.filters.push(filter.getThriftFilter())
+				getFilters().each do |filter|
+					searchQuery.filters.push(filter[1].getThriftFilter())
 				end
 			end
 		end

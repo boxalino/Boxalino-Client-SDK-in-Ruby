@@ -1,5 +1,5 @@
 class BxFilter
-	
+	require 'p13n_types'
 	def initialize(fieldName, values=Array.new(), negative = false) 
 		@fieldName = fieldName
 		@values = values
@@ -55,7 +55,7 @@ class BxFilter
 	end
 	
 	def getThriftFilter
-		filter = Filter()
+		filter = Filter.new()
         filter.fieldName = @fieldName
         filter.negative = @negative
         filter.stringValues = @values

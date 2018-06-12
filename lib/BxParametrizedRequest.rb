@@ -18,7 +18,7 @@ class BxParametrizedRequest < BxRequest
 	
 	def initialize(language, choiceId, max=10, min=0, bxReturnFields=nil, getItemFieldsCB=nil) 
 		BxRequest.new(language, choiceId, max, min)
-		
+		@choiceId = choiceId
 		if (bxReturnFields != nil) 
 			@bxReturnFields = bxReturnFields
 		end
@@ -163,7 +163,7 @@ class BxParametrizedRequest < BxRequest
     end
 
     def getRequestContextParameters
-		params = Array.new
+		params = Hash.new
 		getPrefixedParameters(@requestWeightedParametersPrefix).each  do |nname , values|
 			params[nname] = values
 		end
@@ -185,7 +185,8 @@ class BxParametrizedRequest < BxRequest
 			end
 			params[nname] = values
 		end
-		params.delete_at(params.index('bxi_data_owner_expert'))
+		params.except!(:bxi_data_owner_expert)
+		#params.delete_at(params.index('bxi_data_owner_expert'))
 		return params
 	end
 	
