@@ -23,7 +23,7 @@ class FrontendPagesController < ApplicationController
     # @logs = Array.new #optional, just used here in example to collect logs
     # @isDev = false #are the data to be pushed dev or prod data?
     # @host =  "cdn.bx-cloud.com"
-
+    @isDev = true
     #@isDelta = false #are the data to be pushed full data (reset index) or delta (add/modify index)?
     bxClient =BxClient.new(@account, @password, @domain ,  @isDev, @host, request)
     #To Check Below Line
@@ -39,7 +39,7 @@ class FrontendPagesController < ApplicationController
       requestSortFieldPrefix = "bxsf_"
       requestReturnFieldsName= "bxrf"
       
-      bxReturnFields = ['id'] #the list of fields which should be returned directly by Boxalino, the others will be retrieved through a call-back function
+      bxReturnFields = "id" #the list of fields which should be returned directly by Boxalino, the others will be retrieved through a call-back function
       getItemFieldsCB = "getItemFieldsCB"
       
       #//create the request and set the parameter prefix values
@@ -53,8 +53,9 @@ class FrontendPagesController < ApplicationController
       
       #//add the request
       bxClient.addRequest(bxRequest)
-      
-      #//make the query to Boxalino server and get back the response for all requests
+      # j = ActiveSupport::JSON
+      # @message = j.encode(bxClient.getThriftChoiceRequest())
+      # //make the query to Boxalino server and get back the response for all requests
       bxResponse = bxClient.getResponse()
       @logs.push("<h3>weighted parameters</h3>")
       bxRequest.getWeightedParameters().each  do |fieldName , fieldValues|
@@ -63,27 +64,29 @@ class FrontendPagesController < ApplicationController
         end
       end
       @logs.push("..")
-      
+
       @logs.push("<h3>filters</h3>")
-      bxRequest.getFilters().each do |bxFilter|
-        @logs.push(bxFilter.getFieldName() + ": " + bxFilter.getValues().join(',') + " :" + bxFilter.isNegative())
+      if(!bxRequest.getFilters().nil?)
+        bxRequest.getFilters().each do |bxFilter|
+          @logs.push(bxFilter.getFieldName() + ": " + bxFilter.getValues().join(',') + " :" + bxFilter.isNegative())
+        end
       end
       @logs.push("..")
-      
+
       @logs.push("<h3>facets</h3>")
       bxFacets = bxRequest.getFacets()
       bxFacets.getFieldNames().each do |fieldName|
         @logs.push(fieldName+": " + bxFacets.getSelectedValues(fieldName).join(','))
       end
       @logs.push("..")
-      
+
       @logs.push("<h3>sort fields</h3>")
       bxSortFields = bxRequest.getSortFields()
       bxSortFields.getSortFields().each do |fieldName|
         @logs.push(fieldName+": " + bxSortFields.isFieldReverse(fieldName))
       end
       @logs.push("..")
-      
+
       #//loop on the recommended response hit ids and print them
       @logs.push("<h3>results</h3>")
       @logs.push(bxResponse.toJson(bxRequest.getAllReturnFields()))
@@ -131,7 +134,7 @@ end
       language = "en" # a valid language code (e.g.: "en", "fr", "de", "it", ...)
       choiceId = "basket" #the recommendation choice id (standard choice ids are: "similar" => similar products on product detail page, "complementary" => complementary products on product detail page, "basket" => cross-selling recommendations on basket page, "search"=>search results, "home" => home page personalized suggestions, "category" => category page suggestions, "navigation" => navigation product listing pages suggestions)
       itemFieldId = "id" # the field you want to use to define the id of the product (normally id, but could also be a group id if you have a difference between group id and sku)
-      itemFieldIdValuesPrices = [{:id=>"1234", :price=>130.5},{:id=>"1940", :price=>10.80}] #the product ids and their prices that the user currently has in his basket
+      itemFieldIdValuesPrices = Array.new([{:id=>"1234", :price=>130.5},{:id=>"1940", :price=>10.80}]) #the product ids and their prices that the user currently has in his basket
       hitCount = 10 #a maximum number of recommended result to return in one page
 
       #//create similar recommendations request
@@ -147,8 +150,10 @@ end
       bxResponse = bxClient.getResponse()
 
       #//loop on the recommended response hit ids and print them
-      bxResponse.getHitIds().each do |i , id|
-        @logs.push(i+": returned id "+id)
+      i = 0
+      bxResponse.getHitIds().each do | id|
+        @logs.push(i.to_s+": returned id "+id.to_s)
+        i += 1
       end
 
       @message = @logs.join("<br/>")

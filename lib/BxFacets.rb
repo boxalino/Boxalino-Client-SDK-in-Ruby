@@ -92,7 +92,7 @@ class BxFacets
     end
 
     def getFieldNames
-        @fieldNames = Array.new
+        @fieldNames = Hash.new
 
         if (@searchResult && @facets.size != @searchResult.facetResponses.size) 
             @searchResult.facetResponses.each do |facetResponse|
@@ -111,12 +111,12 @@ class BxFacets
         @facets.each do |fieldName , facet|
             @facetResponse = getFacetResponse(fieldName)
             if(facetResponse != nil && (@facetResponse.values.size > 0 || facet['selectedValues'].size > 0)) 
-                fieldNames[fieldName] = Array.new('fieldName'=>fieldName, 'returnedOrder'=> fieldNames.size)
+                @fieldNames[fieldName] = {'fieldName'=>fieldName, 'returnedOrder'=> @fieldNames.size}
             end
         end
 
-       uasort(fieldNames)
-        return fieldNames.keys
+       uasort(@fieldNames)
+        return @fieldNames.keys
     end 
 
     def  uasort(fieldNames)

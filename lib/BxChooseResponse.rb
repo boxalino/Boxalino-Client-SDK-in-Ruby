@@ -46,7 +46,7 @@
         end
 
         def getChoiceResponseVariant(choice=nil, count=0) 
-            @k =0
+            @k = -1
             @bxRequests.each do | bxRequest|
                 @k += 1
                 if (choice == nil || choice == bxRequest.getChoiceId()) 
@@ -397,14 +397,14 @@
         end
 
         def toJson(fields) 
-            object = Array.new
+            object = Hash.new
             object['hits'] = Array.new
             getHitFieldValues(fields).each do |id , fieldValueMap|
-                hitFieldValues = Array.new
+                hitFieldValues = Hash.new
                 fieldValueMap.each do |fieldName , fieldValues|
-                    hitFieldValues[fieldName] = Array.new('values'=>fieldValues)
+                    hitFieldValues[fieldName] = {'values'=>fieldValues}
                 end
-                object['hits'].push(Array.new('id'=>id, 'fieldValues'=>hitFieldValues))
+                object['hits'].push({'id'=>id, 'fieldValues'=>hitFieldValues})
             end
             return object.to_json
         end

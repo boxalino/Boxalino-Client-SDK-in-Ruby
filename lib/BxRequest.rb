@@ -227,15 +227,15 @@ class BxRequest
 			contextItem = ContextItem.new()
 			contextItem.indexId = getIndexId()
 			contextItem.fieldName = fieldName
-			contextItem.contextItemId = basketItem['id']
+			contextItem.contextItemId = basketItem[:id]
 			contextItem.role = role
 			@contextItems.push(contextItem)
 			basketContent.each do |basketItem| 
 				contextItem = ContextItem.new()
 				contextItem.indexId = getIndexId()
 				contextItem.fieldName = fieldName
-				contextItem.contextItemId = basketItem['id']
-				contextItem.role = $subRole
+				contextItem.contextItemId = basketItem[:id]
+				contextItem.role = subRole
 				@contextItems.push(contextItem)
 			end
 		end

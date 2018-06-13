@@ -17,9 +17,10 @@ class BxParametrizedRequest < BxRequest
 	@requestParameterExclusionPatterns = Array.new
 	
 	def initialize(language, choiceId, max=10, min=0, bxReturnFields=nil, getItemFieldsCB=nil) 
-		BxRequest.new(language, choiceId, max, min)
+		super(language, choiceId, max, min)
 		@choiceId = choiceId
-		if (bxReturnFields != nil) 
+		@language = language
+		if (!bxReturnFields.nil?)
 			@bxReturnFields = bxReturnFields
 		end
 		@getItemFieldsCB = getItemFieldsCB
@@ -258,11 +259,13 @@ class BxParametrizedRequest < BxRequest
 	
 	def getAllReturnFields
 		returnFields = getReturnFields()
-		if (@requestMap.key? (@requestReturnFieldsName))
-			tempArray = requestMap[@requestReturnFieldsName] 
-			tempCal  = tempArray.split(',')
-			returnFields = tempCal.merge(returnFields).uniq
-		end
+    if(!@requestMap.nil?)
+      if (@requestMap.key?(@requestReturnFieldsName))
+        tempArray = requestMap[@requestReturnFieldsName]
+        tempCal  = tempArray.split(',')
+        returnFields = tempCal.merge(returnFields).uniq
+      end
+    end
 		return returnFields
 	end
 	
