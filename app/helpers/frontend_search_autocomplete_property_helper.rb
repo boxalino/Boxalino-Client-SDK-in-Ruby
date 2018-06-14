@@ -1,0 +1,2 @@
+module FrontendSearchAutocompletePropertyHelper
+end

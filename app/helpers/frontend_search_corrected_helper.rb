@@ -1,0 +1,2 @@
+module FrontendSearchCorrectedHelper
+end

@@ -1,74 +1,108 @@
 <?xml version="1.0"?>
 <root>
   <languages>
-    <language id="en"/>
+    <language id="en" />
   </languages>
   <containers>
     <container id="products" type="products">
       <sources>
         <source id="item_vals" type="item_data_file">
-          <file value="products.csv"/>
-          <format value="CSV"/>
-          <encoding value="UTF-8"/>
-          <delimiter value=","/>
-          <enclosure value="&quot;"/>
-          <escape value="\\"/>
-          <lineSeparator value="\n"/>
-          <itemIdColumn value="id"/>
-        </source>
-        <source id="product_categories" type="item_data_file">
-          <file value="product_categories.csv"/>
-          <format value="CSV"/>
-          <encoding value="UTF-8"/>
-          <delimiter value=","/>
-          <enclosure value="\&amp;"/>
-          <escape value="\\"/>
-          <lineSeparator value="\n"/>
-          <itemIdColumn value="id"/>
-        </source>
-        <source id="resource_categories" type="hierarchical">
-          <file value="categories.csv"/>
-          <format value="CSV"/>
-          <encoding value="UTF-8"/>
-          <delimiter value=","/>
-          <enclosure value="\&amp;"/>
-          <escape value="\\"/>
-          <lineSeparator value="\n"/>
-          <referenceIdColumn value="category_id"/>
-          <parentIdColumn value="parent_id"/>
-          <labelColumns>
-            <language name="en" value="value_en"/>
-          </labelColumns>
+          <file value="products.csv">
+            <format value="CSV">
+              <encoding value="UTF-8">
+                <delimiter value=",">
+                  <enclosure value="&quot;">
+                    <escape value="\\">
+                      <lineSeparator value="\n">
+                        <itemIdColumn value="id" />
+                      </lineSeparator>
+                    </escape>
+                  </enclosure>
+                </delimiter>
+              </encoding>
+            </format>
+          </file>
         </source>
       </sources>
       <properties>
         <property id="bx_id" type="id">
           <transform>
-            <logic source="item_vals" type="direct">
-              <field column="id"/>
+            <logic type="direct" source="item_vals">
+              <field column="id" />
             </logic>
           </transform>
-          <params/>
+          <params />
         </property>
         <property id="bx_item_id" type="string">
           <transform>
-            <logic source="item_vals" type="direct">
-              <field column="id"/>
+            <logic type="direct" source="item_vals">
+              <field column="id" />
             </logic>
           </transform>
-          <params/>
+          <params />
         </property>
-        <property id="category" type="hierarchical">
+      </properties>
+    </container>
+    <container id="products" type="products">
+      <sources>
+        <source id="product_color" type="item_data_file">
+          <file value="product_color.csv">
+            <format value="CSV">
+              <encoding value="UTF-8">
+                <delimiter value=",">
+                  <enclosure value="&amp;">
+                    <escape value="\\">
+                      <lineSeparator value="\n">
+                        <itemIdColumn value="id" />
+                      </lineSeparator>
+                    </escape>
+                  </enclosure>
+                </delimiter>
+              </encoding>
+            </format>
+          </file>
+        </source>
+      </sources>
+      <properties>
+        <property id="color" type="text">
           <transform>
-            <logic source="product_categories" type="reference">
-              <field column="category_id"/>
+            <logic type="reference" source="product_color">
+              <field column="color_id" />
             </logic>
           </transform>
           <params>
-            <referenceSource value="resource_categories"/>
+            <referenceSource value="resource_color" />
           </params>
         </property>
       </properties>
+    </container>
+    <container id="products" type="products">
+      <sources>
+        <source id="resource_color" type="resource">
+          <file value="color.csv">
+            <format value="CSV">
+              <encoding value="UTF-8">
+                <delimiter value=",">
+                  <enclosure value="\&amp;">
+                    <escape value="\\">
+                      <lineSeparator value="\n">
+                        <referenceIdColumn value="color_id">
+                          <itemIdColumn value="color_id">
+                            <labelColumns>
+                              <language name="en" value="value_en" />
+                            </labelColumns>
+                          </itemIdColumn>
+                        </referenceIdColumn>
+                      </lineSeparator>
+                    </escape>
+                  </enclosure>
+                </delimiter>
+              </encoding>
+            </format>
+          </file>
+        </source>
+      </sources>
+      <properties />
     </container>
   </containers>
 </root>

@@ -1,0 +1,2 @@
+module FrontendSearchDebugRequestHelper
+end

@@ -22,7 +22,7 @@
 		 @sessionId = nil
 		 @profileId = nil
 		
-		 @requestMap = Array.new
+		 @requestMap = Hash.new
 		
 		 @socketHost = nil
 		 @socketPort = nil
@@ -69,6 +69,7 @@
 			@domain = domain
 			 @chooseRequests = Array.new
 			@requestContextParameters = Hash.new
+			@requestMap = Hash.new
 			end
 
 		def setHost(host) 
@@ -226,7 +227,7 @@
 
 		def addRequestContextParameter(nname, values) 
 			if (!values.kind_of?(Array)) 
-				values = Array.new(values)
+				values = Array.new([values])
 			end
 			@requestContextParameters[nname] = values
 		end
@@ -332,12 +333,13 @@
 	            #}
 				if(!@requestMap.nil?)
 					if(@requestMap['dev_bx_disp'].kind_of?(Array) )
-						puts "<pre><h1>Choice Request</h1>"
-						pp(choiceRequest)
-						puts "<br><h1>Choice Response</h1>"
-						pp(choiceResponse)
-						puts "</pre>"
-						exit
+						jsonEncode = ActiveSupport::JSON
+						_tempOutPut = Array.new(['<pre><h1>Choice Request</h1>'])
+						_tempOutPut.push(jsonEncode.encode(choiceRequest))
+						_tempOutPut.push("<br><h1>Choice Response</h1>")
+						_tempOutPut.push(jsonEncode.encode(choiceResponse))
+						_tempOutPut.push("</pre>")
+						raise(_tempOutPut.join(' '))
 					end
 				end
 				return choiceResponse

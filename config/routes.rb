@@ -1,5 +1,51 @@
 Rails.application.routes.draw do
 
+  get 'backend_data_mooris/backend_data_mooris'
+
+  get 'frontend_search_sub_phrases/frontend_search_sub_phrases'
+
+  get 'frontend_search_two_page/frontend_search_two_page'
+
+  get 'frontend_search_sort_field/frontend_search_sort_field'
+
+  get 'frontend_search_return_fields/frontend_search_return_fields'
+
+  get 'frontend_search_request_context_parameters/frontend_search_request_context_parameters'
+
+  get 'frontend_search_filter_advanced/frontend_search_filter_advanced'
+
+  get 'frontend_search_filter/frontend_search_filter'
+
+  get 'frontend_search_facet_price/frontend_search_facet_price'
+
+  get 'frontend_search_facet_category/frontend_search_facet_category'
+
+  get 'frontend_search_facet/frontend_search_facet'
+
+  get 'frontend_search_corrected/frontend_search_corrected'
+
+  get 'frontend_search_basic/frontend_search_basic'
+
+  get 'frontend_search_autocomplete_property/frontend_search_autocomplete_property'
+
+  get 'frontend_search_autocomplete_items_bundled/frontend_search_autocomplete_items_bundled'
+
+  get 'frontend_search_autocomplete_items/frontend_search_autocomplete_items'
+
+  get 'frontend_search_autocomplete_categories/frontend_search_autocomplete_categories'
+
+  get 'frontend_search_autocomplete_basic/frontend_search_autocomplete_basic'
+
+  get 'frontend_recommendations_similar_complementary/frontend_recommendations_similar_complementary'
+
+  get 'frontend_recommendations_basket/frontend_recommendations_basket'
+
+  get 'frontend_parametrized_request/frontend_parametrized_request'
+
+  get 'frontend_search_debug_request/frontend_search_debug_request'
+
+  get 'frontend_recommendations_similar/frontend_recommendations_similar'
+
   get 'frontend_pages/frontend_parametrized_request'
 
   get 'frontend_pages/frontend_recommendations_basket'

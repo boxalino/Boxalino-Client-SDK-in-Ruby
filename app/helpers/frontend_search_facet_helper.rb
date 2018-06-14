@@ -1,0 +1,2 @@
+module FrontendSearchFacetHelper
+end

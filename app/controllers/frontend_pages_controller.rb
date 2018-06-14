@@ -1,7 +1,7 @@
 
 class FrontendPagesController < ApplicationController
 
-  def initialize(account = "csharp_unittest" , password= "csharp_unittest", exception1=nil, host="cdn.bx-cloud.com")
+  def initialize(account = "mooris_stage" , password= "gjuibprz5rdt292g", exception1=nil, host="cdn.bx-cloud.com")
     @account = account
     @password = password
     @host = host
@@ -184,8 +184,8 @@ end
     #bxClient.setRequestMap($_REQUEST);
     begin
 
-      language = "en" # a valid language code (e.g.: "en", "fr", "de", "it", ...)
-      choiceId = "similar" #the recommendation choice id (standard choice ids are: "similar" => similar products on product detail page, "complementary" => complementary products on product detail page, "basket" => cross-selling recommendations on basket page, "search"=>search results, "home" => home page personalized suggestions, "category" => category page suggestions, "navigation" => navigation product listing pages suggestions)
+      language = "de" # a valid language code (e.g.: "en", "fr", "de", "it", ...)
+      choiceId = "home" #the recommendation choice id (standard choice ids are: "similar" => similar products on product detail page, "complementary" => complementary products on product detail page, "basket" => cross-selling recommendations on basket page, "search"=>search results, "home" => home page personalized suggestions, "category" => category page suggestions, "navigation" => navigation product listing pages suggestions)
       itemFieldId = "id" # the field you want to use to define the id of the product (normally id, but could also be a group id if you have a difference between group id and sku)
       itemFieldIdValue = "1940" #the product id the user is currently looking at
       hitCount = 10 #a maximum number of recommended result to return in one page
@@ -194,7 +194,7 @@ end
       bxRequest = BxRecommendationRequest.new(language, choiceId, hitCount)
       
       #//indicate the product the user is looking at now (reference of what the recommendations need to be similar to)
-      bxRequest.setProductContext(itemFieldId, itemFieldIdValue)
+      # bxRequest.setProductContext(itemFieldId, itemFieldIdValue)
       
       #//add the request
       bxClient.addRequest(bxRequest)

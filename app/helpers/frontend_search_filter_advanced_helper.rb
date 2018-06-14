@@ -1,0 +1,2 @@
+module FrontendSearchFilterAdvancedHelper
+end
