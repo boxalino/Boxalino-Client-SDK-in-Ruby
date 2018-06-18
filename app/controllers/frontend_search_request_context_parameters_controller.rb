@@ -1,5 +1,5 @@
 class FrontendSearchRequestContextParametersController < ApplicationController
-  def initialize(account = "mooris_stage" , password= "gjuibprz5rdt292g", exception1=nil, host="cdn.bx-cloud.com")
+  def initialize(account = "" , password= "", exception1=nil, host="cdn.bx-cloud.com")
     @account = account
     @password = password
     @host = host

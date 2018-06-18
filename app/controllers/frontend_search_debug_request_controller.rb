@@ -5,8 +5,8 @@ class FrontendSearchDebugRequestController < ApplicationController
     require 'BxSearchRequest'
     j = ActiveSupport::JSON
     #required parameters you should set for this example to work
-    @account = "mooris_stage"; # your account name
-    @password = "gjuibprz5rdt292g"; # your account password
+    @account = ""; # your account name
+    @password = ""; # your account password
     @domain = "" # your web-site domain (e.g.: www.abc.com)
     @logs = Array.new #optional, just used here in example to collect logs
     @isDev = false #are the data to be pushed dev or prod data?

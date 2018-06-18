@@ -3,8 +3,8 @@ class BackendDataMoorisController < ApplicationController
   	require 'BxClient'
     require 'BxData'
 
-    @account = "mooris_stage" # your account name
-	@password = "gjuibprz5rdt292g" # your account password
+    @account = "" # your account name
+	@password = "" # your account password
 	@domain = "" # your web-site domain (e.g.: www.abc.com)
 	@languages = Array.new(['de']) #declare the list of available languages
 	@isDev = false #are the data to be pushed dev or prod data?
