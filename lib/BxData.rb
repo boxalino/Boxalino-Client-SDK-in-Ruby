@@ -9,12 +9,12 @@ require 'open-uri'
 require 'net/http/post/multipart'
 
 class BxData
-	
-	URL_VERIFY_CREDENTIALS = '/frontend/dbmind/en/dbmind/api/credentials/verify'
+    
+    URL_VERIFY_CREDENTIALS = '/frontend/dbmind/en/dbmind/api/credentials/verify'
     URL_XML = '/frontend/dbmind/en/dbmind/api/data/source/update'
     URL_PUBLISH_CONFIGURATION_CHANGES = '/frontend/dbmind/en/dbmind/api/configuration/publish/owner'
     URL_ZIP = '/frontend/dbmind/en/dbmind/api/data/push'
-	URL_EXECUTE_TASK = '/frontend/dbmind/en/dbmind/files/task/execute'
+    URL_EXECUTE_TASK = '/frontend/dbmind/en/dbmind/files/task/execute'
 
     @bxClient = ""
     @languages = ""
@@ -140,11 +140,17 @@ class BxData
         params['filePath'] = filePath
         params['format'] = fformat
          params['type'] = type
-
+        if(@sources[container].nil?)
+          @sources[container] = Hash.new()
+        end
+        if(@sources[container][sourceId].nil?)
+          @sources[container][sourceId] = Hash.new()
+        end
         @sources[container][sourceId] = params
         if(validate) 
             validateSource(container, sourceId)
         end
+
         @sourceIdContainers[sourceId] = container
         return encodesourceKey(container, sourceId)
     end
@@ -627,17 +633,15 @@ class BxData
         if(!ignoreDeltaException && @isDelta)
             raise "You should not push specifications when you are pushing a delta file. Only do it when you are preparing full files. Set method parameter ignoreDeltaException to true to ignore this exception and publish anyway."
         end
-        doc = File.open('sample_data/properties.xml') { |f| Nokogiri::XML(f) }
         fields = {
             'username' => @bxClient.getUsername(),
             'password' => @bxClient.getPassword(),
             'account' => @bxClient.getAccount(false),
             'owner' => @owner,
-            'xml' => doc
-            #'xml' => getXML()
+            'xml' => getXML()
         }
         puts fields['xml']
-        url = @host + URL_XML;
+        url = @host + URL_XML
         return callAPI(fields, url)
     end
 

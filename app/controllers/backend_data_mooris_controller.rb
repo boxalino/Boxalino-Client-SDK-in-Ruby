@@ -26,11 +26,11 @@ class BackendDataMoorisController < ApplicationController
 	    @sourceKey = bxData.addMainCSVItemFile(@file, @itemIdColumn)
 
 	    #declare the fields
-	    bxData.addSourceTitleField(@sourceKey, Hash.new({"de"=>"articles_name_intern"}))
-	    bxData.addSourceDescriptionField(@sourceKey, Hash.new({"de"=>"articles_name_vendor"}))
+	    bxData.addSourceTitleField(@sourceKey, {"de"=>"articles_name_intern"})
+	    bxData.addSourceDescriptionField(@sourceKey, {"de"=>"articles_name_vendor"})
 	    bxData.addSourceListPriceField(@sourceKey, "articles_ek_price")
 	    bxData.addSourceDiscountedPriceField(@sourceKey, "articles_ek_price")
-			mainColumns.each do |mainColumn|
+			@mainColumns.each do |mainColumn|
 				bxData.addSourceStringField(@sourceKey, mainColumn, mainColumn)
 			end
 		
@@ -40,32 +40,32 @@ class BackendDataMoorisController < ApplicationController
 		
 	    @subFile = 'C:/Users/Next-Olive/Desktop/Mooris_Data/mooris/gallery_pics.csv' #a csv file with header row
 		@subFileColumn = 'gallery_pics_id'
-	    subFileSourceKey = bxData.addResourceFile(@subFile, @productIdColumn, Hash.new({'de'=>@subFileColumn}))
+	    subFileSourceKey = bxData.addResourceFile(@subFile, @productIdColumn, {'de'=>@subFileColumn})
 	    bxData.addSourceLocalizedTextField(executionToProductSourceKey, @subFileColumn, @productIdColumn, subFileSourceKey)
 		
 	    @subFile = 'C:/Users/Next-Olive/Desktop/Mooris_Data/mooris/product_options.csv' #a csv file with header row
 		@subFileColumn = 'product_options_label'
-	    subFileSourceKey = bxData.addResourceFile(@subFile, @productIdColumn, Hash.new({'de'=>@subFileColumn}))
+	    subFileSourceKey = bxData.addResourceFile(@subFile, @productIdColumn,{'de'=>@subFileColumn})
 	    bxData.addSourceLocalizedTextField(executionToProductSourceKey, @subFileColumn, @productIdColumn, subFileSourceKey)
 		
 	    @subFile = 'C:/Users/Next-Olive/Desktop/Mooris_Data/mooris/products.csv' #a csv file with header row
 		@subFileColumn = 'products_category'
-	    subFileSourceKey = bxData.addResourceFile(@subFile, @productIdColumn, Hash.new({'de'=>@subFileColumn}))
+	    subFileSourceKey = bxData.addResourceFile(@subFile, @productIdColumn, {'de'=>@subFileColumn})
 	    bxData.addSourceLocalizedTextField(executionToProductSourceKey, @subFileColumn, @productIdColumn, subFileSourceKey)
 		
 	    @subFile = 'C:/Users/Next-Olive/Desktop/Mooris_Data/mooris/additionals.csv' #a csv file with header row
 		@subFileColumn = 'additional_informations_label'
-	    subFileSourceKey = bxData.addResourceFile(@subFile, @productIdColumn, Hash.new({'de'=>@subFileColumn}))
+	    subFileSourceKey = bxData.addResourceFile(@subFile, @productIdColumn, {'de'=>@subFileColumn})
 	    bxData.addSourceLocalizedTextField(executionToProductSourceKey, @subFileColumn, @productIdColumn, subFileSourceKey)
 		
 	    @subFile = 'C:/Users/Next-Olive/Desktop/Mooris_Data/mooris/themes.csv' #a csv file with header row
 		@subFileColumn = 'themes_name'
-	    subFileSourceKey = bxData.addResourceFile(@subFile, 'themes_id', Hash.new({'de'=>@subFileColumn}))
+	    subFileSourceKey = bxData.addResourceFile(@subFile, 'themes_id', {'de'=>@subFileColumn})
 	    bxData.addSourceLocalizedTextField(@sourceKey, @subFileColumn, 'articles_theme_id', subFileSourceKey)
 		
 	    @subFile = 'C:/Users/Next-Olive/Desktop/Mooris_Data/mooris/labels.csv' #a csv file with header row
 		@subFileColumn = 'labels_name'
-	    subFileSourceKey = bxData.addResourceFile(@subFile, 'labels_id', Hash.new({'de'=>@subFileColumn}))
+	    subFileSourceKey = bxData.addResourceFile(@subFile, 'labels_id', {'de'=>@subFileColumn})
 	    bxData.addSourceLocalizedTextField(@sourceKey, @subFileColumn, 'articles_label_id', subFileSourceKey)
 		
 	   #Transaction export
@@ -104,6 +104,6 @@ class BackendDataMoorisController < ApplicationController
       @message =  e
       @exception = e
     end
-	# @message = @message  + "finished"
+    # @message = @message  + "finished"
   end
 end
