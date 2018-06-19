@@ -22,7 +22,7 @@ class FrontendRecommendationsBasketControllerTest < ActionDispatch::IntegrationT
       end
     rescue Exception => e
       assert_raise do #Fails, no Exceptions are raised
-        puts "Exception"
+        puts e
       end
     end
   end

@@ -1,7 +1,5 @@
 Rails.application.routes.draw do
 
-  get 'backend_data_mooris/backend_data_mooris'
-
   get 'frontend_search_sub_phrases/frontend_search_sub_phrases'
 
   get 'frontend_search_two_page/frontend_search_two_page'
