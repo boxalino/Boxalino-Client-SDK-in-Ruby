@@ -6,10 +6,10 @@ require 'zip'
 require 'tmpdir'
 require 'FileUtils'
 require 'open-uri'
-require 'net/http/post/multipart'
+#require 'net/http/post/multipart'
 
 class BxData
-    
+
     URL_VERIFY_CREDENTIALS = '/frontend/dbmind/en/dbmind/api/credentials/verify'
     URL_XML = '/frontend/dbmind/en/dbmind/api/data/source/update'
     URL_PUBLISH_CONFIGURATION_CHANGES = '/frontend/dbmind/en/dbmind/api/configuration/publish/owner'
@@ -23,10 +23,10 @@ class BxData
 
     @sources = Hash.new()
     @sourceIdContainers = Hash.new()
+    @globalValidate = true
+    $httpSources = Hash.new()
 
-
-
-    def initialize(bxClient, languages = Array.new, isDev=false, isDelta=false) 
+    def initialize(bxClient, languages = Array.new, isDev=false, isDelta=false)
         @bxClient = bxClient
         @languages = languages
         @isDev = isDev
@@ -34,9 +34,12 @@ class BxData
         @host = 'http://di1.bx-cloud.com'
         @ftpSources = Hash.new()
         @owner = 'bx_client_data_api'
+        @globalValidate = true
+        $httpSources = Hash.new()
+        @sourceIdContainers = Hash.new()
     end
 
-    def setLanguages(languages) 
+    def setLanguages(languages)
         @languages = languages
     end
 
@@ -44,30 +47,30 @@ class BxData
         return @languages
     end
 
-    def addMainXmlItemFile(filePath, itemIdColumn, xPath='', encoding = 'UTF-8', sourceId = 'item_vals', container = 'products', validate=true) 
+    def addMainXmlItemFile(filePath, itemIdColumn, xPath='', encoding = 'UTF-8', sourceId = 'item_vals', container = 'products', validate=true)
         sourceKey = addXMLItemFile(filePath, itemIdColumn, xPath, encoding, sourceId, container, validate)
-        addSourceIdField(sourceKey, itemIdColumn, 'XML', nil, validate) 
-        addSourceStringField(sourceKey, "bx_item_id", itemIdColumn, nil, validate) 
+        addSourceIdField(sourceKey, itemIdColumn, 'XML', nil, validate)
+        addSourceStringField(sourceKey, "bx_item_id", itemIdColumn, nil, validate)
         return sourceKey
     end
 
-    def addMainCSVItemFile(filePath, itemIdColumn, encoding = 'UTF-8', delimiter = ',', enclosure = "\"", escape = "\\\\", lineSeparator = "\\n", sourceId = 'item_vals', container = 'products', validate=true) 
+    def addMainCSVItemFile(filePath, itemIdColumn, encoding = 'UTF-8', delimiter = ',', enclosure = "\"", escape = "\\\\", lineSeparator = "\\n", sourceId = 'item_vals', container = 'products', validate=true)
         sourceKey = addCSVItemFile(filePath, itemIdColumn, encoding, delimiter, enclosure, escape, lineSeparator, sourceId, container, validate)
-        addSourceIdField(sourceKey, itemIdColumn, 'CSV', nil, validate) 
-        addSourceStringField(sourceKey, "bx_item_id", itemIdColumn, nil, validate) 
+        addSourceIdField(sourceKey, itemIdColumn, 'CSV', nil, validate)
+        addSourceStringField(sourceKey, "bx_item_id", itemIdColumn, nil, validate)
         return sourceKey
     end
 
-    def addMainCSVCustomerFile(filePath, itemIdColumn, encoding = 'UTF-8', delimiter = ',', enclosure = "\&", escape = "\\\\", lineSeparator = "\\n", sourceId = 'customers', container = 'customers', validate=true) 
+    def addMainCSVCustomerFile(filePath, itemIdColumn, encoding = 'UTF-8', delimiter = ',', enclosure = "\&", escape = "\\\\", lineSeparator = "\\n", sourceId = 'customers', container = 'customers', validate=true)
         sourceKey = addCSVItemFile(filePath, itemIdColumn, encoding, delimiter, enclosure, escape, lineSeparator, sourceId, container, validate)
-        addSourceIdField(sourceKey, itemIdColumn, 'CSV', nil, validate) 
-        addSourceStringField(sourceKey, "bx_customer_id", itemIdColumn, nil, validate) 
+        addSourceIdField(sourceKey, itemIdColumn, 'CSV', nil, validate)
+        addSourceStringField(sourceKey, "bx_customer_id", itemIdColumn, nil, validate)
         return sourceKey
     end
 
     def addCSVItemFile(filePath,itemIdColumn, encoding = 'UTF-8', delimiter = ',', enclosure = "&", escape = "\\\\", lineSeparator = "\\n", sourceId = nil, container = 'products', validate=true, maxLength=23)
         params = {'itemIdColumn'=>itemIdColumn, 'encoding'=>encoding, 'delimiter'=>delimiter, 'enclosure'=>enclosure, 'escape'=>escape, 'lineSeparator'=>lineSeparator}
-        if(sourceId == nil) 
+        if(sourceId == nil)
             sourceId = getSourceIdFromFileNameFromPath(filePath, container, maxLength, true)
         end
         return addSourceFile(filePath, sourceId, container, 'item_data_file', 'CSV', params, validate)
@@ -75,28 +78,28 @@ class BxData
 
     def addXMLItemFile(filePath, itemIdColumn, xPath, encoding = 'UTF-8', sourceId = nil, container = 'products', validate=true, maxLength=23)
         params = {'itemIdColumn'=>itemIdColumn, 'encoding'=>encoding, 'baseXPath'=>xPath}
-        if(sourceId == nil) 
+        if(sourceId == nil)
             sourceId = getSourceIdFromFileNameFromPath(filePath, container, maxLength, true)
         end
         return addSourceFile(filePath, sourceId, container, 'item_data_file', 'XML', params, validate)
     end
 
-    def addCSVCustomerFile(filePath, itemIdColumn, encoding = 'UTF-8', delimiter = ',', enclosure = "\&", escape = "\\\\", lineSeparator = "\\n", sourceId = nil, container = 'customers', validate=true, maxLength=23) 
+    def addCSVCustomerFile(filePath, itemIdColumn, encoding = 'UTF-8', delimiter = ',', enclosure = "\&", escape = "\\\\", lineSeparator = "\\n", sourceId = nil, container = 'customers', validate=true, maxLength=23)
         params = array('itemIdColumn'=>itemIdColumn, 'encoding'=>encoding, 'delimiter'=>delimiter, 'enclosure'=>enclosure, 'escape'=>escape, 'lineSeparator'=>lineSeparator);
-        if(sourceId == nil) 
+        if(sourceId == nil)
             sourceId = getSourceIdFromFileNameFromPath(filePath, container, maxLength, true);
         end
         return addSourceFile(filePath, sourceId, container, 'item_data_file', 'CSV', params, validate);
     end
 
-    def addCategoryFile(filePath, categoryIdColumn, parentIdColumn, categoryLabelColumns, encoding = 'UTF-8', delimiter = ',', enclosure = "\&", escape = "\\\\", lineSeparator = "\\n", sourceId = 'resource_categories', container = 'products', validate=true) 
+    def addCategoryFile(filePath, categoryIdColumn, parentIdColumn, categoryLabelColumns, encoding = 'UTF-8', delimiter = ',', enclosure = "\&", escape = "\\\\", lineSeparator = "\\n", sourceId = 'resource_categories', container = 'products', validate=true)
         params = {'referenceIdColumn'=>categoryIdColumn, 'parentIdColumn'=>parentIdColumn, 'labelColumns'=>categoryLabelColumns, 'encoding'=>encoding, 'delimiter'=>delimiter, 'enclosure'=>enclosure, 'escape'=>escape, 'lineSeparator'=>lineSeparator}
         return addSourceFile(filePath, sourceId, container, 'hierarchical', 'CSV', params, validate)
     end
 
-    def addResourceFile(filePath, categoryIdColumn, labelColumns, encoding = 'UTF-8', delimiter = ',', enclosure = "\&", escape = "\\\\", lineSeparator = "\\n", sourceId = nil, container = 'products', validate=true, maxLength=23) 
+    def addResourceFile(filePath, categoryIdColumn, labelColumns, encoding = 'UTF-8', delimiter = ',', enclosure = "\&", escape = "\\\\", lineSeparator = "\\n", sourceId = nil, container = 'products', validate=true, maxLength=23)
         params = {'referenceIdColumn'=>categoryIdColumn, 'labelColumns'=>labelColumns, 'encoding'=>encoding, 'delimiter'=>delimiter, 'enclosure'=>enclosure, 'escape'=>escape, 'lineSeparator'=>lineSeparator}
-        if(sourceId == nil) 
+        if(sourceId == nil)
             sourceId = 'resource_' + getSourceIdFromFileNameFromPath(filePath, container, maxLength, true)
         end
         return addSourceFile(filePath, sourceId, container, 'resource', 'CSV', params, validate)
@@ -104,7 +107,7 @@ class BxData
 
 
 
-    def setCSVTransactionFile(filePath, orderIdColumn, productIdColumn, customerIdColumn, orderDateIdColumn, totalOrderValueColumn, productListPriceColumn, productDiscountedPriceColumn, productIdField='bx_item_id', customerIdField='bx_customer_id', productsContainer = 'products', customersContainer = 'customers', fformat = 'CSV', encoding = 'UTF-8', delimiter = ',', enclosure = '"', escape = "\\\\", lineSeparator = "\\n",container = 'transactions', sourceId = 'transactions', validate=true) 
+    def setCSVTransactionFile(filePath, orderIdColumn, productIdColumn, customerIdColumn, orderDateIdColumn, totalOrderValueColumn, productListPriceColumn, productDiscountedPriceColumn, productIdField='bx_item_id', customerIdField='bx_customer_id', productsContainer = 'products', customersContainer = 'customers', fformat = 'CSV', encoding = 'UTF-8', delimiter = ',', enclosure = '"', escape = "\\\\", lineSeparator = "\\n",container = 'transactions', sourceId = 'transactions', validate=true)
 
         params = {'encoding'=>encoding, 'delimiter'=>delimiter, 'enclosure'=>enclosure, 'escape'=>escape, 'lineSeparator'=>lineSeparator}
 
@@ -122,8 +125,8 @@ class BxData
         return addSourceFile(filePath, sourceId, container, 'transactions', fformat, params, validate)
     end
 
-    def addSourceFile(filePath, sourceId, container, type, fformat='CSV', params=Array.new, validate=true) 
-        if(getLanguages().size==0) 
+    def addSourceFile(filePath, sourceId, container, type, fformat='CSV', params=Array.new, validate=true)
+        if(getLanguages().size==0)
             raise "trying to add a source before having declared the languages with method setLanguages"
         end
 
@@ -147,7 +150,7 @@ class BxData
           @sources[container][sourceId] = Hash.new()
         end
         @sources[container][sourceId] = params
-        if(validate) 
+        if(validate)
             validateSource(container, sourceId)
         end
 
@@ -155,86 +158,99 @@ class BxData
         return encodesourceKey(container, sourceId)
     end
 
-    def decodeSourceKey(sourceKey) 
+    def decodeSourceKey(sourceKey)
         temp = sourceKey
         return temp.split('-')
     end
 
-    def encodesourceKey(container, sourceId) 
+    def encodesourceKey(container, sourceId)
         return container + '-' + sourceId
     end
 
-    def getSourceCSVRow(container, sourceId, row=0, maxRow = 2) 
+    def getSourceCSVRow(container, sourceId, row=0, maxRow = 2)
         if(@sources[container][sourceId]['rows'].nil?)
-            csv_text = File.read(@sources[container][sourceId]['filePath'])
-            csv = CSV.parse(csv_text, :headers => true)
-            count = 1;
-            @sources[container][sourceId]['rows'] = Array.new
-            csv.each do |row|
-                @sources[container][sourceId]['rows'].push(row)
-                count = count+1
-                if( count >= maxRow) 
-                    break
-                end
+            begin
+              csv_text = File.read(@sources[container][sourceId]['filePath'])
+              csv = CSV.parse(csv_text, :headers => true)
+              count = 1;
+              @sources[container][sourceId]['rows'] = Array.new
+              csv.each do |row|
+                  @sources[container][sourceId]['rows'].push(row)
+                  count = count+1
+                  if( count >= maxRow)
+                      break
+                  end
+              end
+            rescue Exception => e
             end
         end
-        if(@sources[container][sourceId]['rows'][row] != nil) 
-            return @sources[container][sourceId]['rows'][row]
+        if(!@sources[container][sourceId]['rows'].nil?)
+          if(!@sources[container][sourceId]['rows'][row].nil?)
+              return @sources[container][sourceId]['rows'][row]
+          end
         end
         return nil
     end
 
-    def validateSource(container, sourceId) 
-        source = @sources[container][sourceId]
-        if(source['format'] == 'CSV') 
-            if(source['itemIdColumn'] != nil) 
-                validateColumnExistance(container, sourceId, source['itemIdColumn'])
+    def setGlobalValidate(globalValidate)
+        @globalValidate = globalValidate
+    end
+
+    def validateSource(container, sourceId)
+        if(@globalValidate == true)
+          source = @sources[container][sourceId]
+          if(source['format'] == 'CSV')
+            if(source['itemIdColumn'] != nil)
+              validateColumnExistance(container, sourceId, source['itemIdColumn'])
             end
+          end
         end
     end
 
-    def validateColumnExistance(container, sourceId, col) 
-        row = getSourceCSVRow(container, sourceId, 0)
-        if(row != nil and row.include?col == false) 
-            raise "the source 'sourceId' in the container 'container' declares an column 'col' which is not present in the header row of the provided CSV file: " + row.join(',')
+    def validateColumnExistance(container, sourceId, col)
+        if(@globalValidate == true)
+          row = getSourceCSVRow(container, sourceId, 0)
+          if(row != nil and row.include?col == false)
+              raise "the source 'sourceId' in the container 'container' declares an column 'col' which is not present in the header row of the provided CSV file: " + row.join(',')
+          end
         end
     end
 
-    def addSourceIdField(sourceKey, col, fformat, referenceSourceKey=nil, validate=true) 
+    def addSourceIdField(sourceKey, col, fformat, referenceSourceKey=nil, validate=true)
         id_field = fformat == 'CSV' ? 'bx_id' : 'id'
         addSourceField(sourceKey, id_field, "id", false, col, referenceSourceKey, validate)
     end
 
-    def addSourceTitleField(sourceKey, colMap, referenceSourceKey=nil, validate=true) 
+    def addSourceTitleField(sourceKey, colMap, referenceSourceKey=nil, validate=true)
         addSourceField(sourceKey, "bx_title", "title", true, colMap, referenceSourceKey, validate)
     end
 
-    def addSourceDescriptionField(sourceKey, colMap, referenceSourceKey=nil, validate=true) 
+    def addSourceDescriptionField(sourceKey, colMap, referenceSourceKey=nil, validate=true)
         addSourceField(sourceKey, "bx_description", "body", true, colMap, referenceSourceKey, validate)
     end
 
-    def addSourceListPriceField(sourceKey, col, referenceSourceKey=nil, validate=true) 
+    def addSourceListPriceField(sourceKey, col, referenceSourceKey=nil, validate=true)
         addSourceField(sourceKey, "bx_listprice", "price", false, col, referenceSourceKey, validate)
     end
 
-    def addSourceDiscountedPriceField(sourceKey, col, referenceSourceKey=nil, validate=true) 
+    def addSourceDiscountedPriceField(sourceKey, col, referenceSourceKey=nil, validate=true)
         addSourceField(sourceKey, "bx_discountedprice", "discounted", false, col, referenceSourceKey, validate)
     end
 
-    def addSourceLocalizedTextField(sourceKey, fieldName, colMap, referenceSourceKey=nil, validate=true) 
+    def addSourceLocalizedTextField(sourceKey, fieldName, colMap, referenceSourceKey=nil, validate=true)
         addSourceField(sourceKey, fieldName, "text", true, colMap, referenceSourceKey, validate)
     end
 
-    def addSourceStringField(sourceKey, fieldName, col, referenceSourceKey=nil, validate=true) 
+    def addSourceStringField(sourceKey, fieldName, col, referenceSourceKey=nil, validate=true)
         addSourceField(sourceKey, fieldName, "string", false, col, referenceSourceKey, validate)
     end
 
-    def addSourceNumberField(sourceKey, fieldName, col, referenceSourceKey=nil, validate=true) 
+    def addSourceNumberField(sourceKey, fieldName, col, referenceSourceKey=nil, validate=true)
         addSourceField(sourceKey, fieldName, "number", false, col, referenceSourceKey, validate)
     end
 
-    def setCategoryField(sourceKey, col, referenceSourceKey="resource_categories", validate=true) 
-        if(referenceSourceKey == "resource_categories") 
+    def setCategoryField(sourceKey, col, referenceSourceKey="resource_categories", validate=true)
+        if(referenceSourceKey == "resource_categories")
             container = decodeSourceKey(sourceKey)[0]
             sourceId = decodeSourceKey(sourceKey)[1]
             referenceSourceKey = encodesourceKey(container, referenceSourceKey)
@@ -242,7 +258,7 @@ class BxData
         addSourceField(sourceKey, "category", "hierarchical", false, col, referenceSourceKey, validate)
     end
 
-    def addSourceField(sourceKey, fieldName, type, localized, colMap, referenceSourceKey=nil, validate=true) 
+    def addSourceField(sourceKey, fieldName, type, localized, colMap, referenceSourceKey=nil, validate=true)
         container = decodeSourceKey(sourceKey)[0]
         sourceId = decodeSourceKey(sourceKey)[1]
         if(@sources[container][sourceId].present?)
@@ -254,8 +270,8 @@ class BxData
             @sources[container][sourceId]['fields'] = Hash.new()
         end
         @sources[container][sourceId]['fields'][fieldName] = {'type'=>type, 'localized'=>localized, 'map'=>colMap, 'referenceSourceKey'=>referenceSourceKey}
-        if(@sources[container][sourceId]['format'] == 'CSV') 
-            if(localized && referenceSourceKey == nil) 
+        if(@sources[container][sourceId]['format'] == 'CSV')
+            if(localized && referenceSourceKey == nil)
                 if(!colMap.kind_of?(Hash))
                     raise "'fieldName': invalid column field name for a localized field (expect an array with a column name for each language array(lang=>colName)): " + YAML::dump(colMap)
                 end
@@ -264,48 +280,48 @@ class BxData
                     if(colMap[lang] == nil)
                         raise "'fieldName': no language column provided for language 'lang' in provided column map): " + YAML::dump(colMap)
                     end
-                    if(!colMap[lang].kind_of?(String)) 
+                    if(!colMap[lang].kind_of?(String))
                         raise "'fieldName': invalid column field name for a non-localized field (expect a string): " + YAML::dump(colMap)
                     end
-                    if(validate) 
+                    if(validate)
                         validateColumnExistance(container, sourceId, colMap[lang])
                     end
                 end
-            else 
-                if(!colMap.kind_of?(String)) 
+            else
+                if(!colMap.kind_of?(String))
                     raise "'fieldName' invalid column field name for a non-localized field (expect a string): " + YAML::dump(colMap)
                 end
-                if(validate) 
+                if(validate)
                     validateColumnExistance(container, sourceId, colMap)
                 end
             end
         end
     end
 
-    def setFieldIsMultiValued(sourceKey, fieldName, multiValued = true) 
+    def setFieldIsMultiValued(sourceKey, fieldName, multiValued = true)
         addFieldParameter(sourceKey, fieldName, 'multiValued', multiValued ? 'true' : 'false')
     end
 
-    def addSourceCustomerGuestProperty(sourceKey, parameterValue) 
+    def addSourceCustomerGuestProperty(sourceKey, parameterValue)
         addSourceParameter(sourceKey, "guest_property_id", parameterValue)
     end
 
-    def addSourceParameter(sourceKey, parameterName, parameterValue) 
+    def addSourceParameter(sourceKey, parameterName, parameterValue)
         container = decodeSourceKey(sourceKey)[0]
         sourceId = decodeSourceKey(sourceKey)[1]
-        if(@sources[container][sourceId]== nil) 
+        if(@sources[container][sourceId]== nil)
             raise "trying to add a source parameter on sourceId 'sourceId', container 'container' while this source doesn't exist"
         end
         @sources[container][sourceId][parameterName] = parameterValue
     end
 
-    def addFieldParameter(sourceKey, fieldName, parameterName, parameterValue) 
+    def addFieldParameter(sourceKey, fieldName, parameterName, parameterValue)
         container = decodeSourceKey(sourceKey)[0]
         sourceId = decodeSourceKey(sourceKey)[1]
-        if(@sources[container][sourceId]['fields'][fieldName] == nil) 
+        if(@sources[container][sourceId]['fields'][fieldName] == nil)
             raise s"trying to add a field parameter on sourceId 'sourceId', container 'container', fieldName 'fieldName' while this field doesn't exist"
         end
-        if(@sources[container][sourceId]['fields'][fieldName]['fieldParameters']== nil) 
+        if(@sources[container][sourceId]['fields'][fieldName]['fieldParameters']== nil)
             @sources[container][sourceId]['fields'][fieldName]['fieldParameters'] = Array.new
         end
         @sources[container][sourceId]['fields'][fieldName]['fieldParameters'][parameterName] = parameterValue
@@ -313,7 +329,7 @@ class BxData
 
 
     def setFtpSource(sourceKey, host="di1.bx-cloud.com", port=21, user=nil, password=nil, remoteDir = '/sources/production', protocol=0, type=0, logontype=1,
-                                 timezoneoffset=0, pasvMode='MODE_DEFAULT', maximumMultipeConnections=0, encodingType='Auto', bypassProxy=0, syncBrowsing=0) 
+                                 timezoneoffset=0, pasvMode='MODE_DEFAULT', maximumMultipeConnections=0, encodingType='Auto', bypassProxy=0, syncBrowsing=0)
 
         if(user==nil)
             user = @bxClient.getAccount(false)
@@ -355,6 +371,28 @@ class BxData
       end
   end
 
+   def setHttpSource(sourceKey, webDirectory, user=null, password=null, header='User-Agent: Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:41.0) Gecko/20100101 Firefox/41.0')
+
+      if(user.nil?)
+        user = @bxClient.getAccount(false)
+      end
+
+      if(password.nil?)
+        password = @bxClient.getPassword()
+      end
+
+      params = Hash.new()
+      params['WebDirectory'] = webDirectory
+      params['User'] = user
+      params['Pass'] = password
+      params['Header'] = header
+      container = decodeSourceKey(sourceKey)[0]
+      sourceId = decodeSourceKey(sourceKey)[1]
+      if(@httpSources.nil?)
+        @httpSources = Hash.new
+      end
+      @httpSources[sourceId] = params
+   end
 
   def getXML()
 
@@ -397,9 +435,22 @@ class BxData
                   if(@ftpSources[sourceId] != nil)
                     xml.source('id' => sourceId, 'type' => sourceValues['type'])
                     xml.location('type'=>'ftp')
-                    xml.ftp('name'=>'ftp')
-                  # else
-                  #   xml.source('id' => sourceId, 'type' => sourceValues['type'])
+                    xml.ftp('name'=>'ftp') do
+                      @ftpSources[sourceId].each do | ftpPv , ftpPn|
+                        xml.tag!(ftpPv,ftpPn)
+                      end
+                    end
+                  end
+                  if(@httpSources == nil)
+                    @httpSources = Hash.new()
+                  end
+                  if(@httpSources[sourceId] != nil)
+                    xml.location('type'=>'http')
+                    xml.http('name'=>'http') do
+                      @httpSources[sourceId].each do | httpPv , httpPn|
+                        xml.tag!(httpPv,httpPn)
+                      end
+                    end
                   end
                 end
 
@@ -610,12 +661,12 @@ class BxData
 
 
 
-    def getError(responseBody) 
+    def getError(responseBody)
         return responseBody
     end
 
-    def checkResponseBody(responseBody, url) 
-        if(responseBody == nil) 
+    def checkResponseBody(responseBody, url)
+        if(responseBody == nil)
             raise "API response of call to url is empty string, this is an error!"
         end
         value = ActiveSupport::JSON.decode(responseBody.body)
@@ -628,7 +679,7 @@ class BxData
         return value
     end
 
-    def pushDataSpecifications(ignoreDeltaException=false) 
+    def pushDataSpecifications(ignoreDeltaException=false)
 
         if(!ignoreDeltaException && @isDelta)
             raise "You should not push specifications when you are pushing a delta file. Only do it when you are preparing full files. Set method parameter ignoreDeltaException to true to ignore this exception and publish anyway."
@@ -653,8 +704,8 @@ class BxData
         publishOwnerChanges(true)
     end
 
-    def publishOwnerChanges(publish=true) 
-        if(@isDev) 
+    def publishOwnerChanges(publish=true)
+        if(@isDev)
             publish = false
         end
         fields = {
@@ -669,7 +720,7 @@ class BxData
         return callAPI(fields, url)
     end
 
-    def verifyCredentials 
+    def verifyCredentials
         fields = {
             'username' => @bxClient.getUsername(),
             'password' => @bxClient.getPassword(),
@@ -681,17 +732,17 @@ class BxData
         return callAPI(fields, url)
     end
 
-    def alreadyExistingSourceId(sourceId, container) 
+    def alreadyExistingSourceId(sourceId, container)
         return @sources[container][sourceId] != nil
     end
 
-    def getUnusedSourceIdPostFix(sourceId, container) 
+    def getUnusedSourceIdPostFix(sourceId, container)
         postFix = 2;
-        @sources[container].each do |sid , values| 
-            if(sid.index(sourceId) == nil) 
+        @sources[container].each do |sid , values|
+            if(sid.index(sourceId) == nil)
                 sid[sourceId] =  ''
                 count = sid
-                if(count >= postFix) 
+                if(count >= postFix)
                     postFix = count + 1
                 end
             end
@@ -699,15 +750,15 @@ class BxData
         return postFix
     end
 
-    def getSourceIdFromFileNameFromPath(filePath, container, maxLength=23, withoutExtension=false) 
+    def getSourceIdFromFileNameFromPath(filePath, container, maxLength=23, withoutExtension=false)
         sourceId = getFileNameFromPath(filePath, withoutExtension)
         shortened = false
-        if(sourceId.length > maxLength) 
+        if(sourceId.length > maxLength)
             sourceId = sourceId[ 0, maxLength]
             shortened = true
         end
-        if(alreadyExistingSourceId(sourceId, container)) 
-            if(!shortened) 
+        if(alreadyExistingSourceId(sourceId, container))
+            if(!shortened)
                 raise 'Synchronization failure: Same source id requested twice "' + filePath + '". Please correct that only created once.'
             end
             postFix = getUnusedSourceIdPostFix(sourceId, container)
@@ -716,21 +767,24 @@ class BxData
         return sourceId
     end
 
-    def getFileNameFromPath(filePath, withoutExtension=false) 
+    def getFileNameFromPath(filePath, withoutExtension=false)
         parts = filePath.split('/')
         file = parts[parts.size-1]
-        if(withoutExtension) 
+        if(withoutExtension)
             parts = file.split('.')
             return parts[0]
         end
         return file
     end
 
-    def getFiles 
+    def getFiles
         files = Hash.new
         @sources.each do | container , containerSources|
-            containerSources.each do |sourceId , sourceValues| 
+            containerSources.each do |sourceId , sourceValues|
                 if(@ftpSources.key?(sourceId) )
+                    next
+                end
+                if(@httpSources.key?(sourceId) )
                     next
                 end
                 if(!sourceValues.key?('file'))
