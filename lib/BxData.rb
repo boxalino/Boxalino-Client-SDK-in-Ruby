@@ -649,13 +649,11 @@ class BxData
         end
         http = Net::HTTP.new(uri.host, uri.port)
         #http.use_ssl = true
-        request = Net::HTTP::Post::Multipart.new(uri.path, {'Content-Type' => 'multipart/form-data'})
+        request = Net::HTTP::Post.new(uri.path, {})
 
-        request.form_data = fields # SOME JSON DATA
-       # puts fields['xml'];
 
-        #request.body = fields # SOME JSON DATA
-        response = http.request(request)
+        post_data = URI.encode_www_form(fields)
+        response = http.request(request, post_data)
         checkResponseBody(response, url)
     end
 
