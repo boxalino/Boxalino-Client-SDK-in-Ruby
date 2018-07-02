@@ -1,16 +1,31 @@
 class FrontendSearchFilterAdvancedController < ApplicationController
-  def frontend_search_filter_advanced
+  attr_accessor :bxResponse
+  attr_reader :bxResponse
+  attr_accessor :fieldNames
+  attr_reader :fieldNames
+  attr_accessor :exception
+  attr_reader :exception
+  @bxResponse
+  @fieldNames
+  @exception
+  def frontend_search_filter_advanced (account = "boxalino_automated_tests2", password ="boxalino_automated_tests2", exception = nil, bxHost = "cdn.bx-cloud.com",mockRequest = nil )
   	 require 'json'
     require 'BxClient'
     require 'BxSearchRequest'
     require 'BxFilter'
     #required parameters you should set for this example to work
-    @account = "csharp_unittest"; # your account name
-    @password = "csharp_unittest"; # your account password
+     @account = account # your account name
+     @password = password # your account password
+     @host =  bxHost
+     @exception = exception
     @domain = "" # your web-site domain (e.g.: www.abc.com)
     @logs = Array.new #optional, just used here in example to collect logs
     @isDev = false #are the data to be pushed dev or prod data?
-    @host =  "cdn.bx-cloud.com"
+     if(!mockRequest.nil?)
+       request = mockRequest
+     else
+       request = ActionDispatch::Request.new({"url"=>"/frontend_search_facet/frontend_search_facet","uri"=>"http://localhost:3000/", "host" => "localhost", "REMOTE_ADDR" => "127.0.0.1", "protocol" => "http"})
+     end
     
     @isDelta = false #are the data to be pushed full data (reset index) or delta (add/modify index)?
     bxClient =BxClient.new(@account, @password, @domain ,  @isDev, @host, request)
@@ -26,7 +41,7 @@ class FrontendSearchFilterAdvancedController < ApplicationController
       filterValues2 = ["Yellow"] #the field to consider any of the values should match (or not match)
       filterNegative2 = false #false by default, should the filter match the values or not?
       orFilters = true #the two filters are either or (only one of them needs to be correct
-      fieldNames = ["products_color"] #IMPORTANT: you need to put "products_" as a prefix to your field name except for standard fields: "title", "body", "discountedPrice", "standardPrice"
+      @fieldNames = ["products_color"] #IMPORTANT: you need to put "products_" as a prefix to your field name except for standard fields: "title", "body", "discountedPrice", "standardPrice"
 
       #//create search request
       bxRequest = BxSearchRequest.new(language, queryText, hitCount)
@@ -43,10 +58,10 @@ class FrontendSearchFilterAdvancedController < ApplicationController
       bxClient.addRequest(bxRequest)
       
       #//make the query to Boxalino server and get back the response for all requests
-      bxResponse = bxClient.getResponse()
+      @bxResponse = bxClient.getResponse()
       
       #//loop on the search response hit ids and print them
-      bxResponse.getHitFieldValues(fieldNames).each do |id , fieldValueMap|
+      @bxResponse.getHitFieldValues(fieldNames).each do |id , fieldValueMap|
         @logs.push("<h3>"+id+"</h3>")
         fieldValueMap.each do |fieldName , fieldValues|
           @logs.push(fieldName+": " + fieldValues.join(','))

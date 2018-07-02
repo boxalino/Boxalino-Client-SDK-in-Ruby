@@ -1,16 +1,30 @@
 class FrontendSearchAutocompleteItemsBundledController < ApplicationController
-  def frontend_search_autocomplete_items_bundled
+  attr_accessor :bxAutocompleteResponses
+  attr_reader :bxAutocompleteResponses
+  attr_accessor :exception
+  attr_reader :exception
+  attr_accessor :fieldNames
+  attr_reader :fieldNames
+  @bxAutocompleteResponses
+  @exception
+  @fieldNames
+  def frontend_search_autocomplete_items_bundled (account = "csharp_unittest", password ="csharp_unittest", exception = nil, bxHost = "cdn.bx-cloud.com",mockRequest = nil)
   	require 'json'
     require 'BxClient'
     require 'BxAutocompleteRequest'
     #required parameters you should set for this example to work
-    @account = "csharp_unittest"; # your account name
-    @password = "csharp_unittest"; # your account password
+    @account = account # your account name
+    @password = password # your account password
+    @host =  bxHost
+    @exception = exception
     @domain = "" # your web-site domain (e.g.: www.abc.com)
     @logs = Array.new #optional, just used here in example to collect logs
     @isDev = false #are the data to be pushed dev or prod data?
-    @host =  "cdn.bx-cloud.com"
-    
+    if(!mockRequest.nil?)
+      request = mockRequest
+    else
+      request = ActionDispatch::Request.new({"url"=>"/frontend_search_autocomplete_items_bundled/frontend_search_autocomplete_items_bundled","uri"=>"http://localhost:3000/", "host" => "localhost", "REMOTE_ADDR" => "127.0.0.1", "protocol" => "http"})
+    end
     @isDelta = false #are the data to be pushed full data (reset index) or delta (add/modify index)?
     bxClient =BxClient.new(@account, @password, @domain ,  @isDev, @host, request)
     begin
@@ -18,7 +32,7 @@ class FrontendSearchAutocompleteItemsBundledController < ApplicationController
       language = "en" # a valid language code (e.g.: "en", "fr", "de", "it", ...)
       queryTexts = ["whit", "yello"] # a search query to be completed
       textualSuggestionsHitCount = 10 #a maximum number of search textual suggestions to return in one page
-      fieldNames = ['title'] #return the title for each item returned (globally and per textual suggestion) - IMPORTANT: you need to put "products_" as a prefix to your field name except for standard fields: "title", "body", "discountedPrice", "standardPrice"
+      @fieldNames = ['title'] #return the title for each item returned (globally and per textual suggestion) - IMPORTANT: you need to put "products_" as a prefix to your field name except for standard fields: "title", "body", "discountedPrice", "standardPrice"
 
       bxRequests = []
       queryTexts.each do |queryText|
@@ -28,7 +42,7 @@ class FrontendSearchAutocompleteItemsBundledController < ApplicationController
         #//N.B.: in case you would want to set a filter on a request and not another, you can simply do it by getting the searchchoicerequest with: $bxRequest->getBxSearchRequest() and adding a filter
         
         #//set the fields to be returned for each item in the response
-        bxRequest.getBxSearchRequest().setReturnFields(fieldNames)
+        bxRequest.getBxSearchRequest().setReturnFields(@fieldNames)
         bxRequests.push(bxRequest)
 
       end
@@ -37,9 +51,9 @@ class FrontendSearchAutocompleteItemsBundledController < ApplicationController
       bxClient.setAutocompleteRequests(bxRequests)
       
       #//make the query to Boxalino server and get back the response for all requests
-      bxAutocompleteResponses = bxClient.getAutocompleteResponses()
+      @bxAutocompleteResponses = bxClient.getAutocompleteResponses()
       i = -1
-      bxAutocompleteResponses.each do |bxAutocompleteResponse|
+      @bxAutocompleteResponses.each do |bxAutocompleteResponse|
 
         #//loop on the search response hit ids and print them
         queryText = queryTexts[++i]

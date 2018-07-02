@@ -2,24 +2,19 @@ require 'test_helper'
 
 class FrontendSearchRequestContextParametersControllerTest < ActionDispatch::IntegrationTest
   test "should get frontend_search_request_context_parameters" do
-    begin
-      @account = "boxalino_automated_tests"
-      @password = "boxalino_automated_tests"
+      @account = "boxalino_automated_tests2"
+      @password = "boxalino_automated_tests2"
       @exception = nil
       @bxHosts = ['cdn.bx-cloud.com', 'api.bx-cloud.com']
+      request = ActionDispatch::Request.new({})
       @bxHosts.each do |bxHost|
 
-        _FrontendPages = FrontendSearchRequestContextParametersController.new(@account, @password , @exception , bxHost)
-
-        frontendSearchRequestContextParameters = _FrontendPages.frontend_search_request_context_parameters( )
-        assert_equals frontendSearchRequestContextParameters.instance_variable_get(:@exception ) , nil
+        _FrontendPages = FrontendSearchRequestContextParametersController.new
+        frontendSearchRequestContextParameters = _FrontendPages.frontend_search_request_context_parameters(@account, @password , @exception , bxHost, request)
+        assert_nil (_FrontendPages.exception )
 
       end
-    rescue Exception => e
-      assert_raise do #Fails, no Exceptions are raised
-      puts "Exception"
-      end
-    end
+
   end
 
 end

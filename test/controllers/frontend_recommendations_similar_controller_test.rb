@@ -5,24 +5,20 @@ class FrontendRecommendationsSimilarControllerTest < ActionDispatch::Integration
     @account = "boxalino_automated_tests"
     @password = "boxalino_automated_tests"
     @exception = nil
-    begin
-      @bxHosts = ['cdn.bx-cloud.com', 'api.bx-cloud.com']
-      @bxHosts.each do |bxHost|
-        _FrontendPages = FrontendPagesController.new(@account, @password , @exception , bxHost)
-        frontendRecommendationsSimilar = _FrontendPages.frontend_recommendations_similar()
+    @bxHosts = ['cdn.bx-cloud.com', 'api.bx-cloud.com']
+    request = ActionDispatch::Request.new({})
+    @bxHosts.each do |bxHost|
+      _FrontendPages = FrontendRecommendationsSimilarController.new
+      frontendRecommendationsSimilar = _FrontendPages.frontend_recommendations_similar(@account, @password , @exception , bxHost , request)
 
-        @hitIds = (1..10).to_a
+      @hitIds = ("1".."10").to_a
 
-        _bxResponse = frontendRecommendationsSimilar.instance_variable_get(:bxResponse)
-        assert_equals frontendRecommendationsSimilar.instance_variable_get(:@exception ) , nil
-        assert_equals _bxResponse.getHitIds(), @hitIds
+      _bxResponse = _FrontendPages.bxResponse
+      assert_nil (_FrontendPages.exception )
+      assert_equal _bxResponse.getHitIds(), @hitIds
 
-      end
-    rescue Exception => e
-      assert_raise do #Fails, no Exceptions are raised
-        puts "Exception"
-      end
     end
+
   end
 
 end

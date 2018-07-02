@@ -2,27 +2,24 @@ require 'test_helper'
 
 class FrontendSearchAutocompleteBasicControllerTest < ActionDispatch::IntegrationTest
   test "should get frontend_search_autocomplete_basic" do
-    begin
-      @account = "boxalino_automated_tests"
-      @password = "boxalino_automated_tests"
+      @account = "boxalino_automated_tests2"
+      @password = "boxalino_automated_tests2"
       @exception = nil
       @bxHosts = ['cdn.bx-cloud.com', 'api.bx-cloud.com']
+      request = ActionDispatch::Request.new({})
       @bxHosts.each do |bxHost|
-        _FrontendPages = FrontendPagesController.new(@account, @password , @exception , bxHost)
-        frontendSearchAutoCompleteBasic = _FrontendPages.frontend_search_autocomplete_basic()
+        _FrontendPages = FrontendSearchAutocompleteBasicController.new
+        frontendSearchAutoCompleteBasic = _FrontendPages.frontend_search_autocomplete_basic(@account, @password , @exception , bxHost , request)
 
         @textualSuggestions = ['ida workout parachute pant', 'jade yoga jacket', 'push it messenger bag']
 
-        _bxAutocompleteResponse = frontendSearchAutoCompleteBasic.instance_variable_get(:bxAutocompleteResponse)
-        assert_equals frontendSearchAutoCompleteBasic.instance_variable_get(:@exception ) , nil
-        assert_equals _bxAutocompleteResponse.getTextualSuggestions(), @textualSuggestions
+        _bxAutocompleteResponse = _FrontendPages.bxAutocompleteResponse
+        _bxAutocompleteResponse.getTextualSuggestions()
+        assert_nil (_FrontendPages.exception )
+        assert_equal _bxAutocompleteResponse.getTextualSuggestions(), @textualSuggestions
 
       end
-    rescue Exception => e
-      assert_raise do #Fails, no Exceptions are raised
-      puts "Exception"
-      end
-    end
+
   end
 
 end

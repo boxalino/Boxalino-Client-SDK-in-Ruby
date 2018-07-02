@@ -2,29 +2,24 @@ require 'test_helper'
 
 class FrontendSearchFilterControllerTest < ActionDispatch::IntegrationTest
   test "should get frontend_search_filter" do
-    begin
-      @account = "boxalino_automated_tests"
-      @password = "boxalino_automated_tests"
+      @account = "boxalino_automated_tests2"
+      @password = "boxalino_automated_tests2"
       @exception = nil
       @bxHosts = ['cdn.bx-cloud.com', 'api.bx-cloud.com']
+      request = ActionDispatch::Request.new({})
       @bxHosts.each do |bxHost|
 
-        _FrontendPages = FrontendPagesController.new(@account, @password , @exception , bxHost)
+        _FrontendPages = FrontendSearchFilterController.new
 
-        frontendSearchFilter = _FrontendPages.frontend_search_filter( )
-        _bxResponse = frontendSearchFilter.instance_variable_get(:bxResponse)
-
-        assert_equals frontendSearchFilter.instance_variable_get(:@exception ) , nil
+        frontendSearchFilter = _FrontendPages.frontend_search_filter(@account, @password , @exception , bxHost, request)
+        _bxResponse = _FrontendPages.bxResponse
+        assert_nil (_FrontendPages.exception )
 
         assert !_bxResponse.getHitIds().include?("41")
         assert !_bxResponse.getHitIds().include?("1940")
 
       end
-    rescue Exception => e
-      #assert_raise do #Fails, no Exceptions are raised
-      # puts "Exception"
-      #end
-    end
+
   end
 
 end
