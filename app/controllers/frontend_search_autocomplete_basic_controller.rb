@@ -20,10 +20,11 @@ class FrontendSearchAutocompleteBasicController < ApplicationController
     if(!mockRequest.nil?)
       request = mockRequest
     else
-      request = ActionDispatch::Request.new({"url"=>"/frontend_recommendations_basket/frontend_recommendations_basket","uri"=>"http://localhost:3000/", "host" => "localhost", "REMOTE_ADDR" => "127.0.0.1", "protocol" => "http"})
+      request = ActionDispatch::Request.new({"url"=>"/frontend_search_autocomplete_basic/frontend_search_autocomplete_basic","uri"=>"http://localhost:3000/", "host" => "localhost", "REMOTE_ADDR" => "127.0.0.1", "protocol" => "http"})
     end
     @isDelta = false #are the data to be pushed full data (reset index) or delta (add/modify index)?
     bxClient =BxClient.new(@account, @password, @domain ,  @isDev, @host, request)
+    bxClient.setCookieContainer(cookies)
     begin
 
       language = "en" # a valid language code (e.g.: "en", "fr", "de", "it", ...)

@@ -24,9 +24,10 @@ class FrontendRecommendationsSimilarController < ApplicationController
 			if(!mockRequest.nil?)
 				request = mockRequest
 			else
-				request = ActionDispatch::Request.new({"url"=>"/frontend_recommendations_basket/frontend_recommendations_basket","uri"=>"http://localhost:3000/", "host" => "localhost", "REMOTE_ADDR" => "127.0.0.1", "protocol" => "http"})
+				request = ActionDispatch::Request.new({"url"=>"/frontend_recommendations_similar/frontend_recommendations_similar","uri"=>"http://localhost:3000/", "host" => "localhost", "REMOTE_ADDR" => "127.0.0.1", "protocol" => "http"})
 			end
 	    bxClient =BxClient.new(@account, @password, @domain ,  @isDev, @host, request)
+			bxClient.setCookieContainer(cookies)
 	    begin
 
         language = "de" # a valid language code (e.g.: "en", "fr", "de", "it", ...)

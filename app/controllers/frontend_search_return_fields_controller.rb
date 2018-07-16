@@ -23,11 +23,12 @@ class FrontendSearchReturnFieldsController < ApplicationController
     if(!mockRequest.nil?)
       request = mockRequest
     else
-      request = ActionDispatch::Request.new({"url"=>"/frontend_search_facet/frontend_search_facet","uri"=>"http://localhost:3000/", "host" => "localhost", "REMOTE_ADDR" => "127.0.0.1", "protocol" => "http"})
+      request = ActionDispatch::Request.new({"url"=>"/frontend_search_return_fields/frontend_search_return_fields","uri"=>"http://localhost:3000/", "host" => "localhost", "REMOTE_ADDR" => "127.0.0.1", "protocol" => "http"})
     end
     
     @isDelta = false #are the data to be pushed full data (reset index) or delta (add/modify index)?
     bxClient =BxClient.new(@account, @password, @domain ,  @isDev, @host, request)
+    bxClient.setCookieContainer(cookies)
     begin
 
       language = "en" # a valid language code (e.g.: "en", "fr", "de", "it", ...)

@@ -1,19 +1,25 @@
 class FrontendSearchAutocompleteCategoriesController < ApplicationController
-  def frontend_search_autocomplete_categories
+  def frontend_search_autocomplete_categories (account = "csharp_unittest", password ="csharp_unittest", exception = nil, bxHost = "cdn.bx-cloud.com",mockRequest = nil)
   	require 'json'
     require 'BxClient'
     require 'BxAutocompleteRequest'
     require 'BxFacets'
     #required parameters you should set for this example to work
-    @account = "csharp_unittest"; # your account name
-    @password = "csharp_unittest"; # your account password
+    @account = account # your account name
+    @password = password # your account password
+    @host =  bxHost
+    @exception = exception
     @domain = "" # your web-site domain (e.g.: www.abc.com)
     @logs = Array.new #optional, just used here in example to collect logs
     @isDev = false #are the data to be pushed dev or prod data?
-    @host =  "cdn.bx-cloud.com"
-    
+    if(!mockRequest.nil?)
+      request = mockRequest
+    else
+      request = ActionDispatch::Request.new({"url"=>"/frontend_search_autocomplete_categories/frontend_search_autocomplete_categories","uri"=>"http://localhost:3000/", "host" => "localhost", "REMOTE_ADDR" => "127.0.0.1", "protocol" => "http"})
+    end
     @isDelta = false #are the data to be pushed full data (reset index) or delta (add/modify index)?
     bxClient =BxClient.new(@account, @password, @domain ,  @isDev, @host, request)
+    bxClient.setCookieContainer(cookies)
     begin
 
       language = "en" # a valid language code (e.g.: "en", "fr", "de", "it", ...)

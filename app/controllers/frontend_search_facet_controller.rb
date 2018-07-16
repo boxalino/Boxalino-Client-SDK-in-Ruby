@@ -30,6 +30,7 @@ class FrontendSearchFacetController < ApplicationController
     
     @isDelta = false #are the data to be pushed full data (reset index) or delta (add/modify index)?
     bxClient =BxClient.new(@account, @password, @domain ,  @isDev, @host, request)
+     bxClient.setCookieContainer(cookies)
     begin
 
       language = "en" # a valid language code (e.g.: "en", "fr", "de", "it", ...)
