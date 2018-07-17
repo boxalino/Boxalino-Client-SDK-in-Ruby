@@ -209,8 +209,10 @@
 
         def retrieveHitFieldValues(item, field, fields, hits) 
             fieldValues = Array.new
-            bxRequests.each do |bxRequest|
-                fieldValues = fieldValues.merge(bxRequest.retrieveHitFieldValues(item, field, fields, hits))
+            @bxRequests.each do |bxRequest|
+                if(!bxRequest.retrieveHitFieldValues(item, field, fields, hits).empty?)
+                  fieldValues = fieldValues.merge(bxRequest.retrieveHitFieldValues(item, field, fields, hits))
+                end
             end
             return fieldValues
         end
@@ -241,9 +243,16 @@
                                 fieldValues[item.values['id'][0]][field] = item.values[field]
                             end
                         end
-                        if( fieldValues[item.values['id'][0]][field] == nil ) 
+                        if (fieldValues.empty?)
+                            fieldValues = Hash.new
+                        end
+                        if(fieldValues[item.values['id'][0]].nil?)
+                          fieldValues[item.values['id'][0]] = Hash.new
+                        end
+                        if( fieldValues[item.values['id'][0]][field].nil? )
                             fieldValues[item.values['id'][0]][field] = retrieveHitFieldValues(item, field, searchResult.hits, finalFields)
                         end
+
                     end
                 end
             end
@@ -344,7 +353,8 @@
 
         def areThereSubPhrases(choice=nil, count=0, maxBaseResults=0) 
             variant = getChoiceResponseVariant(choice, count)
-            return variant.searchRelaxation.subphrasesResults != nil && variant.searchRelaxation.subphrasesResults.size > 0 && getTotalHitCount(choice, false, count) <= maxBaseResults
+             return variant.searchRelaxation.subphrasesResults != nil && variant.searchRelaxation.subphrasesResults.size > 0 && getTotalHitCount(choice, false, count) <= maxBaseResults
+            # return getTotalHitCount(choice, false, count) <= maxBaseResults
         end
 
         def getSubPhrasesQueries(choice=nil, count=0) 
