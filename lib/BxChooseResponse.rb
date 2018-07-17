@@ -221,7 +221,8 @@
             fieldValues = Hash.new
             if(searchResult) 
                 hits = searchResult.hits
-                if(searchResult.hits == nil)
+                if(searchResult.hits.empty?)
+                  # == nil
                     hits = Array.new
                     if(searchResult.hitsGroups != nil) 
                         searchResult.hitsGroups.each do |hitGroup|
