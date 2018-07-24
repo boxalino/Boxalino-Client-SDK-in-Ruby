@@ -36,36 +36,36 @@
 	    def initialize( account, password, domain, isDev=false, host=nil, request=nil, port=nil, uri=nil, schema=nil, p13n_username=nil, p13n_password=nil)
 			@account = account
 			@password = password
-			#To Check Below Line 
+			#To Check Below Line
 		#	@requestMap = params
 			@isDev = isDev
 			@host = host
 	    @request = request
-			if (@host == nil) 
+			if (@host.nil?)
 				@host = "cdn.bx-cloud.com"
 			end
 
 			@port = port
-			if(@port == nil) 
+			if(@port.nil?)
 				@port = 443;
 			end
 			@uri = uri
-			if (@uri == nil) 
+			if (@uri.nil?)
 				@uri = '/p13n.web/p13n'
 			end
 
 			@schema = schema
-			if(@schema == nil) 
+			if(@schema.nil?)
 				@schema = 'https'
 			end
 
 			@p13n_username = p13n_username
-			if(@p13n_username == nil) 
+			if(@p13n_username.nil?)
 				@p13n_username = "boxalino"
 			end
 
 			@p13n_password = p13n_password
-			if(@p13n_password == nil) 
+			if(@p13n_password.nil?)
 				@p13n_password = "tkZ8EXfzeZc6SdXZntCU"
 			end
 			@domain = domain
@@ -180,14 +180,7 @@
 
 		@@transport = nil
 		def getP13n(timeout=2, useCurlIfAvailable=true)
-	   #, @port, @uri, @schema
-	   #Thrift::Transport
-			# transport = Thrift::HTTPClientTransport.new(@schema+"://"+@host+@uri, {:ssl_verify_mode => OpenSSL::SSL::VERIFY_NONE } )
-			# transport.add_headers({'Authorization'=>'Basic '+Base64.encode64(@p13n_username + ':'+ @p13n_password)})
-      #
-			# client = P13nService::Client.new(Thrift::CompactProtocol.new(transport))
-			# transport.open()
-			# return client
+
 			if(@@transport == nil)
 				@@transport = Thrift::ReusingHTTPClientTransport.new(@schema+"://"+@host+@uri)
 				@@transport.basic_auth @p13n_username, @p13n_password

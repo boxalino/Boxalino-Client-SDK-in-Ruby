@@ -183,10 +183,10 @@ class BxFacets
     end
 
     def getFacetResponseExtraInfo(facetResponse, extraInfoKey, defaultExtraInfoValue = nil) 
-        if(facetResponse) 
-            # if(facetResponse.extraInfo.kind_of?(Array) && facetResponse.extraInfo.size > 0 && facetResponse.extraInfo.keys[extraInfoKey])
-            #     return facetResponse.extraInfo[extraInfoKey]
-            # end
+        if(!facetResponse.extraInfo.nil?)
+            if(facetResponse.extraInfo.kind_of?(Array) && facetResponse.extraInfo.size > 0 && facetResponse.extraInfo.keys[extraInfoKey])
+                return facetResponse.extraInfo[extraInfoKey]
+            end
             return defaultExtraInfoValue
         end
         return defaultExtraInfoValue
@@ -362,7 +362,7 @@ class BxFacets
                     children.push(buildTree(response, parent.hierarchy,  parentLevel))
                     hitCountSum = hitCountSum + children[children.size-1]['node'].hitCount
                 end
-                root = Array.new
+                root = Hash.new
                 root['stringValue'] = '0/Root'
                 root['hitCount'] = hitCountSum
                 root['hierarchyId'] = 0
@@ -436,10 +436,10 @@ class BxFacets
 
     def getSelectedTreeNode(tree) 
         selectedCategoryId = nil
-        if(@facets['category_id'] != nil)
+        if(!@facets['category_id'].nil? && !@facets['category_id']['selectedValues'].nil?)
             selectedCategoryId = @facets['category_id']['selectedValues'][0]
         end
-        if(selectedCategoryId == nil) 
+        if(selectedCategoryId.nil?)
             begin
                 values = getFacetSelectedValues('category_id')
                 if(values.size > 0) 
@@ -472,10 +472,12 @@ class BxFacets
 
     def getCategoryById(categoryId) 
         facetResponse = getFacetResponse(getCategoryFieldName())
-        if(facetResponse != nil)
-            facetResponse.values.each do |bxFacet|
-                if(bxFacet.hierarchyId == categoryId) 
-                    return categoryId
+        if(!facetResponse.nil?)
+            if(!facetResponse.values.nil?)
+                facetResponse.values.each do |bxFacet|
+                    if(bxFacet.hierarchyId == categoryId)
+                        return categoryId
+                    end
                 end
             end
         end
@@ -508,7 +510,7 @@ class BxFacets
                 tree = buildTree(facetResponse.values)
                 tree = getSelectedTreeNode(tree)
                 node = getFirstNodeWithSeveralChildren(tree, minCategoryLevel)
-                if(!node.empty?)
+                if(!node.empty? && !node['children'].nil?)
                     node['children'].each do |node|
 
                             facetValues[node[1].stringValue] = node[1]
@@ -699,13 +701,15 @@ class BxFacets
     end
 
     def getTreeParent(tree, treeEnd) 
-        tree['children'].each do |child| 
-            if(child['node'].stringValue == treeEnd['node'].stringValue) 
-                return tree
-            end
-            parent = getTreeParent(child, treeEnd)
-            if(parent) 
-                return parent
+        if(!tree['children'].nil?)
+            tree['children'].each do |child|
+                if(child['node'].stringValue == treeEnd['node'].stringValue)
+                    return tree
+                end
+                parent = getTreeParent(child, treeEnd)
+                if(parent)
+                    return parent
+                end
             end
         end
         return nil
@@ -842,7 +846,7 @@ class BxFacets
 
     def getSelectedCategoryIds
         ids = Array.new
-        if (facets['category_id'])
+        if (!facets['category_id'].nil? || !facets['category_id'].empty?)
             ids = facets['category_id']['selectedValues']
         end
         return ids
@@ -1039,9 +1043,9 @@ class BxFacets
 
         thriftFacets = Array.new
         @facets.each do |fieldName , facet|
-            type = facet['type'];
-            order = facet['order'];
-            maxCount = facet['maxCount'];
+            type = facet['type']
+            order = facet['order']
+            maxCount = facet['maxCount']
             andSelectedValues =  facet['andSelectedValues']
             if(fieldName == @priceFieldName)
                 selectedPriceValues = facetSelectedValue(fieldName, type)

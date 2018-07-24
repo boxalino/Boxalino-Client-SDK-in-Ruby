@@ -85,11 +85,11 @@ class BxData
     end
 
     def addCSVCustomerFile(filePath, itemIdColumn, encoding = 'UTF-8', delimiter = ',', enclosure = "\&", escape = "\\\\", lineSeparator = "\\n", sourceId = nil, container = 'customers', validate=true, maxLength=23)
-        params = array('itemIdColumn'=>itemIdColumn, 'encoding'=>encoding, 'delimiter'=>delimiter, 'enclosure'=>enclosure, 'escape'=>escape, 'lineSeparator'=>lineSeparator);
+        params = {'itemIdColumn'=>itemIdColumn, 'encoding'=>encoding, 'delimiter'=>delimiter, 'enclosure'=>enclosure, 'escape'=>escape, 'lineSeparator'=>lineSeparator}
         if(sourceId == nil)
-            sourceId = getSourceIdFromFileNameFromPath(filePath, container, maxLength, true);
+            sourceId = getSourceIdFromFileNameFromPath(filePath, container, maxLength, true)
         end
-        return addSourceFile(filePath, sourceId, container, 'item_data_file', 'CSV', params, validate);
+        return addSourceFile(filePath, sourceId, container, 'item_data_file', 'CSV', params, validate)
     end
 
     def addCategoryFile(filePath, categoryIdColumn, parentIdColumn, categoryLabelColumns, encoding = 'UTF-8', delimiter = ',', enclosure = "\&", escape = "\\\\", lineSeparator = "\\n", sourceId = 'resource_categories', container = 'products', validate=true)
@@ -125,7 +125,7 @@ class BxData
         return addSourceFile(filePath, sourceId, container, 'transactions', fformat, params, validate)
     end
 
-    def addSourceFile(filePath, sourceId, container, type, fformat='CSV', params=Array.new, validate=true)
+    def addSourceFile(filePath, sourceId, container, type, fformat='CSV', params=Hash.new, validate=true)
         if(getLanguages().size==0)
             raise "trying to add a source before having declared the languages with method setLanguages"
         end
@@ -168,25 +168,27 @@ class BxData
     end
 
     def getSourceCSVRow(container, sourceId, row=0, maxRow = 2)
-        if(@sources[container][sourceId]['rows'].nil?)
-            begin
-              csv_text = File.read(@sources[container][sourceId]['filePath'])
-              csv = CSV.parse(csv_text, :headers => true)
-              count = 1;
-              @sources[container][sourceId]['rows'] = Array.new
-              csv.each do |row|
-                  @sources[container][sourceId]['rows'].push(row)
-                  count = count+1
-                  if( count >= maxRow)
-                      break
-                  end
+        if(!@sources[container].nil? && !@sources[container][sourceId].nil?)
+          if(@sources[container][sourceId]['rows'].nil?)
+              begin
+                csv_text = File.read(@sources[container][sourceId]['filePath'])
+                csv = CSV.parse(csv_text, :headers => true)
+                count = 1
+                @sources[container][sourceId]['rows'] = Array.new
+                csv.each do |row|
+                    @sources[container][sourceId]['rows'].push(row)
+                    count = count+1
+                    if( count >= maxRow)
+                        break
+                    end
+                end
+              rescue Exception => e
               end
-            rescue Exception => e
+          end
+          if(!@sources[container][sourceId]['rows'].nil?)
+            if(!@sources[container][sourceId]['rows'][row].nil?)
+                return @sources[container][sourceId]['rows'][row]
             end
-        end
-        if(!@sources[container][sourceId]['rows'].nil?)
-          if(!@sources[container][sourceId]['rows'][row].nil?)
-              return @sources[container][sourceId]['rows'][row]
           end
         end
         return nil
@@ -263,11 +265,11 @@ class BxData
         sourceId = decodeSourceKey(sourceKey)[1]
         if(@sources[container][sourceId].present?)
             if(!@sources[container][sourceId]['fields'].present?)
-                @sources[container][sourceId]['fields'] = Hash.new()
+                @sources[container][sourceId]['fields'] = Hash.new
             end
         else
             @sources[container][sourceId] = Hash.new
-            @sources[container][sourceId]['fields'] = Hash.new()
+            @sources[container][sourceId]['fields'] = Hash.new
         end
         @sources[container][sourceId]['fields'][fieldName] = {'type'=>type, 'localized'=>localized, 'map'=>colMap, 'referenceSourceKey'=>referenceSourceKey}
         if(@sources[container][sourceId]['format'] == 'CSV')
@@ -339,7 +341,7 @@ class BxData
             password = @bxClient.getPassword()
         end
 
-        params = Array.new
+        params = Hash.new
         params['Host'] = host
         params['Port'] = port
         params['User'] = user
@@ -357,6 +359,9 @@ class BxData
         params['SyncBrowsing'] = syncBrowsing
         container = decodeSourceKey(sourceKey)[0]
         sourceId = decodeSourceKey(sourceKey)[1]
+        if(@ftpSources.nil?)
+          @ftpSources = Hash.new
+        end
         @ftpSources[sourceId] = params
     end
   require 'nokogiri'
@@ -381,7 +386,7 @@ class BxData
         password = @bxClient.getPassword()
       end
 
-      params = Hash.new()
+      params = Hash.new
       params['WebDirectory'] = webDirectory
       params['User'] = user
       params['Pass'] = password
@@ -419,13 +424,13 @@ class BxData
                   if(@ftpSources[sourceId] != nil)
                     xml.source("id" => sourceId, "type" => sourceValues['type'] ,'additional_item_source'=> sourceValues['additional_item_source']) do
                       xml.location('type'=>'ftp')
-                      xml.ftp('name'=>'ftp')
-                      # @ftpSources[sourceId].each do |ftpPn , ftpPv|
-                      #     ftp->ftpPn = ftpPv
-                      # end
+                      xml.ftp('name'=>'ftp') do
+                        @ftpSources[sourceId].each do | ftpPv , ftpPn|
+                          xml.tag!(ftpPv,ftpPn)
+                        end
+                      end
                     end
                   else
-                    #To check Below line
                     xml.source('id' => sourceId, 'type' => sourceValues['type'] ,'additional_item_source'=> sourceValues['additional_item_source'])
                   end
                 else
@@ -442,7 +447,7 @@ class BxData
                     end
                   end
                   if(@httpSources == nil)
-                    @httpSources = Hash.new()
+                    @httpSources = Hash.new
                   end
 
                 end
@@ -632,19 +637,7 @@ class BxData
 
     def   callAPI(fields, url, temporaryFilePath=nil, timeout=60)
       uri = URI(url)
-      if(fields.size ==7)
-          #uri = URI('http://localhost/img/')
-          http = Net::HTTP.new(uri.host, uri.port)
 
-          request = Net::HTTP::Post.new(uri.path,{'Content-Type' => 'application/zip'})
-          request["content-type"] = 'multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW'
-          request.body = "------WebKitFormBoundary7MA4YWxkTrZu0gW\r\nContent-Disposition: form-data; name=\"username\"\r\n\r\ncsharp_unittest\r\n------WebKitFormBoundary7MA4YWxkTrZu0gW\r\nContent-Disposition: form-data; name=\"password\"\r\n\r\ncsharp_unittest\r\n------WebKitFormBoundary7MA4YWxkTrZu0gW\r\nContent-Disposition: form-data; name=\"account\"\r\n\r\ncsharp_unittest \r\n------WebKitFormBoundary7MA4YWxkTrZu0gW\r\nContent-Disposition: form-data; name=\"owner\"\r\n\r\nbx_client_data_api\r\n------WebKitFormBoundary7MA4YWxkTrZu0gW\r\nContent-Disposition: form-data; name=\"dev\"\r\n\r\nfalse\r\n------WebKitFormBoundary7MA4YWxkTrZu0gW\r\nContent-Disposition: form-data; name=\"delta\"\r\n\r\nfalse\r\n------WebKitFormBoundary7MA4YWxkTrZu0gW\r\nContent-Disposition: form-data; name=\"data\"; filename=\"bxdata.zip\"\r\nContent-Type: application/zip\r\n\r\n\r\n------WebKitFormBoundary7MA4YWxkTrZu0gW--"
-
-          response = http.request(request)
-          puts response.read_body
-        else
-            uri = URI(url)
-        end
         if uri.scheme == "https"
           uri.port = 443
         end
@@ -816,29 +809,7 @@ class BxData
       
       
         Zip::File.open(zipFilePath, Zip::File::CREATE) do |zipfile|
-            # foreach (files as f => filePath) 
-            #     if (!zip->addFile(filePath, f)) 
-            #         throw new \Exception(
-            #             'Synchronization failure: Failed to add file "' .
-            #             filePath . '" to the zip "' .
-            #             name . '". Please try again.'
-            #         );
-            #     }
-            # }
 
-            # if (!zip->addFromString ('properties.xml', this->getXML())) 
-            #     throw new \Exception(
-            #         'Synchronization failure: Failed to add xml string to the zip "' .
-            #         name . '". Please try again.'
-            #     );
-            # }
-
-            # if (!zip->close()) 
-            #     throw new \Exception(
-            #         'Synchronization failure: Failed to close the zip "' .
-            #         name . '". Please try again.'
-            #     );
-            # }
           files.each do |f, filePath|
             # Two arguments:
             # - The name of the file as it will appear in the archive
@@ -847,7 +818,6 @@ class BxData
           end
           zipfile.add('properties.xml', 'sample_data/properties.xml')
 
-          #zipfile.get_output_stream(zipFilePath) { |f| f.write "myFile contains just this" }
         end
 
        
@@ -865,24 +835,13 @@ class BxData
             'dev' => (@isDev ? 'true' : 'false'),
             'delta' => (@isDelta ? 'true' : 'false'),
             'data' => File.new(zipFile)
-           # 'data' => getCurlFile(zipFile, "application/zip")
         }
 
         url = @host + URL_ZIP
         return callAPI(fields, url, temporaryFilePath, timeout)
     end
 
-    # def getCurlFile(filename, type)
-    
-    #     begin 
-    #         if (class_exists('CURLFile')) 
-    #             return new \CURLFile(filename, type);
-    #         }
-    #     } catch(\Exception e) }
-    #     return "@filename;type=type";
-    # end
-
-    def getTaskExecuteUrl(taskName) 
+    def getTaskExecuteUrl(taskName)
         return @host + URL_EXECUTE_TASK + '?iframeAccount=' + @bxClient.getAccount() + '&task_process=' + taskName
     end
 
@@ -896,7 +855,6 @@ class BxData
         end
         url = getTaskExecuteUrl(taskName)
         document = open(url) { |f| f.read }
-        # File.read(url)
     end
 
     def prepareCorpusIndex(taskName="corpus") 
