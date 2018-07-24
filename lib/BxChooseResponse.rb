@@ -36,7 +36,7 @@
             finalNotifications = @notifications
             if(!@bxRequests.nil?  || !@bxRequests.empty?)
               @bxRequests.each do |bxRequest|
-                  finalNotifications.push(Array.new('name'=>'bxFacet', 'parameters'=>bxRequest.getChoiceId()))
+                  finalNotifications.push(Hash.new({'name'=>'bxFacet', 'parameters'=>bxRequest.getChoiceId()}))
                   bxRequest.getFacets().getNotifications().each do |notification|
                       finalNotifications.push(notification)
                   end
