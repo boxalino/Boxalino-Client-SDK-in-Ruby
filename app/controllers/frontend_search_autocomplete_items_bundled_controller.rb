@@ -9,7 +9,7 @@ class FrontendSearchAutocompleteItemsBundledController < ApplicationController
   @exception
   @fieldNames
   def frontend_search_autocomplete_items_bundled (account = "csharp_unittest", password ="csharp_unittest", exception = nil, bxHost = "cdn.bx-cloud.com",mockRequest = nil)
-  	require 'json'
+    require 'json'
     require 'BxClient'
     require 'BxAutocompleteRequest'
     #required parameters you should set for this example to work
@@ -39,18 +39,18 @@ class FrontendSearchAutocompleteItemsBundledController < ApplicationController
       queryTexts.each do |queryText|
         #//create search request
         bxRequest = BxAutocompleteRequest.new(language, queryText, textualSuggestionsHitCount)
-        
+
         #//N.B.: in case you would want to set a filter on a request and not another, you can simply do it by getting the searchchoicerequest with: $bxRequest->getBxSearchRequest() and adding a filter
-        
+
         #//set the fields to be returned for each item in the response
         bxRequest.getBxSearchRequest().setReturnFields(@fieldNames)
         bxRequests.push(bxRequest)
 
       end
-      
+
       #//set the request
       bxClient.setAutocompleteRequests(bxRequests)
-      
+
       #//make the query to Boxalino server and get back the response for all requests
       @bxAutocompleteResponses = bxClient.getAutocompleteResponses()
       i = -1
@@ -61,9 +61,9 @@ class FrontendSearchAutocompleteItemsBundledController < ApplicationController
         @logs.push("<h2>textual suggestions for "+queryText+":</h2>")
         bxAutocompleteResponse.getTextualSuggestions().each do |suggestion|
           @logs.push("<div style=\"border:1px solid; padding:10px; margin:10px\">");
-          @logs.push("<h3>"+suggestion+"</b></h3>")
+          @logs.push("<h3>"+suggestion.join(" ")+"</b></h3>")
 
-          @logs.push("item suggestions for suggestion "+suggestion+":")
+          @logs.push("item suggestions for suggestion "+suggestion.join(" ")+":")
           #//loop on the search response hit ids and print them
           bxAutocompleteResponse.getBxSearchResponse(suggestion).getHitFieldValues(fieldNames).each do |id ,fieldValueMap|
             @logs.push("<div>"+id)
@@ -87,8 +87,8 @@ class FrontendSearchAutocompleteItemsBundledController < ApplicationController
       end
 
       @message = @logs.join("<br/>")
-      
-    rescue Exception => e 
+
+    rescue Exception => e
 
       #be careful not to print the error message on your publish web-site as sensitive information like credentials might be indicated for debug purposes
       @message = e

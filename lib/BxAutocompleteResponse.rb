@@ -2,25 +2,25 @@ require 'digest'
 class BxAutocompleteResponse
 	@response
 	@bxAutocompleteRequest
-	
-	def initialize(response, bxAutocompleteRequest=nil) 
+
+	def initialize(response, bxAutocompleteRequest=nil)
 		@response = response
 		@bxAutocompleteRequest = bxAutocompleteRequest
 	end
-	
+
 	def getResponse
 		return @response
 	end
 
-    def getPrefixSearchHash
-        if (getResponse().prefixSearchResult.totalHitCount > 0) 
-            hashcode = Digest::MD5.hexdigest getResponse().prefixSearchResult.queryText
-            return hashcode[ 0, 10]
-        else 
-            return nil
-        end
-    end
-	
+	def getPrefixSearchHash
+		if (getResponse().prefixSearchResult.totalHitCount > 0)
+			hashcode = Digest::MD5.hexdigest getResponse().prefixSearchResult.queryText
+			return hashcode[ 0, 10]
+		else
+			return nil
+		end
+	end
+
 	def getTextualSuggestions
 		suggestions = Hash.new
 		if(!getResponse().hits.nil?)
@@ -35,39 +35,39 @@ class BxAutocompleteResponse
 		end
 		return reOrderSuggestions(suggestions)
 	end
-	
-	def suggestionIsInGroup(groupName, suggestion) 
+
+	def suggestionIsInGroup(groupName, suggestion)
 		hit = getTextualSuggestionHit(suggestion)
 		case groupName
 		when 'highlighted-beginning'
 			if (!hit.highlighted.nil?)
-        if( hit.highlighted.index(@bxAutocompleteRequest.getHighlightPre()) == nil)
-				  return true
-        end
+				if( hit.highlighted.index(@bxAutocompleteRequest.getHighlightPre()) == nil)
+					return true
+				end
 			else
 				return false
 			end
 
 		when 'highlighted-not-beginning'
 			if (!hit.highlighted.nil?)
-        if(hit.highlighted.index(@bxAutocompleteRequest.getHighlightPre()) != nil)
-				  return true
-        end
+				if(hit.highlighted.index(@bxAutocompleteRequest.getHighlightPre()) != nil)
+					return true
+				end
 			else
 				return false
 			end
 		else
-			if hit.highlighted == "" 
+			if hit.highlighted == ""
 				return true
 			else
 				return false
 			end
 		end
 	end
-	
-	def reOrderSuggestions(suggestions) 
+
+	def reOrderSuggestions(suggestions)
 		queryText = getSearchRequest().getQuerytext()
-		
+
 		groupNames = ['highlighted-beginning', 'highlighted-not-beginning', 'others']
 		groupValues = Hash.new
 		k = 0
@@ -80,15 +80,17 @@ class BxAutocompleteResponse
 				groupValues[k] = Hash.new
 			end
 			if(!suggestions.nil?)
+				suggestionGroup = Array.new
 				suggestions.each do |suggestion|
 					if (suggestionIsInGroup(groupName, suggestion))
-						groupValues[k].push(suggestion)
+						suggestionGroup.push(suggestion)
 					end
 				end
+				groupValues[k] = suggestionGroup
 			end
 			k +=1
 		end
-		
+
 		final = Array.new
 		groupValues.each do |values|
 			if !values.nil?  && !values[1].nil?
@@ -97,11 +99,11 @@ class BxAutocompleteResponse
 				end
 			end
 		end
-		
+
 		return final
 	end
-	
-	def getTextualSuggestionHit(suggestion) 
+
+	def getTextualSuggestionHit(suggestion)
 		if(!getResponse().hits.empty?)
 			getResponse().hits.each do |hit|
 				if (hit.suggestion == suggestion[0])
@@ -111,19 +113,19 @@ class BxAutocompleteResponse
 		end
 		raise "unexisting textual suggestion provided " + suggestion.to_s
 	end
-	
-	def getTextualSuggestionTotalHitCount(suggestion) 
+
+	def getTextualSuggestionTotalHitCount(suggestion)
 		hit = getTextualSuggestionHit(suggestion)
 		return hit.searchResult.totalHitCount
 	end
-	
+
 	def getSearchRequest
 		return @bxAutocompleteRequest.getBxSearchRequest()
 	end
-	
-	def getTextualSuggestionFacets(suggestion) 
+
+	def getTextualSuggestionFacets(suggestion)
 		hit = getTextualSuggestionHit(suggestion)
-	
+
 		facets = getSearchRequest().getFacets()
 
 		if (facets.nil? || facets == "" )
@@ -132,20 +134,20 @@ class BxAutocompleteResponse
 		facets.setSearchResults(hit.searchResult)
 		return facets
 	end
-	
-	def getTextualSuggestionHighlighted(suggestion) 
+
+	def getTextualSuggestionHighlighted(suggestion)
 		hit = getTextualSuggestionHit(suggestion)
-		if(hit.highlighted == "") 
+		if(hit.highlighted == "")
 			return suggestion
 		end
 		return hit.highlighted
 	end
-	
-	def getBxSearchResponse(textualSuggestion = nil) 
+
+	def getBxSearchResponse(textualSuggestion = nil)
 		searchResult = textualSuggestion.nil? ? getResponse().prefixSearchResult : getTextualSuggestionHit(textualSuggestion).searchResult
 		return BxChooseResponse.new(searchResult, @bxAutocompleteRequest.getBxSearchRequest())
 	end
-	
+
 	def getPropertyHits(field)
 		if(!getResponse().propertyResults.nil? || !getResponse().propertyResults.empty?)
 			getResponse().propertyResults.each do |propertyResult|
@@ -156,7 +158,7 @@ class BxAutocompleteResponse
 		end
 		return Array.new
 	end
-	
+
 	def getPropertyHit(field, hitValue)
 		if(!getPropertyHits(field).nil? || !getPropertyHits(field).empty?)
 			getPropertyHits(field).each do |hit|
@@ -167,8 +169,8 @@ class BxAutocompleteResponse
 		end
 		return nil
 	end
-	
-	def getPropertyHitValues(field) 
+
+	def getPropertyHitValues(field)
 		hitValues = Array.new
 		if(!getPropertyHits(field).nil? || !getPropertyHits(field).empty?)
 			getPropertyHits(field).each do |hit|
@@ -177,21 +179,21 @@ class BxAutocompleteResponse
 		end
 		return hitValues
 	end
-	
-	def getPropertyHitValueLabel(field, hitValue) 
+
+	def getPropertyHitValueLabel(field, hitValue)
 		hit = getPropertyHit(field, hitValue)
 		if (!hit.nil?)
 			return hit.label
 		end
 		return nil
 	end
-	
-	def getPropertyHitValueTotalHitCount(field, hitValue) 
+
+	def getPropertyHitValueTotalHitCount(field, hitValue)
 		hit = getPropertyHit(field, hitValue)
 		if (!hit.nil?)
 			return hit.totalHitCount
 		end
 		return nil
 	end
-	
+
 end

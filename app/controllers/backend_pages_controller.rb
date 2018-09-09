@@ -212,7 +212,7 @@ class BackendPagesController < ApplicationController
       sourceKey = bxData.addMainXMLItemFile(mainProductFile, itemIdColumn, productsXPath)
 
       #add a xml file with products ids to categories ids
-      $productToCategoriesSourceKey = bxData.addXMLItemFile(productCategoryFile, itemIdColumn, productCategoryXPath)
+      productToCategoriesSourceKey = bxData.addXMLItemFile(productCategoryFile, itemIdColumn, productCategoryXPath)
 
       #add a xml file with categories
       bxData.addXMLCategoryFile(categoryFile, categoryIdColumn, parentCategoryIdColumn, categoryLabelColumns, categoriesXPath)
@@ -602,7 +602,7 @@ class BackendPagesController < ApplicationController
         bxData.pushDataSpecifications();
 
         @logs.push("publish the api owner changes") #if the specifications have changed since the last time they were pushed
-        $bxData.publishChanges()
+        bxData.publishChanges()
       end
 
       @logs.push("push the data for data sync")
@@ -650,7 +650,7 @@ class BackendPagesController < ApplicationController
         bxData.pushDataSpecifications();
 
         @logs.push("publish the api owner changes") #if the specifications have changed since the last time they were pushed
-        $bxData.publishChanges()
+        bxData.publishChanges()
       end
 
       @logs.push("push the data for data sync")

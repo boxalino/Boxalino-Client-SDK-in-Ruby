@@ -7,7 +7,7 @@ class StaticPagesController < ApplicationController
     require 'builder'
   sources = ['test','developer']
   sourcesR = ['test'=>'developer']
-     xml = Builder::XmlMarkup.new( :target => $stdout, :indent => 2 )
+     xml = Builder::XmlMarkup.new( :target => stdout, :indent => 2 )
       #languages
       tests ="MyCustomTag"
       xml.languages do 

@@ -9,7 +9,7 @@ class FrontendSearchAutocompleteItemsController < ApplicationController
   @exception
   @fieldNames
   def frontend_search_autocomplete_items (account = "boxalino_automated_tests2", password ="boxalino_automated_tests2", exception = nil, bxHost = "cdn.bx-cloud.com",mockRequest = nil)
-  	require 'json'
+    require 'json'
     require 'BxClient'
     require 'BxAutocompleteRequest'
     #required parameters you should set for this example to work
@@ -37,13 +37,13 @@ class FrontendSearchAutocompleteItemsController < ApplicationController
 
       #//create search request
       bxRequest = BxAutocompleteRequest.new(language, queryText, textualSuggestionsHitCount)
-      
+
       #//set the fields to be returned for each item in the response
       bxRequest.getBxSearchRequest().setReturnFields(fieldNames)
-      
+
       #//set the request
       bxClient.setAutocompleteRequest(bxRequest)
-      
+
       #//make the query to Boxalino server and get back the response for all requests
       @bxAutocompleteResponse = bxClient.getAutocompleteResponse()
 
@@ -51,9 +51,9 @@ class FrontendSearchAutocompleteItemsController < ApplicationController
       @logs.push("textual suggestions for "+queryText+":<br>")
       @bxAutocompleteResponse.getTextualSuggestions().each do |suggestion|
         @logs.push("<div style=\"border:1px solid; padding:10px; margin:10px\">")
-        @logs.push("<h3>"+suggestion+"</b></h3>")
+        @logs.push("<h3>"+suggestion.join(" ")+"</b></h3>")
 
-        @logs.push("item suggestions for suggestion "+suggestion+":<br>")
+        @logs.push("item suggestions for suggestion "+suggestion.join(" ")+":<br>")
         #//loop on the search response hit ids and print them
         @bxAutocompleteResponse.getBxSearchResponse(suggestion).getHitFieldValues(fieldNames).each do |id , fieldValueMap|
           @logs.push("<div>"+id);
@@ -76,8 +76,8 @@ class FrontendSearchAutocompleteItemsController < ApplicationController
       end
 
       @message = @logs.join("<br/>")
-      
-    rescue Exception => e 
+
+    rescue Exception => e
 
       #be careful not to print the error message on your publish web-site as sensitive information like credentials might be indicated for debug purposes
       @message =  e
