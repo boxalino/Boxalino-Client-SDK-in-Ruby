@@ -362,13 +362,13 @@ class BxFacets
                     children.push(buildTree(response, parent.hierarchy,  parentLevel))
                     hitCountSum = hitCountSum + children[children.size-1]['node'].hitCount
                 end
-                root = Hash.new
+                root = Array.new
                 root['stringValue'] = '0/Root'
                 root['hitCount'] = hitCountSum
                 root['hierarchyId'] = 0
                 root['hierarchy'] = Array.new
                 root['selected'] = false
-                return Array.new('node'=>root, 'children'=>children)
+                return {'node'=>root, 'children'=>children}
             end
         end
         children = Array.new
@@ -376,14 +376,15 @@ class BxFacets
             if(node.hierarchy.size == parentLevel + 2)
                 allTrue = true
                 i = 0
-                parents.each do | v|
-                    if(node.hierarchy[i] == nil || node.hierarchy[i] != v)
+                parents.each do | v |
+                    if(node.hierarchy[i].nil? || node.hierarchy[i] != v)
                         allTrue = false
                     end
                     i += 1
                 end
                 if(allTrue == true)
-                    children.push(buildTree(response, node.hierarchy, parentLevel+1))
+                    newChild=buildTree(response, node.hierarchy, parentLevel+1)
+                    children.push(newChild)
                 end
             end
         end
@@ -391,12 +392,12 @@ class BxFacets
             if(node.hierarchy.size == parentLevel + 1)
                 allTrue = true
                 node.hierarchy do |k , v|
-                    if(parents[k] == nil || parents[k] != v)
+                    if(!parents[k] || parents[k] != v)
                         allTrue = false
                     end
                 end
                 if(allTrue == true)
-                    return Hash.new({'node'=>node, 'children'=>children})
+                    return {"node"=> node, "children"=>children}
                 end
             end
         end
@@ -446,13 +447,12 @@ class BxFacets
                     selectedCategoryId = values[0]
                 end
             rescue => ex
-
             end
         end
         if(selectedCategoryId == nil)
             return tree
         end
-        if(tree['node'] != nil)
+        if(tree.nil? || tree['node'].nil?)
             return nil
         end
         tempPart = tree['node'].stringValue
@@ -511,8 +511,12 @@ class BxFacets
             tree = getSelectedTreeNode(tree)
             node = getFirstNodeWithSeveralChildren(tree, minCategoryLevel)
             if(node && !node.empty? && !node.nil? && !node['children'].nil?)
-                node['children'].each do |node|
-                    facetValues[node[1].stringValue] = node[1]
+                node['children'].each do |childNode|
+                    if(childNode && !childNode.empty? && !childNode.nil? && !childNode['children'].nil?)
+                        childNode['children'].each do |child|
+                            facetValues[child["node"].stringValue] = child["node"]
+                        end
+                    end
                 end
             end
         when 'ranged'
@@ -862,7 +866,7 @@ class BxFacets
     def getFacetValues(fieldName, ranking='alphabetical', minCategoryLevel=0)
         @lastSetMinCategoryLevel = minCategoryLevel
         facetKeysValues = getFacetKeysValues(fieldName, ranking, minCategoryLevel)
-        if (facetKeysValues.kind_of?(Array))
+        if (facetKeysValues.kind_of?(Hash) || facetKeysValues.kind_of?(Array))
             return facetKeysValues.to_h.keys
         end
         return Array.new
