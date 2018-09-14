@@ -18,76 +18,76 @@ class BxAutocompleteRequest
 		@choiceId = autocompleteChoiceId
 		@propertyQueries = Array.new()
 		@bxSearchRequest = BxSearchRequest.new(language, queryText, productSuggestionHitCount, searchChoiceId)
-	end 
+	end
 
-	def getBxSearchRequest() 
+	def getBxSearchRequest()
 		return @bxSearchRequest
 	end
-	
-	def setBxSearchRequest(bxSearchRequest) 
+
+	def setBxSearchRequest(bxSearchRequest)
 		@bxSearchRequest = bxSearchRequest;
 	end
 
-	def getLanguage 
+	def getLanguage
 		return @language
 	end
-	
-	def  setLanguage(language) 
+
+	def  setLanguage(language)
 		@language = language
 	end
-	
-	def getQuerytext 
+
+	def getQuerytext
 		return @queryText
 	end
-	
-	def  setQuerytext(queryText) 
+
+	def  setQuerytext(queryText)
 		@queryText = queryText
 	end
 
-	def getChoiceId 
+	def getChoiceId
 		return @choiceId
 	end
-	
-	def setChoiceId(choiceId) 
+
+	def setChoiceId(choiceId)
 		@choiceId = choiceId
 	end
-	
-	def getTextualSuggestionHitCount() 
+
+	def getTextualSuggestionHitCount()
 		return @textualSuggestionsHitCount
 	end
-	
-	def setTextualSuggestionHitCount(textualSuggestionsHitCount) 
+
+	def setTextualSuggestionHitCount(textualSuggestionsHitCount)
 		@textualSuggestionsHitCount = textualSuggestionsHitCount
 	end
 
-	def getIndexId 
+	def getIndexId
 		return @indexId
 	end
-	
-	def setIndexId(indexId) 
+
+	def setIndexId(indexId)
 		@indexId = indexId
 	end
 
-	def setDefaultIndexId(indexId) 
+	def setDefaultIndexId(indexId)
 		if @indexId == nil
 			setIndexId(indexId)
 		end
 		@bxSearchRequest.setDefaultIndexId(indexId)
 	end
-	
-	def getHighlight 
+
+	def getHighlight
 		return @highlight
 	end
-	
-	def getHighlightPre 
+
+	def getHighlightPre
 		return @highlightPre
 	end
-	
-	def getHighlightPost() 
+
+	def getHighlightPost()
 		return @highlightPost
 	end
-	
-	def getAutocompleteQuery() 
+
+	def getAutocompleteQuery()
 		autocompleteQuery = AutocompleteQuery.new()
 		autocompleteQuery.indexId = getIndexId()
 		autocompleteQuery.language = @language
@@ -101,19 +101,19 @@ class BxAutocompleteRequest
 
 	@propertyQueries = Array.new()
 
-	def addPropertyQuery(field, hitCount, evaluateTotal=false) 
+	def addPropertyQuery(field, hitCount, evaluateTotal=false)
 		propertyQuery = PropertyQuery.new()
 		propertyQuery.name = field
 		propertyQuery.hitCount = hitCount
 		propertyQuery.evaluateTotal = evaluateTotal
 		@propertyQueries.push(propertyQuery)
 	end
-	
-	def resetPropertyQueries() 
+
+	def resetPropertyQueries()
 		@propertyQueries = Hash.new()
 	end
-	
-	def getAutocompleteThriftRequest(profileid, thriftUserRecord) 
+
+	def getAutocompleteThriftRequest(profileid, thriftUserRecord)
 		autocompleteRequest = AutocompleteRequest.new()
 		autocompleteRequest.userRecord = thriftUserRecord
 		autocompleteRequest.profileId = profileid
@@ -122,9 +122,8 @@ class BxAutocompleteRequest
 		autocompleteRequest.searchChoiceId = @bxSearchRequest.getChoiceId()
 		autocompleteRequest.autocompleteQuery = getAutocompleteQuery()
 		if (@propertyQueries.length > 0 )
-		#	autocompleteRequest.propertyQueries = @propertyQueries
+			#	autocompleteRequest.propertyQueries = @propertyQueries
 		end
 		return autocompleteRequest
 	end
-	
 end

@@ -24,7 +24,7 @@ class FrontendSearchSubPhrasesController < ApplicationController
     end
 
     @isDelta = false #are the data to be pushed full data (reset index) or delta (add/modify index)?
-    bxClient =BxClient.new(@account, @password, @domain ,  @isDev, @host, request)
+    bxClient =BxClient.new(@account, @password, @domain ,  @isDev, @host, request, params)
     bxClient.setCookieContainer(cookies)
     begin
 
@@ -72,7 +72,7 @@ class FrontendSearchSubPhrasesController < ApplicationController
 
       #be careful not to print the error message on your publish web-site as sensitive information like credentials might be indicated for debug purposes
       @message =  e
-      @exception = e
+      @exception = e.backtrace
     end
   end
 end

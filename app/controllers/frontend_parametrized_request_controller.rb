@@ -1,6 +1,6 @@
 class FrontendParametrizedRequestController < ApplicationController
   def frontend_parametrized_request (account = "csharp_unittest", password ="csharp_unittest", exception = nil, bxHost = "cdn.bx-cloud.com",mockRequest = nil)
-  	require 'json'
+    require 'json'
     require 'BxClient'
     require 'BxParametrizedRequest'
     #required parameters you should set for this example to work
@@ -17,7 +17,7 @@ class FrontendParametrizedRequestController < ApplicationController
     else
       request = ActionDispatch::Request.new({"url"=>"/frontend_parametrized_request/frontend_parametrized_request","uri"=>"http://localhost:3000/", "host" => "localhost", "REMOTE_ADDR" => "127.0.0.1", "protocol" => "http"})
     end
-    bxClient =BxClient.new(@account, @password, @domain ,  @isDev, @host, request)
+    bxClient =BxClient.new(@account, @password, @domain ,  @isDev, @host, request, params)
     bxClient.setCookieContainer(cookies)
     begin
 
@@ -29,19 +29,19 @@ class FrontendParametrizedRequestController < ApplicationController
       requestFacetsPrefix = "bxfa_"
       requestSortFieldPrefix = "bxsf_"
       requestReturnFieldsName= "bxrf"
-      
+
       bxReturnFields = "id" #the list of fields which should be returned directly by Boxalino, the others will be retrieved through a call-back function
       getItemFieldsCB = "getItemFieldsCB"
-      
+
       #//create the request and set the parameter prefix values
       bxRequest = BxParametrizedRequest.new(language, choiceId, hitCount, 0, bxReturnFields, getItemFieldsCB)
       bxRequest.setRequestWeightedParametersPrefix(requestWeightedParametersPrefix)
       bxRequest.setRequestFiltersPrefix(requestFiltersPrefix)
       bxRequest.setRequestFacetsPrefix(requestFacetsPrefix)
       bxRequest.setRequestSortFieldPrefix(requestSortFieldPrefix)
-      
+
       bxRequest.setRequestReturnFieldsName(requestReturnFieldsName)
-      
+
       #//add the request
       bxClient.addRequest(bxRequest)
       # //make the query to Boxalino server and get back the response for all requests
@@ -81,12 +81,12 @@ class FrontendParametrizedRequestController < ApplicationController
       @logs.push(bxResponse.toJson(bxRequest.getAllReturnFields()))
 
       @message = @logs.join("<br/>")
-      
-    rescue Exception => e 
+
+    rescue Exception => e
 
       #be careful not to print the error message on your publish web-site as sensitive information like credentials might be indicated for debug purposes
       @message =  e
-      @exception = e
+      @exception = e.backtrace
     end
   end
 end

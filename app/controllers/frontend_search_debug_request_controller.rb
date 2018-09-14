@@ -25,10 +25,8 @@ class FrontendSearchDebugRequestController < ApplicationController
     end
     @isDelta = false #are the data to be pushed full data (reset index) or delta (add/modify index)?
     offset = 0
-    @bxClient =BxClient.new(@account, @password, @domain ,  @isDev, @host, request)
+    @bxClient =BxClient.new(@account, @password, @domain ,  @isDev, @host, request, params)
     bxClient.setCookieContainer(cookies)
-    #To Check Below Line
-    #bxClient.setRequestMap($_REQUEST);
     begin
 
       language = "de" # a valid language code (e.g.: "en", "fr", "de", "it", ...)
@@ -45,7 +43,7 @@ class FrontendSearchDebugRequestController < ApplicationController
       @bxClient.addRequest(bxRequest)
 
       #//make the query to Boxalino server and get back the response for all requests
-       bxResponse = @bxClient.getResponse()
+      bxResponse = @bxClient.getResponse()
 
       #//print the request object which is sent to our server (please provide it to Boxalino in all your support requests)
 
@@ -55,7 +53,7 @@ class FrontendSearchDebugRequestController < ApplicationController
 
       #be careful not to print the error message on your publish web-site as sensitive information like credentials might be indicated for debug purposes
       @message =  e
-      @exception = e
+      @exception = e.backtrace
     end
   end
 end

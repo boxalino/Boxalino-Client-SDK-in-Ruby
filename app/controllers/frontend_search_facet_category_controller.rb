@@ -79,7 +79,7 @@ class FrontendSearchFacetCategoryController < ApplicationController
 
       #be careful not to print the error message on your publish web-site as sensitive information like credentials might be indicated for debug purposes
       @message =  e
-      @exception = e
+      @exception = e.exception
     end
   end
 end

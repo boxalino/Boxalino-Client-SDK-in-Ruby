@@ -9,7 +9,7 @@ class FrontendSearchAutocompletePropertyController < ApplicationController
   @property
   @exception
   def frontend_search_autocomplete_property (account = "boxalino_automated_tests2", password ="boxalino_automated_tests2", exception = nil, bxHost = "cdn.bx-cloud.com",mockRequest = nil)
-  	require 'json'
+    require 'json'
     require 'BxClient'
     require 'BxAutocompleteRequest'
     #required parameters you should set for this example to work
@@ -26,7 +26,7 @@ class FrontendSearchAutocompletePropertyController < ApplicationController
       request = ActionDispatch::Request.new({"url"=>"/frontend_search_autocomplete_property/frontend_search_autocomplete_property","uri"=>"http://localhost:3000/", "host" => "localhost", "REMOTE_ADDR" => "127.0.0.1", "protocol" => "http"})
     end
     @isDelta = false #are the data to be pushed full data (reset index) or delta (add/modify index)?
-    bxClient =BxClient.new(@account, @password, @domain ,  @isDev, @host, request)
+    bxClient =BxClient.new(@account, @password, @domain ,  @isDev, @host, request, params)
     bxClient.setCookieContainer(cookies)
     begin
 
@@ -39,10 +39,10 @@ class FrontendSearchAutocompletePropertyController < ApplicationController
 
       #//create search request
       bxRequest = BxAutocompleteRequest.new(language, queryText, textualSuggestionsHitCount)
-      
+
       #//indicate to the request a property index query is requested
       bxRequest.addPropertyQuery(property, propertyTotalHitCount, true)
-      
+
       #//set the request
       bxClient.setAutocompleteRequest(bxRequest)
       #make the query to Boxalino server and get back the response for all requests
@@ -58,12 +58,12 @@ class FrontendSearchAutocompletePropertyController < ApplicationController
       end
 
       @message = @logs.join("<br/>")
-      
-    rescue Exception => e 
+
+    rescue Exception => e
 
       #be careful not to print the error message on your publish web-site as sensitive information like credentials might be indicated for debug purposes
       @message =  e
-      @exception = e
+      @exception = e.backtrace
     end
   end
 end

@@ -6,7 +6,7 @@ class FrontendSearchAutocompleteBasicController < ApplicationController
   @bxAutocompleteResponse
   @exception
   def frontend_search_autocomplete_basic (account = "csharp_unittest", password ="csharp_unittest", exception = nil, bxHost = "cdn.bx-cloud.com",mockRequest = nil)
-  	require 'json'
+    require 'json'
     require 'BxClient'
     require 'BxAutocompleteRequest'
     #required parameters you should set for this example to work
@@ -33,13 +33,13 @@ class FrontendSearchAutocompleteBasicController < ApplicationController
 
       #//create search request
       bxRequest = BxAutocompleteRequest.new(language, queryText, textualSuggestionsHitCount)
-      
+
       #//set the request
       bxClient.setAutocompleteRequest(bxRequest)
-      
+
       #//make the query to Boxalino server and get back the response for all requests
       @bxAutocompleteResponse = bxClient.getAutocompleteResponse()
-      
+
       #//loop on the search response hit ids and print them
       @logs.push("textual suggestions for "+queryText+":")
       if(!@bxAutocompleteResponse.nil?)
@@ -48,18 +48,18 @@ class FrontendSearchAutocompleteBasicController < ApplicationController
           @logs.push(@bxAutocompleteResponse.getTextualSuggestionHighlighted(suggestion))
         end
       end
-      
+
       if(@bxAutocompleteResponse.getTextualSuggestions().size== 0)
         @logs.push("There are no autocomplete textual suggestions. This might be normal, but it also might mean that the first execution of the autocomplete index preparation was not done and published yet. Please refer to the example backend_data_init and make sure you have done the following steps at least once: 1) publish your data 2) run the prepareAutocomplete case 3) publish your data again");
       end
 
       @message = @logs.join("<br/>")
-      
-    rescue Exception => e 
+
+    rescue Exception => e
 
       #be careful not to print the error message on your publish web-site as sensitive information like credentials might be indicated for debug purposes
       @message =  e
-      @exception = e
+      @exception = e.exception
     end
   end
 end

@@ -38,19 +38,19 @@ class FrontendPagesController < ApplicationController
       requestFacetsPrefix = "bxfa_"
       requestSortFieldPrefix = "bxsf_"
       requestReturnFieldsName= "bxrf"
-      
+
       bxReturnFields = "id" #the list of fields which should be returned directly by Boxalino, the others will be retrieved through a call-back function
       getItemFieldsCB = "getItemFieldsCB"
-      
+
       #//create the request and set the parameter prefix values
       bxRequest = BxParametrizedRequest.new(language, choiceId, hitCount, 0, bxReturnFields, getItemFieldsCB)
       bxRequest.setRequestWeightedParametersPrefix(requestWeightedParametersPrefix)
       bxRequest.setRequestFiltersPrefix(requestFiltersPrefix)
       bxRequest.setRequestFacetsPrefix(requestFacetsPrefix)
       bxRequest.setRequestSortFieldPrefix(requestSortFieldPrefix)
-      
+
       bxRequest.setRequestReturnFieldsName(requestReturnFieldsName)
-      
+
       #//add the request
       bxClient.addRequest(bxRequest)
       # j = ActiveSupport::JSON
@@ -92,8 +92,8 @@ class FrontendPagesController < ApplicationController
       @logs.push(bxResponse.toJson(bxRequest.getAllReturnFields()))
 
       @message = @logs.join("<br/>")
-      
-    rescue Exception => e 
+
+    rescue Exception => e
 
       #be careful not to print the error message on your publish web-site as sensitive information like credentials might be indicated for debug purposes
       @message =  e
@@ -102,16 +102,16 @@ class FrontendPagesController < ApplicationController
   end
 
   def getItemFieldsCB(ids, fieldNames)
-  #todo your code here to retrieve the fields values
-  values = Array.new
-  ids.each do |id|
-    values[id] = Array.new
-    fieldNames.each  do |fieldName|
-      values[id][fieldName] = [fieldName + "-value"]
+    #todo your code here to retrieve the fields values
+    values = Array.new
+    ids.each do |id|
+      values[id] = Array.new
+      fieldNames.each  do |fieldName|
+        values[id][fieldName] = [fieldName + "-value"]
+      end
     end
+    return values
   end
-  return values
-end
 
   def frontend_recommendations_basket
     require 'json'
@@ -192,16 +192,16 @@ end
 
       #//create similar recommendations request
       bxRequest = BxRecommendationRequest.new(language, choiceId, hitCount)
-      
+
       #//indicate the product the user is looking at now (reference of what the recommendations need to be similar to)
       # bxRequest.setProductContext(itemFieldId, itemFieldIdValue)
-      
+
       #//add the request
       bxClient.addRequest(bxRequest)
-      
+
       #//make the query to Boxalino server and get back the response for all requests
       bxResponse = bxClient.getResponse()
-      
+
       #//loop on the recommended response hit ids and print them
       i = 0
       bxResponse.getHitIds().each do | id|
@@ -210,8 +210,8 @@ end
       end
 
       @message = @logs.join("<br/>")
-      
-    rescue Exception => e 
+
+    rescue Exception => e
 
       #be careful not to print the error message on your publish web-site as sensitive information like credentials might be indicated for debug purposes
       @message =  e
@@ -250,18 +250,18 @@ end
       bxRequestSimilar.setProductContext(itemFieldId, itemFieldIdValue)
       #//add the request
       bxClient.addRequest(bxRequestSimilar)
-      
-      
+
+
       #//create complementary recommendations request
       bxRequestComplementary = BxRecommendationRequest.new(language, choiceIdComplementary, hitCount)
       #//indicate the product the user is looking at now (reference of what the recommendations need to be similar to)
       bxRequestComplementary.setProductContext(itemFieldId, itemFieldIdValue)
       #//add the request
       bxClient.addRequest(bxRequestComplementary)
-      
+
       #//make the query to Boxalino server and get back the response for all requests (make sure you have added all your requests before calling getResponse; i.e.: do not push the first request, then call getResponse, then add a new request, then call getResponse again it wil not work; N.B.: if you need to do to separate requests call, then you cannot reuse the same instance of BxClient, but need to create a new one)
       bxResponse = bxClient.getResponse()
-      
+
       #//loop on the recommended response hit ids and print them
       @logs.push("recommendations of similar items:")
       i = 0
@@ -281,8 +281,8 @@ end
       end
 
       @message = @logs.join("<br/>")
-      
-    rescue Exception => e 
+
+    rescue Exception => e
 
       #be careful not to print the error message on your publish web-site as sensitive information like credentials might be indicated for debug purposes
       @message =  e
@@ -312,19 +312,19 @@ end
       queryText = "watch" # a search query
       hitCount = 5 #a maximum number of search result to return in one page
       offset = 5 #the offset to start the page with (if = hitcount ==> page 2)
-      
+
       #//create search request
       bxRequest = BxSearchRequest.new(language, queryText, hitCount)
-      
+
       #//set an offset for the returned search results (start at position provided)
       bxRequest.setOffset(offset)
-      
+
       #//add the request
       bxClient.addRequest(bxRequest)
-      
+
       #make the query to Boxalino server and get back the response for all requests
       bxResponse = bxClient.getResponse()
-      
+
       #//loop on the search response hit ids and print them
       i = 0
       bxResponse.getHitIds().each do |id|
@@ -332,8 +332,8 @@ end
       end
 
       @message = @logs.join("<br/>")
-      
-    rescue Exception => e 
+
+    rescue Exception => e
 
       #be careful not to print the error message on your publish web-site as sensitive information like credentials might be indicated for debug purposes
       @message =  e
@@ -365,13 +365,13 @@ end
 
       #//create search request
       bxRequest = BxAutocompleteRequest.new(language, queryText, textualSuggestionsHitCount)
-      
+
       #//set the request
       bxClient.setAutocompleteRequest(bxRequest)
-      
+
       #//make the query to Boxalino server and get back the response for all requests
       bxAutocompleteResponse = bxClient.getAutocompleteResponse()
-      
+
       #//loop on the search response hit ids and print them
       @logs.push("textual suggestions for "+queryText+":")
       if(!bxAutocompleteResponse.nil?)
@@ -380,14 +380,14 @@ end
           @logs.push(bxAutocompleteResponse.getTextualSuggestionHighlighted(suggestion))
         end
       end
-      
-      if(bxAutocompleteResponse.getTextualSuggestions().size== 0) 
+
+      if(bxAutocompleteResponse.getTextualSuggestions().size== 0)
         @logs.push("There are no autocomplete textual suggestions. This might be normal, but it also might mean that the first execution of the autocomplete index preparation was not done and published yet. Please refer to the example backend_data_init and make sure you have done the following steps at least once: 1) publish your data 2) run the prepareAutocomplete case 3) publish your data again");
       end
 
       @message = @logs.join("<br/>")
-      
-    rescue Exception => e 
+
+    rescue Exception => e
 
       #be careful not to print the error message on your publish web-site as sensitive information like credentials might be indicated for debug purposes
       @message =  e
@@ -420,39 +420,39 @@ end
 
       #//create search request
       bxRequest = BxAutocompleteRequest.new(language, queryText, textualSuggestionsHitCount)
-      
+
       bxSearchRequest = bxRequest.getBxSearchRequest()
-      
+
       facets = BxFacets.new()
       facets.addCategoryFacet()
       bxSearchRequest.setFacets(facets)
-      
+
       #//set the request
       bxClient.setAutocompleteRequest(bxRequest)
-      
+
       #//make the query to Boxalino server and get back the response for all requests
       bxAutocompleteResponse = bxClient.getAutocompleteResponse()
-      
+
       #//loop on the search response hit ids and print them
       @logs.push("textual suggestions for "+queryText+":")
       i = 0
       bxAutocompleteResponse.getTextualSuggestions().each do |suggestion|
         @logs.push(bxAutocompleteResponse.getTextualSuggestionHighlighted($suggestion))
-        if(i == 0) 
+        if(i == 0)
           bxAutocompleteResponse.getTextualSuggestionFacets(suggestion).getCategories().each do |value|
             @logs.push("<a href=\"?bx_category_id=" + facets.getCategoryValueId(value) + "\">" + facets.getCategoryValueLabel(value) + "</a> (" + facets.getCategoryValueCount(value) + ")")
           end
         end
         i = i+1
       end
-      
-      if(bxAutocompleteResponse.getTextualSuggestions().size == 0) 
+
+      if(bxAutocompleteResponse.getTextualSuggestions().size == 0)
         @logs.push("There are no autocomplete textual suggestions. This might be normal, but it also might mean that the first execution of the autocomplete index preparation was not done and published yet. Please refer to the example backend_data_init and make sure you have done the following steps at least once: 1) publish your data 2) run the prepareAutocomplete case 3) publish your data again")
       end
 
       @message = @logs.join("<br/>")
-      
-    rescue Exception => e 
+
+    rescue Exception => e
 
       #be careful not to print the error message on your publish web-site as sensitive information like credentials might be indicated for debug purposes
       @message =  e
@@ -485,13 +485,13 @@ end
 
       #//create search request
       bxRequest = BxAutocompleteRequest.new(language, queryText, textualSuggestionsHitCount)
-      
+
       #//set the fields to be returned for each item in the response
       bxRequest.getBxSearchRequest().setReturnFields(fieldNames)
-      
+
       #//set the request
       bxClient.setAutocompleteRequest(bxRequest)
-      
+
       #//make the query to Boxalino server and get back the response for all requests
       bxAutocompleteResponse = bxClient.getAutocompleteResponse()
 
@@ -524,8 +524,8 @@ end
       end
 
       @message = @logs.join("<br/>")
-      
-    rescue Exception => e 
+
+    rescue Exception => e
 
       #be careful not to print the error message on your publish web-site as sensitive information like credentials might be indicated for debug purposes
       @message =  e
@@ -560,18 +560,18 @@ end
       queryTexts.each do |queryText|
         #//create search request
         bxRequest = BxAutocompleteRequest.new(language, queryText, textualSuggestionsHitCount)
-        
+
         #//N.B.: in case you would want to set a filter on a request and not another, you can simply do it by getting the searchchoicerequest with: $bxRequest->getBxSearchRequest() and adding a filter
-        
+
         #//set the fields to be returned for each item in the response
         bxRequest.getBxSearchRequest().setReturnFields(fieldNames)
         bxRequests.push(bxRequest)
 
       end
-      
+
       #//set the request
       bxClient.setAutocompleteRequests(bxRequests)
-      
+
       #//make the query to Boxalino server and get back the response for all requests
       bxAutocompleteResponses = bxClient.getAutocompleteResponses()
       i = -1
@@ -608,8 +608,8 @@ end
       end
 
       @message = @logs.join("<br/>")
-      
-    rescue Exception => e 
+
+    rescue Exception => e
 
       #be careful not to print the error message on your publish web-site as sensitive information like credentials might be indicated for debug purposes
       @message = e
@@ -644,10 +644,10 @@ end
 
       #//create search request
       bxRequest = BxAutocompleteRequest.new(language, queryText, textualSuggestionsHitCount)
-      
+
       #//indicate to the request a property index query is requested
       bxRequest.addPropertyQuery(property, propertyTotalHitCount, true)
-      
+
       #//set the request
       bxClient.setAutocompleteRequest(bxRequest)
       #make the query to Boxalino server and get back the response for all requests
@@ -663,8 +663,8 @@ end
       end
 
       @message = @logs.join("<br/>")
-      
-    rescue Exception => e 
+
+    rescue Exception => e
 
       #be careful not to print the error message on your publish web-site as sensitive information like credentials might be indicated for debug purposes
       @message =  e
@@ -694,10 +694,10 @@ end
       language = "en" # a valid language code (e.g.: "en", "fr", "de", "it", ...)
       queryText =  queryText == "" ?  "women" : queryText  # a search query
       hitCount = 10 #a maximum number of search result to return in one page
-      
+
       #//create search request
       bxRequest = BxSearchRequest.new(language, queryText, hitCount)
-      
+
       #//add the request
       bxClient.addRequest(bxRequest)
 
@@ -707,7 +707,7 @@ end
 
       #//indicate the search made with the number of results found
       @logs.push("Results for query " + queryText + " (" + bxResponse.getTotalHitCount().to_s + "):")
-      
+
       #//loop on the search response hit ids and print them
       @i=0
       bxResponse.getHitIds().each do |id|
@@ -715,12 +715,12 @@ end
         @i +=1
       end
 
-       @message = @logs.join("<br/>")
-      
-    rescue Exception => e 
+      @message = @logs.join("<br/>")
+
+    rescue Exception => e
 
       #be careful not to print the error message on your publish web-site as sensitive information like credentials might be indicated for debug purposes
-         @message =  e
+      @message =  e
       @exception = e
     end
   end
@@ -749,32 +749,32 @@ end
 
       #//create search request
       bxRequest = BxSearchRequest.new(language, queryText, hitCount)
-      
+
       #//add the request
       bxClient.addRequest(bxRequest)
-      
+
       #//make the query to Boxalino server and get back the response for all requests
       bxResponse = bxClient.getResponse()
-      
+
       #//if the query is corrected, then print the corrrect query text
       if(bxResponse.areResultsCorrected())
         @logs.push("Corrected query " + queryText + " into " + bxResponse.getCorrectedQuery())
       end
-      
+
       #//loop on the search response hit ids and print them
       @i=0
       bxResponse.getHitIds().each do |id|
         @logs.push(@i.to_s+": returned id "+id.to_s)
         @i +=1
       end
-      
-      if(bxResponse.getHitIds().size == 0) 
+
+      if(bxResponse.getHitIds().size == 0)
         @logs = "There are no corrected results. This might be normal, but it also might mean that the first execution of the corpus preparation was not done and published yet. Please refer to the example backend_data_init and make sure you have done the following steps at least once: 1) publish your data 2) run the prepareCorpus case 3) publish your data again";
       end
 
       @message = @logs.join("<br/>")
-      
-    rescue Exception => e 
+
+    rescue Exception => e
 
       #be careful not to print the error message on your publish web-site as sensitive information like credentials might be indicated for debug purposes
       @message =  e
@@ -807,18 +807,18 @@ end
 
       #//create search request
       bxRequest = BxSearchRequest.new(language, queryText, hitCount)
-      
+
       #//add the request
       bxClient.addRequest(bxRequest)
-      
+
       #//make the query to Boxalino server and get back the response for all requests
       bxResponse = bxClient.getResponse()
-      
+
       #//print the request object which is sent to our server (please provide it to Boxalino in all your support requests)
 
       @message = j.encode(bxClient.getThriftChoiceRequest())
-      
-    rescue Exception => e 
+
+    rescue Exception => e
 
       #be careful not to print the error message on your publish web-site as sensitive information like credentials might be indicated for debug purposes
       @message =  e
@@ -855,18 +855,18 @@ end
 
       #//create search request
       bxRequest = BxSearchRequest.new(language, queryText, hitCount)
-      
+
       #//set the fields to be returned for each item in the response
       bxRequest.setReturnFields([facetField])
-      
+
       #//add a facert
       facets = BxFacets.new()
       facets.addFacet(facetField, selectedValue)
       bxRequest.setFacets(facets)
-      
+
       #//add the request
       bxClient.addRequest(bxRequest)
-      
+
       #//make the query to Boxalino server and get back the response for all requests
       bxResponse = bxClient.getResponse()
 
@@ -890,8 +890,8 @@ end
       end
 
       @message = @logs.join("<br/>")
-      
-    rescue Exception => e 
+
+    rescue Exception => e
 
       #be careful not to print the error message on your publish web-site as sensitive information like credentials might be indicated for debug purposes
       @message =  e
@@ -923,24 +923,24 @@ end
       hitCount = 10 #a maximum number of search result to return in one page
       #selectedValue = isset($_REQUEST['bx_category_id']) ? $_REQUEST['bx_category_id'] : null;
       selectedValue = nil
-      
+
       #//create search request
       bxRequest = BxSearchRequest.new(language, queryText, hitCount)
-      
+
       #//add a facert
       facets =  BxFacets.new()
       facets.addCategoryFacet(selectedValue)
       bxRequest.setFacets(facets)
-      
+
       #//add the request
       bxClient.addRequest(bxRequest)
-      
+
       #//make the query to Boxalino server and get back the response for all requests
       bxResponse = bxClient.getResponse()
-      
+
       #//get the facet responses
       facets = bxResponse.getFacets()
-      
+
       #//show the category breadcrumbs
       level = 0
       @logs.push("<a href=\"?\">home</a>")
@@ -953,8 +953,8 @@ end
       facets.getCategories().each do |value|
         @logs.push("<a href=\"?bx_category_id=" + facets.getCategoryValueId(value) + "\">" + facets.getCategoryValueLabel(value) + "</a> (" + facets.getCategoryValueCount(value) + ")")
       end
-       @logs.push(" ")
-      
+      @logs.push(" ")
+
       #//loop on the search response hit ids and print them
       i = 0
       bxResponse.getHitIds().each do |id|
@@ -963,8 +963,8 @@ end
       end
 
       @message = @logs.join("<br/>")
-      
-    rescue Exception => e 
+
+    rescue Exception => e
 
       #be careful not to print the error message on your publish web-site as sensitive information like credentials might be indicated for debug purposes
       @message =  e
@@ -1002,33 +1002,33 @@ end
 
       #//create search request
       bxRequest = BxSearchRequest.new(language, queryText, hitCount)
-      
+
       #//add a facert
       facets =  BxFacets.new()
       facets.addPriceRangeFacet(selectedValue)
       bxRequest.setFacets(facets)
-      
+
       #//set the fields to be returned for each item in the response
       bxRequest.setReturnFields([facets.getPriceFieldName()])
-      
+
       #//add the request
       bxClient.addRequest(bxRequest)
-      
+
       #//make the query to Boxalino server and get back the response for all requests
       bxResponse = bxClient.getResponse();
-      
+
       #//get the facet responses
       facets = bxResponse.getFacets()
 
       #//loop on the search response hit ids and print them
       facets.getPriceRanges().each do |fieldValue|
         range = "<a href=\"?bx_price=" + facets.getPriceValueParameterValue(fieldValue) + "\">" + facets.getPriceValueLabel(fieldValue) + "</a> (" + facets.getPriceValueCount(fieldValue).to_s + ")"
-        if(facets.isPriceValueSelected(fieldValue)) 
+        if(facets.isPriceValueSelected(fieldValue))
           range = range+  "<a href=\"?\">[X]</a>"
         end
         @logs.push(range)
       end
-      
+
       #//loop on the search response hit ids and print them
       bxResponse.getHitFieldValues([facets.getPriceFieldName()]).each do |id , fieldValueMap|
         @logs.push("<h3>"+id+"</h3>")
@@ -1038,8 +1038,8 @@ end
       end
 
       @message = @logs.join("<br/>")
-      
-    rescue Exception => e 
+
+    rescue Exception => e
 
       #be careful not to print the error message on your publish web-site as sensitive information like credentials might be indicated for debug purposes
       @message =  e
@@ -1072,19 +1072,19 @@ end
       filterField = "id" #the field to consider in the filter
       filterValues = ["41", "1940"] #the field to consider any of the values should match (or not match)
       filterNegative = true #false by default, should the filter match the values or not?
-      
+
       #//create search request
       bxRequest = BxSearchRequest.new(language, queryText, hitCount)
-      
+
       #//add a filter
       bxRequest.addFilter(BxFilter.new(filterField, filterValues, filterNegative))
-      
+
       #//add the request
       bxClient.addRequest(bxRequest)
-      
+
       #//make the query to Boxalino server and get back the response for all requests
       bxResponse = bxClient.getResponse()
-      
+
       #//loop on the search response hit ids and print them
       i = 0
       bxResponse.getHitIds().each do |id|
@@ -1093,8 +1093,8 @@ end
       end
 
       @message = @logs.join("<br/>")
-      
-    rescue Exception => e 
+
+    rescue Exception => e
 
       #be careful not to print the error message on your publish web-site as sensitive information like credentials might be indicated for debug purposes
       @message =  e
@@ -1135,21 +1135,21 @@ end
 
       #//create search request
       bxRequest = BxSearchRequest.new(language, queryText, hitCount)
-      
+
       #//set the fields to be returned for each item in the response
       bxRequest.setReturnFields(fieldNames)
-      
+
       #//add a filter
       bxRequest.addFilter(BxFilter.new(filterField,filterValues, filterNegative))
       bxRequest.addFilter(BxFilter.new(filterField2, filterValues2, filterNegative2))
       bxRequest.setOrFilters(orFilters)
-      
+
       #//add the request
       bxClient.addRequest(bxRequest)
-      
+
       #//make the query to Boxalino server and get back the response for all requests
       bxResponse = bxClient.getResponse()
-      
+
       #//loop on the search response hit ids and print them
       bxResponse.getHitFieldValues(fieldNames).each do |id , fieldValueMap|
         @logs.push("<h3>"+id+"</h3>")
@@ -1159,8 +1159,8 @@ end
       end
 
       @message = @logs.join("<br/>")
-      
-    rescue Exception => e 
+
+    rescue Exception => e
 
       #be careful not to print the error message on your publish web-site as sensitive information like credentials might be indicated for debug purposes
       @message =  e
@@ -1189,23 +1189,23 @@ end
       language = "en" # a valid language code (e.g.: "en", "fr", "de", "it", ...)
       queryText = "women" # a search query
       hitCount = 10 #a maximum number of search result to return in one page
-      
+
       requestParameters = {"geoIP-latitude" => ["47.36"], "geoIP-longitude" => ["6.1517993"]}
-      
+
       #//create search request
       bxRequest =  BxSearchRequest.new(language, queryText, hitCount)
-      
+
       #//set the fields to be returned for each item in the response
-      requestParameters.each do |k , v| 
+      requestParameters.each do |k , v|
         bxClient.addRequestContextParameter(k, v)
       end
-      
+
       #//add the request
       bxClient.addRequest(bxRequest)
-      
+
       #//make the query to Boxalino server and get back the response for all requests
       bxResponse = bxClient.getResponse()
-      
+
       #//indicate the search made with the number of results found
       @logs.push("Results for query \"" + queryText + "\" (" + bxResponse.getTotalHitCount().to_s + "):<br>")
 
@@ -1217,8 +1217,8 @@ end
       end
 
       @message = @logs.join("<br/>")
-      
-    rescue Exception => e 
+
+    rescue Exception => e
 
       #be careful not to print the error message on your publish web-site as sensitive information like credentials might be indicated for debug purposes
       @message =  e
@@ -1247,18 +1247,18 @@ end
       language = "en" # a valid language code (e.g.: "en", "fr", "de", "it", ...)
       queryText = "women" # a search query
       hitCount = 10 #a maximum number of search result to return in one page
-      
+
       fieldNames = ["products_color"] #//IMPORTANT: you need to put "products_" as a prefix to your field name except for standard fields: "title", "body", "discountedPrice", "standardPrice"
-      
+
       #//create search request
       bxRequest =  BxSearchRequest.new(language, queryText, hitCount)
-      
+
       #//set the fields to be returned for each item in the response
       bxRequest.setReturnFields(fieldNames)
-      
+
       #//add the request
       bxClient.addRequest(bxRequest)
-      
+
       #//make the query to Boxalino server and get back the response for all requests
       bxResponse = bxClient.getResponse()
 
@@ -1272,8 +1272,8 @@ end
       end
 
       @message = @logs.join("<br/>")
-      
-    rescue Exception => e 
+
+    rescue Exception => e
 
       #be careful not to print the error message on your publish web-site as sensitive information like credentials might be indicated for debug purposes
       @message =  e
@@ -1307,19 +1307,19 @@ end
 
       #//create search request
       bxRequest = BxSearchRequest.new(language, queryText, hitCount)
-      
+
       #//add a sort field in the provided direction
       bxRequest.addSortField(sortField, sortDesc)
-      
+
       #//set the fields to be returned for each item in the response
       bxRequest.setReturnFields([sortField])
-      
+
       #//add the request
       bxClient.addRequest(bxRequest)
-      
+
       #//make the query to Boxalino server and get back the response for all requests
       bxResponse = bxClient.getResponse()
-      
+
       #//loop on the search response hit ids and print them
       bxResponse.getHitFieldValues([sortField]).each do |id , fieldValueMap|
         product = "<h3>"+id+"</h3>"
@@ -1330,8 +1330,8 @@ end
       end
 
       @message = @logs.join("<br/>")
-      
-    rescue Exception => e 
+
+    rescue Exception => e
 
       #be careful not to print the error message on your publish web-site as sensitive information like credentials might be indicated for debug purposes
       @message =  e
@@ -1360,22 +1360,22 @@ end
       language = "en" # a valid language code (e.g.: "en", "fr", "de", "it", ...)
       queryText = "women" # a search query
       hitCount = 10 #a maximum number of search result to return in one page
-     
+
       #//create search request
       bxRequest = BxSearchRequest.new(language, queryText, hitCount)
-      
+
       #//add a sort field in the provided direction
       bxRequest.addSortField(sortField, sortDesc)
-      
+
       #//set the fields to be returned for each item in the response
       bxRequest.setReturnFields([sortField])
-      
+
       #//add the request
       bxClient.addRequest(bxRequest)
-      
+
       #//make the query to Boxalino server and get back the response for all requests
       bxResponse = bxClient.getResponse()
-      
+
       #//loop on the search response hit ids and print them
       bxResponse.getHitFieldValues([sortField]).each do |id , fieldValueMap|
         product = "<h3>"+id+"</h3>"
@@ -1386,8 +1386,8 @@ end
       end
 
       @message = @logs.join("<br/>")
-      
-    rescue Exception => e 
+
+    rescue Exception => e
 
       #be careful not to print the error message on your publish web-site as sensitive information like credentials might be indicated for debug purposes
       @message =  e

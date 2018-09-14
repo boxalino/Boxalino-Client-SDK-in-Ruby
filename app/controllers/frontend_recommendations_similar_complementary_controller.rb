@@ -12,7 +12,7 @@ class FrontendRecommendationsSimilarComplementaryController < ApplicationControl
   @bxResponse
   @exception
   def frontend_recommendations_similar_complementary(account = "csharp_unittest", password ="csharp_unittest", exception = nil, bxHost = "cdn.bx-cloud.com",mockRequest = nil)
-  	require 'json'
+    require 'json'
     require 'BxClient'
     require 'BxRecommendationRequest'
     #required parameters you should set for this example to work
@@ -29,7 +29,7 @@ class FrontendRecommendationsSimilarComplementaryController < ApplicationControl
       request = ActionDispatch::Request.new({"url"=>"/frontend_recommendations_similar_complementary/frontend_recommendations_similar_complementary","uri"=>"http://localhost:3000/", "host" => "localhost", "REMOTE_ADDR" => "127.0.0.1", "protocol" => "http"})
     end
     @isDelta = false #are the data to be pushed full data (reset index) or delta (add/modify index)?
-    bxClient =BxClient.new(@account, @password, @domain ,  @isDev, @host, request)
+    bxClient =BxClient.new(@account, @password, @domain ,  @isDev, @host, request, params)
     bxClient.setCookieContainer(cookies)
     begin
 
@@ -46,18 +46,18 @@ class FrontendRecommendationsSimilarComplementaryController < ApplicationControl
       bxRequestSimilar.setProductContext(itemFieldId, itemFieldIdValue)
       #//add the request
       bxClient.addRequest(bxRequestSimilar)
-      
-      
+
+
       #//create complementary recommendations request
       bxRequestComplementary = BxRecommendationRequest.new(language, @choiceIdComplementary, hitCount)
       #//indicate the product the user is looking at now (reference of what the recommendations need to be similar to)
       bxRequestComplementary.setProductContext(itemFieldId, itemFieldIdValue)
       #//add the request
       bxClient.addRequest(bxRequestComplementary)
-      
+
       #//make the query to Boxalino server and get back the response for all requests (make sure you have added all your requests before calling getResponse; i.e.: do not push the first request, then call getResponse, then add a new request, then call getResponse again it wil not work; N.B.: if you need to do to separate requests call, then you cannot reuse the same instance of BxClient, but need to create a new one)
       @bxResponse = bxClient.getResponse()
-      
+
       #//loop on the recommended response hit ids and print them
       @logs.push("recommendations of similar items:")
       i = 0
@@ -77,12 +77,12 @@ class FrontendRecommendationsSimilarComplementaryController < ApplicationControl
       end
 
       @message = @logs.join("<br/>")
-      
-    rescue Exception => e 
+
+    rescue Exception => e
 
       #be careful not to print the error message on your publish web-site as sensitive information like credentials might be indicated for debug purposes
       @message =  e
-      @exception = e
+      @exception = e.backtrace
     end
   end
 end

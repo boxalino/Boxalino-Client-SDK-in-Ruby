@@ -3,38 +3,38 @@ class BxSortFields
 
 	@sorts = Hash.new
 
-    def  initialize(field=nil, reverse=false)
-			@sorts = Hash.new
-			if(field)
-				push(field, reverse)
-			end
-    end
+	def  initialize(field=nil, reverse=false)
+		@sorts = Hash.new
+		if(field)
+			push(field, reverse)
+		end
+	end
 
-    #/**
-    # * @param $field name od field to sort by (i.e. discountedPrice / title)
-    # * @param $reverse true for ASC, false for DESC
-    # */
-    def  push(field, reverse=false)
-    
-        @sorts[field] = reverse
+	#/**
+	# * @param $field name od field to sort by (i.e. discountedPrice / title)
+	# * @param $reverse true for ASC, false for DESC
+	# */
+	def  push(field, reverse=false)
 
-    end
+		@sorts[field] = reverse
 
-    def getSortFields
-			if(@sorts.nil?)
-				return Array.new
+	end
 
-			end
+	def getSortFields
+		if(@sorts.nil?)
+			return Array.new
+
+		end
 		return @sorts.keys
-    end
-	
-	def isFieldReverse(field) 
+	end
+
+	def isFieldReverse(field)
 		if(@sorts.key?(field) && @sorts[field])
 			return true;
 		end
 		return false;
 	end
-	
+
 	def getThriftSortFields
 		@sortFields = Array.new
 		getSortFields().each do |field|
@@ -42,5 +42,5 @@ class BxSortFields
 		end
 		return @sortFields
 	end
-	
+
 end

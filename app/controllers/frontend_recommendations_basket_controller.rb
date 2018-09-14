@@ -7,7 +7,7 @@ class FrontendRecommendationsBasketController < ApplicationController
   @exception
 
   def frontend_recommendations_basket (account = "csharp_unittest", password ="csharp_unittest", exception = nil, bxHost = "cdn.bx-cloud.com",mockRequest = nil)
-  	require 'json'
+    require 'json'
     require 'BxClient'
     require 'BxRecommendationRequest'
     #required parameters you should set for this example to work
@@ -25,7 +25,7 @@ class FrontendRecommendationsBasketController < ApplicationController
     end
 
     @isDelta = false #are the data to be pushed full data (reset index) or delta (add/modify index)?
-    bxClient =BxClient.new(@account, @password, @domain ,  @isDev, @host, request)
+    bxClient =BxClient.new(@account, @password, @domain ,  @isDev, @host, request, params)
     bxClient.setCookieContainer(cookies)
     begin
 
@@ -60,7 +60,7 @@ class FrontendRecommendationsBasketController < ApplicationController
 
       #be careful not to print the error message on your publish web-site as sensitive information like credentials might be indicated for debug purposes
       @message =  e
-      @exception = e
+      @exception = e.backtrace
     end
   end
 end
