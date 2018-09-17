@@ -32,8 +32,10 @@ class BxClient
   @chooseRequests = Hash.new
   @request = nil
   @CustomCookies = nil
+  @apiKey = nil
+  @apiSecret = nil
 
-  def initialize( account, password, domain, isDev=false, host=nil, request=nil, params=Hash.new, port=nil, uri=nil, schema=nil, p13n_username=nil, p13n_password=nil)
+  def initialize( account, password, domain, isDev=false, host=nil, request=nil, params=Hash.new, port=nil, uri=nil, schema=nil, p13n_username=nil, p13n_password=nil, apiKey=nil, apiSecret=nil)
     @account = account
     @password = password
     #To Check Below Line
@@ -69,6 +71,8 @@ class BxClient
       @p13n_password = "tkZ8EXfzeZc6SdXZntCU"
     end
     @domain = domain
+    @apiKey = apiKey
+    @apiSecret = apiSecret
     @chooseRequests = Array.new
     @requestContextParameters = Hash.new
     @requestMap = Hash.new
@@ -89,6 +93,14 @@ class BxClient
 
   def setTestMode(isTest)
     @isTest = isTest
+  end
+
+  def setApiKey(apiKey)
+    @apiKey = apiKey
+  end
+
+  def setApiSecret(apiSecret)
+    @apiSecret = apiSecret
   end
 
   def setSocket(socketHost, socketPort=4040, socketSendTimeout=1000, socketRecvTimeout=1000)
@@ -130,6 +142,14 @@ class BxClient
 
   def getPassword
     return @password
+  end
+
+  def getApiKey
+    return @apiKey
+  end
+
+  def getApiSecret
+    return @apiSecret
   end
 
   def setSessionAndProfile(sessionId, profileId)
@@ -177,6 +197,8 @@ class BxClient
   def getUserRecord
     @userRecord = UserRecord.new()
     @userRecord.username = getAccount()
+    @userRecord.apiKey = getApiKey()
+    @userRecord.apiSecret = getApiSecret()
     return @userRecord
   end
 
@@ -212,7 +234,7 @@ class BxClient
     return choiceRequest
   end
 
-  def   getIP
+  def getIP
     @ip = @request.remote_ip
     return @ip
   end
