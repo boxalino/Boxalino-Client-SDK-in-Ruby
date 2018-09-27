@@ -30,7 +30,7 @@ class BxBatchClient
     @host = "track.bx-cloud.com/track"
     @uri = '/p13n.web/p13n'
     @schema = 'https'
-    @batchSize = 1000
+    @batchSize =1000
 
     @notifications = Hash.new
     @requestContextParameters = Hash.new

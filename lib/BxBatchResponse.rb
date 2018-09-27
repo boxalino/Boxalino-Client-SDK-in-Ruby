@@ -47,4 +47,40 @@ class BxBatchResponse
     return @profileItemsFromVariants
   end
 
+  def getHitValueByField(field)
+    profileHits = Hash.new
+    key=0
+    @response.variants.each() do |variant|
+      values = Array.new
+      variant.searchResult.hitsGroups.each() do |hitGroup|
+        hitGroup.hits.each() do |hit|
+          values.push(hit.values[field][0])
+        end
+      end
+
+      context = @bxBatchProfileContextsIds[key]
+      profileHits[context] = values
+      key+=1
+    end
+    return profileHits
+  end
+
+  def getHitIds(field='id')
+    profileHits = Hash.new
+    key=0
+    @response.variants.each() do |variant|
+      values = Array.new
+      variant.searchResult.hitsGroups.each() do |hitGroup|
+        hitGroup.hits.each() do |hit|
+          values.push(hit.values[field][0])
+        end
+      end
+
+      context = @bxBatchProfileContextsIds[key]
+      profileHits[context] = values
+      key+=1
+    end
+    return profileHits
+  end
+
 end
