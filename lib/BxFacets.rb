@@ -1199,8 +1199,12 @@ class BxFacets
         facetObject.fieldName = facetField
         facetObject.order = facetResponse.sortOrder
         facetObject.label = getFacetLabel(facetField, language)
-        facetObject.hidden = showFacetValueCounters(facetField)
+        facetObject.showCounter = showFacetValueCounters(facetField)
         facetObject.displayType = getFacetDisplay(facetField)
+        facetObject.hidden = facetObject.displayType=="hidden" ? true : false
+        if()
+
+        end
         facetObject.type = getFacetType(facetField)
         facetObject.icon = getFacetIcon(facetField)
 
