@@ -1202,9 +1202,6 @@ class BxFacets
         facetObject.showCounter = showFacetValueCounters(facetField)
         facetObject.displayType = getFacetDisplay(facetField)
         facetObject.hidden = facetObject.displayType=="hidden" ? true : false
-        if()
-
-        end
         facetObject.type = getFacetType(facetField)
         facetObject.icon = getFacetIcon(facetField)
 

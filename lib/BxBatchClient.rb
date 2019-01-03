@@ -149,7 +149,7 @@ class BxBatchClient
       end
 
       @@transport = Thrift::ReusingHTTPClientTransport.new(@schema+"://"+@host+@uri)
-      @@transport.basic_auth(getApiKey(), getApiSecret())
+      @@transport.basic_auth(getApiKey, getApiSecret)
     end
     client = P13nService::Client.new(Thrift::CompactProtocol.new(@@transport))
     return client
@@ -158,8 +158,8 @@ class BxBatchClient
   def getUserRecord
     @userRecord = UserRecord.new()
     @userRecord.username = getAccount(@isDev)
-    @userRecord.apiKey = getApiKey()
-    @userRecord.apiSecret = getApiSecret()
+    @userRecord.apiKey = getApiKey
+    @userRecord.apiSecret = getApiSecret
     return @userRecord
   end
 
@@ -173,10 +173,10 @@ class BxBatchClient
 
   #duplicate from BxClient.rb
   def throwCorrectP13nException(e)
-    if(e.to_s.index( 'Could not connect ') != nil)
+    if(e.to_s.index('Could not connect ') != nil)
       raise 'The connection to our server failed even before checking your credentials. This might be typically caused by 2 possible things: wrong values in host, port, schema or uri (typical value should be host=cdn.bx-cloud.com, port=443, uri =/p13n.web/p13n and schema=https, your values are : host=' + @host + ', port=' + @port + ', schema=' + @schema + ', uri=' + @uri + '). Another possibility, is that your server environment has a problem with ssl certificate (peer certificate cannot be authenticated with given ca certificates), which you can either fix, or avoid the problem by adding the line "curl_setopt(self::$curlHandle, CURLOPT_SSL_VERIFYPEER, false);" in the file "lib\Thrift\Transport\P13nTCurlClient" after the call to curl_init in the function flush. Full error message=' + e.to_s
     end
-    if( e.to_s.index(  'Bad protocol id in TCompact message') !=nil)
+    if( e.to_s.index('Bad protocol id in TCompact message') !=nil)
       raise 'The connection to our server has worked, but your credentials were refused. Provided credentials username=' + @p13n_username + ', password=' + @p13n_password + '. Full error message=' + e.to_s
     end
     if(e.to_s.index('choice not found') != nil)
@@ -186,11 +186,11 @@ class BxBatchClient
       pieces = pieceMsg.split(' at ')
       choiceId = pieces[0]
       choiceId[':'] = ""
-      raise "Configuration not live on account " + getAccount() + ": choice $choiceId doesn't exist. NB: If you get a message indicating that the choice doesn't exist, go to http://intelligence.bx-cloud.com, log in your account and make sure that the choice id you want to use is published."
+      raise "Configuration not live on account " + getAccount + ": choice $choiceId doesn't exist. NB: If you get a message indicating that the choice doesn't exist, go to http://intelligence.bx-cloud.com, log in your account and make sure that the choice id you want to use is published."
     end
 
     if(e.to_s.index('Solr returned status 404') !=nil)
-      raise "Data not live on account " + getAccount() + ": index returns status 404. Please publish your data first, like in example backend_data_basic.php."
+      raise "Data not live on account " + getAccount + ": index returns status 404. Please publish your data first, like in example backend_data_basic.php."
     end
 
     if( e.to_s.index('undefined field') != nil)
@@ -200,7 +200,7 @@ class BxBatchClient
       pieces = piecesMsg.split(' at ')
       field = pieces[0]
       field[":"] = ""
-      raise "You request in your filter or facets a non-existing field of your account " + getAccount() + ": field $field doesn't exist."
+      raise "You request in your filter or facets a non-existing field of your account " + getAccount + ": field $field doesn't exist."
     end
     if(e.to_s.index('All choice variants are excluded') != nil)
       raise "You have an invalid configuration for with a choice defined, but having no defined strategies. This is a quite unusual case, please contact support@boxalino.com to get support."

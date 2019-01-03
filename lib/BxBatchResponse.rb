@@ -18,7 +18,7 @@ class BxBatchResponse
 
   def getHitFieldValuesByProfileId(profileId)
     if(@profileItemsFromVariants.nil?)
-      getResultsFromVariants
+      getHitFieldValueForProfileIds
     end
 
     if(!@profileItemsFromVariants.nil? && !@profileItemsFromVariants[profileId].nil?)
@@ -31,10 +31,16 @@ class BxBatchResponse
   def getHitFieldValueForProfileIds
     profileItems = Hash.new
     key=0
-    @response.variants.each() do |variant|
+    if (@response.nil? || @response.variants.nil?)
+      return Hash.new
+    end
+    @response.variants.each do |variant|
       items = Array.new
-      variant.searchResult.hitsGroups.each() do |hitGroup|
-        hitGroup.hits.each() do |hit|
+      if(variant.nil? || variant.searchResult.nil? || variant.searchResult.hitsGroups.nil?)
+        return Hash.new
+      end
+      variant.searchResult.hitsGroups.each do |hitGroup|
+        hitGroup.hits.each do |hit|
           items.push(hit.values)
         end
       end
@@ -50,9 +56,9 @@ class BxBatchResponse
   def getHitValueByField(field)
     profileHits = Hash.new
     key=0
-    @response.variants.each() do |variant|
+    @response.variants.each do |variant|
       values = Array.new
-      variant.searchResult.hitsGroups.each() do |hitGroup|
+      variant.searchResult.hitsGroups.each do |hitGroup|
         hitGroup.hits.each() do |hit|
           values.push(hit.values[field][0])
         end
@@ -68,9 +74,15 @@ class BxBatchResponse
   def getHitIds(field='id')
     profileHits = Hash.new
     key=0
+    if (@response.nil? || @response.variants.nil?)
+      return Hash.new
+    end
     @response.variants.each() do |variant|
       values = Array.new
-      variant.searchResult.hitsGroups.each() do |hitGroup|
+      if(variant.nil? || variant.searchResult.nil? || variant.searchResult.hitsGroups.nil?)
+        return Hash.new
+      end
+      variant.searchResult.hitsGroups.each do |hitGroup|
         hitGroup.hits.each() do |hit|
           values.push(hit.values[field][0])
         end

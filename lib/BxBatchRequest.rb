@@ -1,6 +1,5 @@
 require 'json'
 class BxBatchRequest < BxRequest
-  require 'p13n_types'
 
   @language = nil
   @choiceId
@@ -74,24 +73,24 @@ class BxBatchRequest < BxRequest
 
   def getSimpleSearchQuery
     searchQuery  = SimpleSearchQuery.new
-    searchQuery.indexId = getIndexId()
+    searchQuery.indexId = getIndexId
     searchQuery.language = @language
-    searchQuery.returnFields = getReturnFields()
+    searchQuery.returnFields = getReturnFields
     searchQuery.hitCount = @max
-    searchQuery.queryText = getQuerytext()
-    searchQuery.groupBy = getGroupBy()
-    _temp =getFilters()
+    searchQuery.queryText = getQuerytext
+    searchQuery.groupBy = getGroupBy
+    _temp =getFilters
     if(!_temp.nil?)
       if (_temp.length >0)
         searchQuery.filters = Array.new
-        getFilters().each do |filter|
-          searchQuery.filters.push(filter[1].getThriftFilter())
+        getFilters.each do |filter|
+          searchQuery.filters.push(filter[1].getThriftFilter)
         end
       end
     end
-    searchQuery.orFilters = getOrFilters()
-    if(getSortFields())
-      searchQuery.sortFields = getSortFields().getThriftSortFields()
+    searchQuery.orFilters = getOrFilters
+    if(getSortFields)
+      searchQuery.sortFields = getSortFields.getThriftSortFields
     end
     return searchQuery
   end
@@ -140,7 +139,7 @@ class BxBatchRequest < BxRequest
   end
 
   def setUseSameChoiceInquiry(sameInquiry)
-    @sameInquiry = true
+    @sameInquiry = sameInquiry
   end
 
   def setProfileIds(ids)
@@ -162,6 +161,5 @@ class BxBatchRequest < BxRequest
   def setIsDev(dev)
     @isDev = dev
   end
-
 
 end
