@@ -118,5 +118,7 @@ Rails.application.routes.draw do
 
   get 'frontend_batch/frontend_batch'
 
+  get 'frontend_search_object/frontend_search_object'
+
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 end

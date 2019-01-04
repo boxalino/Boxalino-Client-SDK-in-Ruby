@@ -31,7 +31,7 @@ class BxClient
   @notifications = Hash.new
   @chooseRequests = Hash.new
   @request = nil
-  @CustomCookies = nil
+  @CustomCookies = Hash.new
   @apiKey = nil
   @apiSecret = nil
 
@@ -76,7 +76,7 @@ class BxClient
     @chooseRequests = Array.new
     @requestContextParameters = Hash.new
     @requestMap = Hash.new
-    @CustomCookies = nil
+    @CustomCookies = Hash.new
 
     params.each do |key,value|
       addToRequestMap(key, value)
